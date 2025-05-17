@@ -26,6 +26,7 @@ class ProfilePerusahaanController extends Controller
 
     public function store(Request $request)
     {
+        dd($request->user()->name);
         $request->validate([
             "nama" => "required|string|min:3|max:255",
             "alamat" => "required|min:10|max:255",
@@ -72,7 +73,7 @@ class ProfilePerusahaanController extends Controller
                 'deskripsi' => $request->deskripsi,
                 'logo' => $logo,
                 'thumbnail' => $thumbnail,
-                'updated_at' => $request->user()->name
+                'created_by' => $request->user()->name
             ]);
             $visi = Visi::create([
                 'kantor_cabang_id' => $kantorCabang->id,
@@ -163,7 +164,7 @@ class ProfilePerusahaanController extends Controller
                 'deskripsi' => $request->deskripsi,
                 'logo' => $logo,
                 'thumbnail' => $thumbnail,
-                'updated_at' => $request->user()->name
+                'updated_by' => $request->user()->name
             ]);
             $ids_sosial_media = [];
             foreach ($request->sosial_media as $index => $item) {
