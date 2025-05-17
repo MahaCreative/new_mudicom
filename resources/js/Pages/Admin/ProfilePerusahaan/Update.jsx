@@ -168,7 +168,7 @@ export default function Update(props) {
             ...prev,
             kode: kantor.kode,
             nama: kantor.nama,
-            kode: kantor.kode,
+
             alamat: kantor.alamat,
             kota: kantor.kota,
             provinsi: kantor.provinsi,
