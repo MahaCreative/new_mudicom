@@ -72,7 +72,7 @@ class ProfilePerusahaanController extends Controller
                 'deskripsi' => $request->deskripsi,
                 'logo' => $logo,
                 'thumbnail' => $thumbnail,
-                'updated_at' => $request->user->name
+                'updated_at' => $request->user()->name
             ]);
             $visi = Visi::create([
                 'kantor_cabang_id' => $kantorCabang->id,
@@ -163,7 +163,7 @@ class ProfilePerusahaanController extends Controller
                 'deskripsi' => $request->deskripsi,
                 'logo' => $logo,
                 'thumbnail' => $thumbnail,
-                'updated_at' => $request->user->name
+                'updated_at' => $request->user()->name
             ]);
             $ids_sosial_media = [];
             foreach ($request->sosial_media as $index => $item) {
