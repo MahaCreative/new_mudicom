@@ -111,9 +111,9 @@ export default function GuestLayout({ children }) {
                 {/* Contact */}
                 <section
                     id="contact"
-                    className="bg-blue-800 text-white py-12 px-6 text-center flex justify-between items-start"
+                    className="bg-blue-800 text-white py-12 px-6 text-center flex flex-col md:flex-row justify-between items-start"
                 >
-                    <div className="w-1/2">
+                    <div className="w-full md:w-[50%] lg:w-[70%]">
                         <div className="flex gap-x-3 items-center">
                             <img
                                 src={"/storage/" + profile.logo}
@@ -129,7 +129,7 @@ export default function GuestLayout({ children }) {
                             Berprestasi, Terampil, Selaras, Mandiri, Kompetitif
                         </p>
                     </div>
-                    <div className=" text-left">
+                    <div className="w-full md:w-[50%] lg:w-[30%] text-left">
                         <h1 className="font-bold text-white capitalize text-4xl">
                             Hubungi Kami
                         </h1>
