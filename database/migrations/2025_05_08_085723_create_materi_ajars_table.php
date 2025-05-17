@@ -1,0 +1,33 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('materi_ajars', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('sub_kategrori_id')->constrained('sub_kategori_kursuses')->onDelete('cascade');
+            $table->string('nama_materi');
+            $table->string('thumbnail')->default('image/default_thumnbnail.jpg');
+            $table->longText('deskripsi');
+            $table->string('modul')->nullable();
+            $table->string('silabus')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('materi_ajars');
+    }
+};

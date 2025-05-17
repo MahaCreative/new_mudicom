@@ -1,3 +1,92 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+*::before, *::after{
+  box-sizing: border-box;
+}
+h6{
+  color: rgb(5, 5, 105);
+  font-weight: 600;
+}
+.navItem{
+    position: relative;
+}
+.navItem::before{
+    content: '';
+    position: absolute;
+    width: 0px;
+    background: orange;
+    height: 3px;
+    left: 0;
+    top: 0;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    
+}
+.jumbotron{
+  position: relative;
+  background: red;
+}
+.jumbotron::before{
+    content: '';
+    position: absolute;
+    width: 1000px;
+    height: 1000px;
+    background-color: gray;
+    height: 3px;
+    left: 0;
+    top: 0;
+    z-index: 100;
+    transition: all 0.3s ease;
+}
+.section-title{
+  position: relative;
+  background-color: white;
+  
+}
+.section-title::before{
+    position: absolute;
+    content: "";
+    width: 30px;
+    height: 2px;
+    top: 4px;
+    left: 100px;
+    background: rgb(2, 119, 119);
+    z-index: -1;
+}
+.section-title::after{
+    position: absolute;
+    content: "";
+    width: 60px;
+    height: 2px;
+    bottom: 8px;
+    left: 100px;
+    background: rgb(2, 119, 119);
+    z-index: -1;
+}
+.navItem:hover::before{
+    width: 100%;
+}
+
+.usetransisi{
+    @apply transition-all duration-300 ease-in-out;
+}
+@keyframes zoomIn {
+  0% {
+    transform: scale(1.2);
+    
+  }
+  50% {
+    transform: scale(1);
+    
+  }
+  100% {
+    transform: scale(1.2);
+    
+  }
+}
+
+.zoom-in {
+  animation: zoomIn 60s ease infinite;
+}
