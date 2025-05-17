@@ -26,7 +26,7 @@ class ProfilePerusahaanController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->user()->name);
+
         $request->validate([
             "nama" => "required|string|min:3|max:255",
             "alamat" => "required|min:10|max:255",
