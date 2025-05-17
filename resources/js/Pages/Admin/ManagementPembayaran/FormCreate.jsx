@@ -1,4 +1,3 @@
-import Dialogs from "@/Components/Dialogs";
 import InputText from "@/Components/InputText";
 import Tables from "@/Components/Tables";
 import axios from "axios";

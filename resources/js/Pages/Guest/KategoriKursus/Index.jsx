@@ -11,7 +11,7 @@ export default function Index(props) {
                 <h1 className="font-bold text-white text-4xl">
                     Kategori Kursus
                 </h1>
-                <p className="text-white w-full w-[80%] lg:w-1/2 text-center my-3">
+                <p className="text-white w-full md:w-[80%] lg:w-1/2 text-center my-3">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Doloribus ipsa repudiandae nobis rem, blanditiis odio saepe
                     natus laborum in vel voluptas possimus porro cumque fugiat

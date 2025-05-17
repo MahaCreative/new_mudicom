@@ -1,6 +1,5 @@
 import AuthLayout from "@/Layouts/AuthLayout";
-import { Link } from "@inertiajs/react";
-import { ArrowForwardIos } from "@mui/icons-material";
+
 import React, { useState } from "react";
 
 export default function Index() {

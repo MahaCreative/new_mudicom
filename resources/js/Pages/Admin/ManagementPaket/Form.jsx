@@ -1,10 +1,10 @@
 import InputText from "@/Components/InputText";
 import SelectOption from "@/Components/SelectOption";
 import Tables from "@/Components/Tables";
-import { formatRupiah } from "@/Pages/Function/FormatRupiah";
+
 import { router, useForm, usePage } from "@inertiajs/react";
-import { Check, Checklist, Clear, Delete } from "@mui/icons-material";
-import { MenuItem, Table } from "@mui/material";
+import { Check, Clear, Delete } from "@mui/icons-material";
+import { MenuItem } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
 export default function Form({ kategori, sub, jenis, model, open, onClose }) {
