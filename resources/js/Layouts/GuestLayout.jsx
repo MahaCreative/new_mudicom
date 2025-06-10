@@ -68,7 +68,7 @@ export default function GuestLayout({ children }) {
                                 Profile Lembaga
                             </Link>
                         </li>
-                        <li>
+                        {/* <li>
                             <Link
                                 href={route("kategori-kursus")}
                                 className={`${
@@ -79,6 +79,18 @@ export default function GuestLayout({ children }) {
                             >
                                 Kategori Kursus
                             </Link>
+                        </li> */}
+                        <li>
+                            <Link
+                                href={route("paket-kursus")}
+                                className={`${
+                                    route().current("paket-kursus")
+                                        ? "bg-white py-2 px-3 rounded-md text-primary"
+                                        : "text-white"
+                                } navItem text-xs md:text-base lg:text-lg  py-1.5 md:py-3 border-orange-500 font-medium  transition-all duration-300 ease-in-out  h-full `}
+                            >
+                                Paket Kursus
+                            </Link>
                         </li>
                         <li>
                             <Link className="navItem text-xs md:text-base lg:text-lg text-white py-1.5 md:py-3 border-orange-500 font-medium  transition-all duration-300 ease-in-out  h-full ">
@@ -87,10 +99,11 @@ export default function GuestLayout({ children }) {
                         </li>
                         <li>
                             <Link
+                                href={route("login")}
                                 as="button"
                                 className="bg-orange-500  px-4  rounded-md text-xs md:text-base lg:text-lg text-white py-1.5 md:py-3 border-orange-500 font-medium  transition-all duration-300 ease-in-out  h-full "
                             >
-                                Login / Create Akun
+                                Login
                             </Link>
                         </li>
                     </ul>

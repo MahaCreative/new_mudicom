@@ -15,10 +15,13 @@ class JenisKursusKontroller extends Controller
             'jenis_kursus' => 'required|string|min:3|max:25|unique:jenis_kursuses,jenis_kursus',
             'deskripsi' => 'required|string|min:25|max:255',
             'thumbnail' => 'required|image|mimes:jpeg,jpeg,jpg,png,webp,gif',
-            'benefits.*.benefit' => 'required|string|min:25|max:100'
+            'benefits.*.benefit' => 'required|string|min:25|max:100',
+            'kantor_cabang_id' => 'required',
         ]);
         $thumbnail = $request->file('thumbnail')->store('jenis_kursus');
         $jenis = JenisKursus::create([
+            'kantor_cabang_id' => $request->kantor_cabang_id,
+            'created_by' => $request->user()->name,
             'jenis_kursus' => $request->jenis_kursus,
             'deskripsi' => $request->deskripsi,
             'thumbnail' => $thumbnail,
@@ -39,7 +42,7 @@ class JenisKursusKontroller extends Controller
         $request->validate([
             'jenis_kursus' => 'required|string|min:3|max:25|unique:jenis_kursuses,jenis_kursus,' . $jenis->id,
             'deskripsi' => 'required|string|min:25|max:255',
-
+            'kantor_cabang_id' => 'required',
             'benefits.*.benefit' => 'required|string|min:25|max:100'
         ]);
         $thumbnail = $jenis->thumbnail;
@@ -50,9 +53,11 @@ class JenisKursusKontroller extends Controller
             $thumbnail = $request->file('thumbnail')->store('jenis_kursus');
         }
         $jenis->update([
+            'kantor_cabang_id' => $request->kantor_cabang_id,
             'jenis_kursus' => $request->jenis_kursus,
             'deskripsi' => $request->deskripsi,
             'thumbnail' => $thumbnail,
+            'updated_by' => $request->user()->name,
         ]);
         foreach ($request->benefits as $item) {
 

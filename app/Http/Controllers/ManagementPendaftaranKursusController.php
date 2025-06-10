@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DetailPesananKursus;
 use App\Models\Instruktur;
 use App\Models\JenisKursus;
+use App\Models\KantorCabang;
 use App\Models\Kas;
 use App\Models\KategoriKursus;
 use App\Models\PaketKursus;
@@ -46,14 +47,26 @@ class ManagementPendaftaranKursusController extends Controller
         $sub = SubKategoriKursus::with('kategori')->latest()->get();
         $jenis = JenisKursus::latest()->get();
         $kd_transaksi = 'tr-' . now()->format('my') . '-00' . PesananKursus::count() + 1;
+        $kantor_cabang = KantorCabang::latest()->get();
         return inertia('Global/PendaftaranKursuss/Create', compact(
             'kategori',
             'sub',
             'jenis',
-            'kd_transaksi'
+            'kd_transaksi',
+            'kantor_cabang',
         ));
     }
 
+    public function update_siswa(Request $request, $kd_transaksi)
+    {
+
+        $pesanan = PesananKursus::where('kd_transaksi', $kd_transaksi);
+        $siswa = Siswa::where('kd_siswa', $request->kd_siswa)->first();
+
+        if ($siswa) {
+            $pesanan->update(['siswa_id' => $siswa->id]);
+        }
+    }
     public function store(Request $request)
     {
         // Validasi awal
@@ -61,6 +74,7 @@ class ManagementPendaftaranKursusController extends Controller
         $validator = FacadesValidator::make($request->all(), [
             'kd_siswa' => 'required|exists:siswas,kd_siswa',
             'nama_siswa' => 'required|string',
+            'kantor_cabang_id' => 'required',
             'bayar' => 'required|numeric|min:1',
             'total_harga' => 'required|numeric|min:0',
             'total_netto' => 'required|numeric|min:0',
@@ -96,7 +110,7 @@ class ManagementPendaftaranKursusController extends Controller
                 'kd_transaksi' => $kd_transaksi,
                 'siswa_id' => $siswa->id,
                 'petugas_id' => auth()->id() ?? 1, // Gunakan petugas dari login, fallback ke 1
-
+                'kantor_cabang_id' => $request->kantor_cabang_id,
                 'total_pertemuan' => $request->total_pertemuan,
                 'total_materi' => $request->total_materi,
                 'total_discount' => $request->total_discount ?? 0,
@@ -134,9 +148,11 @@ class ManagementPendaftaranKursusController extends Controller
                 'remaining_amount' => $sisa_bayar,
                 'installments' => 1,
                 'installment_number' => 1,
+                'kantor_cabang_id' => $request->kantor_cabang_id,
             ]);
             $kas = Kas::create([
                 'tanggal' => now(),
+                'kantor_cabang_id' => $request->kantor_cabang_id,
                 'jenis_transaksi' => 'pemasukan',
                 'sumber' => 'pembayaran kursus',
                 'keterangan' => 'pendaftaran kursus ' . $pesanan->kd_transaksi,
@@ -176,8 +192,8 @@ class ManagementPendaftaranKursusController extends Controller
         // dd($detail);
         $payment = Payment::where('pesanan_kursus_id', $pendaftaran->id)->latest()->get();
         $siswa = Siswa::find($pendaftaran->siswa_id);
-
-        return inertia('Global/PendaftaranKursuss/Update', compact('pendaftaran', 'payment', 'detail', 'siswa', 'kategori', 'kd_transaksi'));
+        $kantor_cabang = KantorCabang::latest()->get();
+        return inertia('Global/PendaftaranKursuss/Update', compact('pendaftaran', 'payment', 'detail', 'siswa', 'kategori', 'kd_transaksi', 'kantor_cabang'));
     }
 
     public function update(Request $request)

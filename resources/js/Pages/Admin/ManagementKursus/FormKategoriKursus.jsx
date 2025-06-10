@@ -1,12 +1,15 @@
 import InputText from "@/Components/InputText";
+import SelectOption from "@/Components/SelectOption";
 import { useForm } from "@inertiajs/react";
+import { MenuItem } from "@mui/material";
 import React, { useEffect } from "react";
 
-export default function FormKategoriKursus({ model, onClose }) {
+export default function FormKategoriKursus({ model, onClose, kantor_cabang }) {
     const { data, setData, post, reset, errors } = useForm({
         nama_kategori: "",
         deskripsi: "",
         thumbnail: "",
+        kantor_cabang_id: "",
     });
     const submitHandler = (e) => {
         e.preventDefault();
@@ -23,6 +26,7 @@ export default function FormKategoriKursus({ model, onClose }) {
             id: model ? model.id : "",
             nama_kategori: model ? model.nama_kategori : "",
             deskripsi: model ? model.deskripsi : "",
+            kantor_cabang_id: model ? model.kantor_cabang_id : "",
             thumbnail: model ? model.thumbnail : "",
         });
     }, [model]);
@@ -55,6 +59,31 @@ export default function FormKategoriKursus({ model, onClose }) {
                     label="Deskripsi"
                 />
             </div>
+            <div className="w-full">
+                <SelectOption
+                    label="Kantor"
+                    name="kantor_cabang_id"
+                    value={data.kantor_cabang_id}
+                    errors={errors.kantor_cabang_id}
+                    onChange={(e) =>
+                        setData((prev) => ({
+                            ...prev,
+                            [e.target.name]: e.target.value,
+                        }))
+                    }
+                >
+                    <MenuItem value="">Pilih Kantor Mengajar</MenuItem>
+                    {kantor_cabang.map((item, key) => (
+                        <MenuItem
+                            key={key}
+                            value={item.id}
+                            className="capitalize"
+                        >
+                            {item.nama + " | " + item.status}
+                        </MenuItem>
+                    ))}
+                </SelectOption>
+            </div>
             <div className="p-2">
                 <input
                     type="file"
@@ -74,6 +103,7 @@ export default function FormKategoriKursus({ model, onClose }) {
                     </p>
                 )}
             </div>
+
             <div className="flex gap-x-3 justify-end items-center">
                 <button className="bg-blue-500 hover:bg-blue-700 usetransisi py-2 px-3 text-sm text-white font-medium rounded-md">
                     Submit

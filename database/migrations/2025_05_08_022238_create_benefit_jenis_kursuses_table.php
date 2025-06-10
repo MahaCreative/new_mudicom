@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('jenis_kursus_id')->constrained('jenis_kursuses')->onDelete('cascade');
             $table->string('benefit');
+            $table->string('status_konfirmasi')->default('menunggu konfirmasi');
+            $table->bigInteger('views')->default(0);
             $table->timestamps();
         });
     }

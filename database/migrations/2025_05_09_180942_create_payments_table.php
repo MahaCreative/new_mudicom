@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('kantor_cabang_id')->constrained('kantor_cabangs')->onDelete('cascade')->default(1);
             $table->foreignId('pesanan_kursus_id')->constrained('pesanan_kursuses')->onDelete('restrict'); // Relasi ke tabel pesanan_kursus
             $table->foreignId('siswa_id')->constrained('siswas')->onDelete('cascade'); // Relasi ke tabel siswa
             $table->foreignId('petugas_id')->constrained('users')->onDelete('cascade'); // Relasi ke tabel petugas

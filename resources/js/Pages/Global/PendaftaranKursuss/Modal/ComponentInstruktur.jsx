@@ -17,21 +17,24 @@ export default function ComponentInstruktur({ kategori }) {
     const [modal, setModal] = useRecoilState(ModalInstrukturRecoil);
     const [params, setParams] = useState({ search: "", kategori: "" });
     const searchInstruktur = async () => {
-        console.log(params);
+        console.log(formData);
 
         try {
             const response = await axios.get(route("api.data-instruktur"), {
                 params: {
                     search: params.search,
                     kategori: params.kategori,
+                    kd_paket: formData.paket[formData.index_form].kd_paket,
+                    kantor_cabang_id: formData.kantor_cabang_id,
                 },
             });
 
             setDataInstruktur(response.data);
         } catch (err) {
-            setShowModalInstruktur(false);
+            setModal(false);
             alert(
-                "Ups terjadi kesalahan saat melakukan pencarian data instruktur, silahkan lakukan kembali"
+                "Ups terjadi kesalahan saat melakukan pencarian data instruktur, silahkan lakukan kembali Err2: " +
+                    err
             );
         }
     };
@@ -60,7 +63,7 @@ export default function ComponentInstruktur({ kategori }) {
     };
     useEffect(() => {
         searchInstruktur();
-    }, []);
+    }, [formData, params]);
     return (
         <>
             <Dialogs

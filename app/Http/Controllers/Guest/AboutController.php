@@ -15,6 +15,6 @@ class AboutController extends Controller
         $visi = Visi::where('kantor_cabang_id', 2)->first();
         $misi = Misi::where('kantor_cabang_id', 2)->get();
         $sosmed = SosialMedia::where('kantor_cabang_id', 2)->get();
-        return inertia('Guest/About', compact('visi', 'misi', 'sosmed'));
+        return inertia('Guest/About/About', compact('visi', 'misi', 'sosmed'));
     }
 }

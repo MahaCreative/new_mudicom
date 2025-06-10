@@ -30,9 +30,12 @@ return new class extends Migration
             $table->string('telp')->nullable();
             $table->string('pendidikan')->nullable();
             $table->string('foto')->default('image/default_profile.png');
-            $table->string('kantor_cabang')->default('mudicom');
+            $table->foreignId('kantor_cabang_id')->constrained('kantor_cabangs')->onDelete('cascade')->default(1);
             $table->string('status')->default('aktif'); //aktif, keluar
+            $table->string('status_konfirmasi')->default('menunggu konfirmasi');
             $table->string('jabatan');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

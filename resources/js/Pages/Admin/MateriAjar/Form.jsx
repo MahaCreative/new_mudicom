@@ -4,7 +4,7 @@ import { useForm } from "@inertiajs/react";
 import { MenuItem } from "@mui/material";
 import React, { useEffect } from "react";
 
-export default function Form({ model, setOpen, sub }) {
+export default function Form({ model, setOpen, sub, kantor_cabang }) {
     const { data, setData, post, reset, errors } = useForm({
         sub_kategrori_id: "",
         nama_materi: "",
@@ -12,6 +12,7 @@ export default function Form({ model, setOpen, sub }) {
         deskripsi: "",
         modul: "",
         silabus: "",
+        kantor_cabang_id: "",
     });
     const submitHandler = (e) => {
         e.preventDefault();
@@ -29,6 +30,7 @@ export default function Form({ model, setOpen, sub }) {
             sub_kategrori_id: model ? model.sub_kategrori_id : "",
             nama_materi: model ? model.nama_materi : "",
             deskripsi: model ? model.deskripsi : "",
+            kantor_cabang_id: model ? model.kantor_cabang_id : "",
         });
     }, [model]);
     return (
@@ -53,6 +55,31 @@ export default function Form({ model, setOpen, sub }) {
                         </MenuItem>
                     ))}
                 </SelectOption>
+                <div className="w-full my-2">
+                    <SelectOption
+                        label="Kantor"
+                        name="kantor_cabang_id"
+                        value={data.kantor_cabang_id}
+                        errors={errors.kantor_cabang_id}
+                        onChange={(e) =>
+                            setData((prev) => ({
+                                ...prev,
+                                [e.target.name]: e.target.value,
+                            }))
+                        }
+                    >
+                        <MenuItem value="">Pilih Kantor Mengajar</MenuItem>
+                        {kantor_cabang.map((item, key) => (
+                            <MenuItem
+                                key={key}
+                                value={item.id}
+                                className="capitalize"
+                            >
+                                {item.nama + " | " + item.status}
+                            </MenuItem>
+                        ))}
+                    </SelectOption>
+                </div>
                 <div className="p-2">
                     <InputText
                         name={"nama_materi"}
@@ -163,6 +190,7 @@ export default function Form({ model, setOpen, sub }) {
                     </div>
                 </div>
             </div>
+
             <div className="flex gap-x-3 justify-end items-center my-2">
                 <button className="bg-blue-500 hover:bg-blue-700 usetransisi py-2 px-3 text-sm text-white font-medium rounded-md">
                     Submit

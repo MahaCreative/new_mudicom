@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Http\Controllers\MateriAJarController;
 use App\Models\BenefitJenisKursus;
 use App\Models\JenisKursus;
+use App\Models\KantorCabang;
 use App\Models\KategoriKursus;
 use App\Models\MateriAjar;
 use App\Models\PaketKursus;
@@ -24,25 +25,89 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        $this->call([
+            KantorCabangSeeder::class,
+        ]);
+
         $permissions = [
-            'view_kategori_kursus',
-            'create_kategori_kursus',
-            'edit_kategori_kursus',
-            'delete_kategori_kursus',
-            'view_pesanan_kursus',
-            'create_pesanan_kursus',
-            'update_pesanan_kursus',
-            'delete_pesanan_kursus',
-            'view_payment',
-            'create_payment',
-            'update_payment_status',
-            'delete_payment',
+            'view_kantor_cabang',
+            'create_kantor_cabang',
+            'edit_kantor_cabang',
+            'delete_kantor_cabang',
+            'confirm_kantor_cabang',
+
+            'view_slider',
+            'create_slider',
+            'edit_slider',
+            'delete_slider',
+            'confirm_slider',
+
+            'view_petugas',
+            'create_petugas',
+            'edit_petugas',
+            'delete_petugas',
+            'confirm_petugas',
+            'only_kantor',
+
+            'view_instruktur',
+            'create_instruktur',
+            'edit_instruktur',
+            'delete_instruktur',
+            'confirm_instruktur',
+            'only_kantor',
+
+            'view_kategori',
+            'create_kategori',
+            'edit_kategori',
+            'delete_kategori',
+            'confirm_kategori',
+            'only_kantor',
+            'create_sub_kategori',
+            'edit_sub_kategori',
+            'delete_sub_kategori',
+            'confirm_sub_kategori',
+            'only_kantor',
+            'create_jenis',
+            'edit_jenis',
+            'delete_jenis',
+            'confirm_jenis',
+            'only_kantor',
+
+            'view_materi',
+            'create_materi',
+            'edit_materi',
+            'delete_materi',
+            'confirm_materi',
+            'only_kantor',
+
+            'view_paket',
+            'create_paket',
+            'edit_paket',
+            'delete_paket',
+            'confirm_paket',
+            'only_kantor',
+
+            'view_pendaftaran_kursus',
+            'create_pendaftaran_kursus',
+            'edit_pendaftaran_kursus',
+            'delete_pendaftaran_kursus',
+            'confirm_pendaftaran_kursus',
+            'only_kantor',
+
+            'view_pembayaran_kursus',
+            'create_pembayaran_kursus',
+            'edit_pembayaran_kursus',
+            'delete_pembayaran_kursus',
+            'confirm_pembayaran_kursus',
+            'only_kantor',
+
             'view_kas',
             'create_kas',
+            'edit_kas',
             'delete_kas',
-            'view_instruktur_dashboard',
-            'upload_modul_instruktur',
+            'confirm_kas',
+            'only_kantor',
+
         ];
 
         foreach ($permissions as $permission) {
@@ -102,7 +167,7 @@ class DatabaseSeeder extends Seeder
             'kabupaten' => 'mamuju',
             'telp' => '082194255717',
             'pendidikan' => 'sma',
-            'kantor_cabang' => 'mudicom',
+            'kantor_cabang_id' => 1,
             'jabatan' => 'super admin',
         ]);
 
@@ -110,24 +175,18 @@ class DatabaseSeeder extends Seeder
             'nama_kategori' => 'Mobil',
             'deskripsi' => fake()->paragraph(2),
             'thumbnail' => fake()->imageUrl(),
+            'kantor_cabang_id' => 1
         ]);
         KategoriKursus::create([
             'nama_kategori' => 'Komputer',
             'deskripsi' => fake()->paragraph(2),
             'thumbnail' => fake()->imageUrl(),
+            'kantor_cabang_id' => 1
         ]);
-
-
-
         $this->call([
-            // SubKategoriSeeder::class,
-            // JenisKursusSeeder::class,
-            // MateriAjarSeeder::class,
-            KantorCabangSeeder::class,
-            // InstrukturSeeder::class,
+            JenisKursusSeeder::class,
         ]);
-        // BenefitJenisKursus::factory(10)->create();
-        // Siswa::factory(10)->create();
-        // PaketKursus::factory(10)->create();
+        SubKategoriKursus::factory(10)->create();
+        MateriAjar::factory(15)->create();
     }
 }

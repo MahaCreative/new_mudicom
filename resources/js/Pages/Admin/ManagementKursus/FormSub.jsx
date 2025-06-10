@@ -4,12 +4,13 @@ import { useForm } from "@inertiajs/react";
 import { MenuItem } from "@mui/material";
 import React, { useEffect } from "react";
 
-export default function FormSub({ model, kategori, onClose }) {
+export default function FormSub({ model, kategori, onClose, kantor_cabang }) {
     const { data, setData, post, reset, errors } = useForm({
         kategori_kursus_id: "",
         nama_sub_kategori: "",
         thumbnail: "",
         deskripsi: "",
+        kantor_cabang_id: "",
     });
     const submitHandler = (e) => {
         e.preventDefault();
@@ -28,30 +29,61 @@ export default function FormSub({ model, kategori, onClose }) {
             nama_sub_kategori: model ? model.nama_sub_kategori : "",
             thumbnail: model ? model.thumbnail : "",
             deskripsi: model ? model.deskripsi : "",
+            kantor_cabang_id: model ? model.kantor_cabang_id : "",
         });
     }, [model]);
     return (
         <form
             onSubmit={model ? updateHandler : submitHandler}
-            className="w-full"
+            className="w-full py-6"
         >
-            <div className="p-2">
-                <SelectOption
-                    value={data.kategori_kursus_id}
-                    label="kategori_kursus_id"
-                    name="kategori_kursus_id"
-                    errors={errors.kategori_kursus_id}
-                    onChange={(e) =>
-                        setData({ ...data, [e.target.name]: e.target.value })
-                    }
-                >
-                    <MenuItem value={""}>Pilih Kategori</MenuItem>
-                    {kategori.map((item, key) => (
-                        <MenuItem value={item.id} key={key}>
-                            {item.nama_kategori}
-                        </MenuItem>
-                    ))}
-                </SelectOption>
+            <div className="flex gap-x-3">
+                <div className="w-full">
+                    <SelectOption
+                        value={data.kategori_kursus_id}
+                        label="Kategori Kursus"
+                        name="kategori_kursus_id"
+                        errors={errors.kategori_kursus_id}
+                        onChange={(e) =>
+                            setData({
+                                ...data,
+                                [e.target.name]: e.target.value,
+                            })
+                        }
+                    >
+                        <MenuItem value={""}>Pilih Kategori</MenuItem>
+                        {kategori.map((item, key) => (
+                            <MenuItem value={item.id} key={key}>
+                                {item.nama_kategori}
+                            </MenuItem>
+                        ))}
+                    </SelectOption>
+                </div>
+                <div className="w-full">
+                    <SelectOption
+                        label="Kantor"
+                        name="kantor_cabang_id"
+                        value={data.kantor_cabang_id}
+                        errors={errors.kantor_cabang_id}
+                        onChange={(e) =>
+                            setData((prev) => ({
+                                ...prev,
+                                [e.target.name]: e.target.value,
+                            }))
+                        }
+                    >
+                        <MenuItem value="">Pilih Kantor Mengajar</MenuItem>
+                        {kantor_cabang.map((item, key) => (
+                            <MenuItem
+                                key={key}
+                                value={item.id}
+                                className="capitalize"
+                            >
+                                {item.nama + " | " + item.status}
+                            </MenuItem>
+                        ))}
+                    </SelectOption>
+                </div>
             </div>
             <div className="p-2">
                 <InputText

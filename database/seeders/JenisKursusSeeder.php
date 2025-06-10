@@ -20,11 +20,13 @@ class JenisKursusSeeder extends Seeder
                 'jenis_kursus' => 'private',
                 'deskripsi' => fake()->paragraph(2),
                 'thumbnail' => fake()->imageUrl(),
+                'kantor_cabang_id' => 1
             ],
             [
                 'jenis_kursus' => 'reguler',
                 'deskripsi' => fake()->paragraph(2),
                 'thumbnail' => fake()->imageUrl(),
+                'kantor_cabang_id' => 1
             ],
         ]);
     }

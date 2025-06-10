@@ -26,7 +26,7 @@
     @inertiaHead
 </head>
 
-<body class="font-sans antialiased min-h-screen max-h-screen">
+<body class="font-sans antialiased min-h-screen max-h-screen ">
     @inertia
 </body>
 

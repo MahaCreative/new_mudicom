@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Visi;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -49,6 +50,10 @@ class KantorCabangSeeder extends Seeder
                 'link' => 'instagram.com',
                 'kantor_cabang_id' => 1,
             ],
+        ]);
+        Visi::create([
+            'kantor_cabang_id' => 1,
+            'visi' => 'Menjadi Lembaga Pendidikan dan Pelatihan yang bertaraf Nasional',
         ]);
     }
 }

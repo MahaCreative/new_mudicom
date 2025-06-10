@@ -5,12 +5,14 @@ import { useForm } from "@inertiajs/react";
 import { MenuItem } from "@mui/material";
 import React, { useState } from "react";
 
-export default function Create() {
+export default function Create(props) {
+    const kantor_cabang = props.kantor_cabang;
     const { data, setData, post, errors, reset } = useForm({
         judul: "",
         tag_line: "",
         thumbnail: "",
         status: "",
+        kantor_cabang_id: "",
     });
     const [preview, setPreview] = useState(null);
     const changeImage = (e) => {
@@ -78,6 +80,31 @@ export default function Create() {
                                 onChange={(e) => changeImage(e)}
                             />
                         </div>
+                    </div>
+                    <div className="w-full">
+                        <SelectOption
+                            label="Kantor"
+                            name="kantor_cabang_id"
+                            value={data.kantor_cabang_id}
+                            errors={errors.kantor_cabang_id}
+                            onChange={(e) =>
+                                setData((prev) => ({
+                                    ...prev,
+                                    [e.target.name]: e.target.value,
+                                }))
+                            }
+                        >
+                            <MenuItem value="">Pilih Kantor Mengajar</MenuItem>
+                            {kantor_cabang.map((item, key) => (
+                                <MenuItem
+                                    key={key}
+                                    value={item.id}
+                                    className="capitalize"
+                                >
+                                    {item.nama + " | " + item.status}
+                                </MenuItem>
+                            ))}
+                        </SelectOption>
                     </div>
                 </div>
                 <div className="flex items-center gap-x-3 py-4 px-3">

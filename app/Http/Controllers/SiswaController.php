@@ -12,7 +12,10 @@ class SiswaController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Siswa::query()->with('user');
+        $query = Siswa::query()
+            ->join('kantor_cabangs', 'kantor_cabangs.id', 'siswas.kantor_cabang_id')
+            ->select('kantor_cabangs.nama as nama_kantor', 'siswas.*')
+            ->with('user');
         $siswa = $query->latest()->get();
         return inertia('Admin/Siswa/Index', compact('siswa'));
     }
@@ -42,7 +45,7 @@ class SiswaController extends Controller
             'nama_ayah' => 'nullable|string|min:3|max:50',
             'nama_ibu' => 'nullable|string|min:3|max:50',
             "foto" => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            "kantor_cabang" => 'required',
+            "kantor_cabang_id" => 'required',
             "status" => 'required|in:aktif,keluar',
         ]);
         if ($request->filled('email')) {
@@ -80,11 +83,13 @@ class SiswaController extends Controller
                 'kelurahan' => $request->kelurahan,
                 'kecamatan' => $request->kecamatan,
                 'kabupaten' => $request->kabupaten,
+                'kantor_cabang_id' => $request->kantor_cabang_id,
                 'foto' => $foto,
                 'status' => $request->status,
                 'pekerjaan' => $request->pekerjaan,
                 'nama_ayah' => $request->nama_ayah,
                 'nama_ibu' => $request->nama_ibu,
+                'created_by'  => $request->user()->name
             ]);
 
             DB::commit();
@@ -106,6 +111,7 @@ class SiswaController extends Controller
     {
         $siswa = Siswa::where('kd_siswa', $request->kd_siswa)->first();
         $userId = $siswa->user_id;
+
         $request->validate([
 
             "nik_ktp" => 'nullable|numeric|digits:16|unique:siswas,nik_ktp,' . $siswa->id,
@@ -121,7 +127,7 @@ class SiswaController extends Controller
             "telp" => 'required|numeric|digits_between:10,15|unique:siswas,telp,' . $siswa->id,
             "pendidikan" => 'nullable',
             "foto" => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            "kantor_cabang" => 'required',
+            "kantor_cabang_id" => 'required',
             "status" => 'required|in:aktif,keluar',
             'pekerjaan' => 'nullable|string|min:3|max:50',
             'nama_ayah' => 'nullable|string|min:3|max:50',
@@ -148,19 +154,19 @@ class SiswaController extends Controller
                 'password' => $request->password ? bcrypt($request->password) : $user->password
             ]);
         } else {
-            if ($request->filled('email')) {
+            if ($request->email) {
                 $request->validate([
                     "email" => 'required|email|unique:users,email',
                     "password" => 'required|string|confirmed|min:8|max:50',
                 ]);
+                $user = User::create([
+                    'name' => $request->nama_lengkap,
+                    'email' => $request->email,
+                    'password' => bcrypt($request->password),
+                ]);
+                $user->assignRole($request->jabatan);
+                $userId = $user->id;
             }
-            $user = User::create([
-                'name' => $request->nama_lengkap,
-                'email' => $request->email,
-                'password' => bcrypt($request->password),
-            ]);
-            $user->assignRole($request->jabatan);
-            $userId = $user->id;
         }
         $siswa->update([
             'user_id' => $userId,
@@ -177,11 +183,12 @@ class SiswaController extends Controller
             'kecamatan' => $request->kecamatan,
             'kabupaten' => $request->kabupaten,
             'foto' => $foto,
-            'kantor_cabang' => $request->kantor_cabang,
+            'kantor_cabang_id' => $request->kantor_cabang_id,
             'status' => $request->status,
             'pekerjaan' => $request->pekerjaan,
             'nama_ayah' => $request->nama_ayah,
             'nama_ibu' => $request->nama_ibu,
+            'updated_by' => $request->user()->name,
         ]);
     }
 }

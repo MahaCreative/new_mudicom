@@ -4,7 +4,7 @@ import { atom } from "recoil";
 export const FormDataRecoil = atom({
     key: "form_data_recoil", // unique ID
     default: {
-        index_form: null,
+        index_form: 0,
         user: "Guntur Madjid",
         no_transaksi: "",
         tanggal: moment(new Date()).format("D-M-Y"),
@@ -15,6 +15,7 @@ export const FormDataRecoil = atom({
         nama_siswa: "",
         alamat_siswa: "",
         telp_siswa: "",
+        kantor_cabang_id: "",
         paket: [
             {
                 nama_instruktur: "",

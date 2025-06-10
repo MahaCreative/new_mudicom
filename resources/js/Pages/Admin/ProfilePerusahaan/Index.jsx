@@ -4,6 +4,7 @@ import AuthLayout from "@/Layouts/AuthLayout";
 import { Link } from "@inertiajs/react";
 import { Delete, Edit } from "@mui/icons-material";
 import { Tooltip } from "@mui/material";
+import moment from "moment";
 import React from "react";
 
 export default function Index(props) {
@@ -68,6 +69,18 @@ export default function Index(props) {
                             </Tables.Th>
                             <Tables.Th className="text-xs capitalize">
                                 Thumbnail
+                            </Tables.Th>
+                            <Tables.Th className="text-xs capitalize">
+                                Status Konfirmasi
+                            </Tables.Th>
+                            <Tables.Th className="text-xs capitalize">
+                                Updated_at
+                            </Tables.Th>
+                            <Tables.Th className="text-xs capitalize">
+                                Created_by
+                            </Tables.Th>
+                            <Tables.Th className="text-xs capitalize">
+                                Updated_by
                             </Tables.Th>
 
                             <Tables.Th className="text-xs capitalize">
@@ -140,6 +153,28 @@ export default function Index(props) {
                                                 }
                                                 alt=""
                                             />
+                                        </Tables.Td>
+                                        <Tables.Td>
+                                            <p className="w-[140px] capitalize text-xs text-wrap line-clamp-1">
+                                                {item.status_konfirmasi}
+                                            </p>
+                                        </Tables.Td>
+                                        <Tables.Td>
+                                            <p className="w-[140px] capitalize text-xs text-wrap line-clamp-1">
+                                                {moment(item.updated_at).format(
+                                                    "LL"
+                                                )}
+                                            </p>
+                                        </Tables.Td>
+                                        <Tables.Td>
+                                            <p className="w-[140px] capitalize text-xs text-wrap line-clamp-1">
+                                                {item.created_by}
+                                            </p>
+                                        </Tables.Td>
+                                        <Tables.Td>
+                                            <p className="w-[140px] capitalize text-xs text-wrap line-clamp-1">
+                                                {item.updated_by}
+                                            </p>
                                         </Tables.Td>
 
                                         <Tables.Td>

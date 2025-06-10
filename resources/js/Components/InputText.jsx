@@ -11,6 +11,7 @@ export default function InputText({ errors, variant = "standard", ...props }) {
                 autoComplete="off"
             >
                 <TextField
+                    className="px-3"
                     id={`${variant}-basic`}
                     variant={variant}
                     error={errors ? true : false}

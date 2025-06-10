@@ -21,6 +21,7 @@ class SubKategoriKursusFactory extends Factory
             'nama_sub_kategori' => fake()->word(2),
             'thumbnail' => fake()->imageUrl(),
             'deskripsi' => fake()->paragraph(1),
+            'kantor_cabang_id' => 1
         ];
     }
 }

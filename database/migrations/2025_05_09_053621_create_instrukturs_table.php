@@ -34,6 +34,9 @@ return new class extends Migration
             $table->date('tanggal_keluar')->nullable();
             $table->string('kantor_cabang')->default('mudicom');
             $table->string('status')->default('aktif'); //aktif, keluar
+            $table->string('status_konfirmasi')->default('menunggu konfirmasi');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

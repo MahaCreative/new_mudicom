@@ -20,6 +20,9 @@ class ApiPaketController extends Controller
                 $q->orWhere('nama_paket', 'like', '%' . $request->search . '%');
             });
         }
+        // if ($request->kantor_cabang_id) {
+        //     $query->where('kantor_cabang_id', $request->kantor_cabang_id);
+        // }
         $paket = $query->latest()->get();
         return response()->json($paket);
     }

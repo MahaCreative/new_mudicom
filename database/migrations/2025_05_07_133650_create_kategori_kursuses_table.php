@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string('nama_kategori');
             $table->longText('deskripsi');
             $table->string('thumbnail')->default('image/default_thumnbnail.jpg');
+            $table->string('status_konfirmasi')->default('menunggu konfirmasi');
+            $table->bigInteger('views')->default(0);
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

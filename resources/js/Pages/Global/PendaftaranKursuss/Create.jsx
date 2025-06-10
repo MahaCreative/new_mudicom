@@ -41,6 +41,7 @@ export default function Create(props) {
     const kd_paket_ref = useRef([]);
 
     const kategori = props.kategori;
+    const kantor_cabang = props.kantor_cabang;
     const sub = props.sub;
     const jenis = props.jenis;
     const kd_transaksi = props.kd_transaksi;
@@ -74,6 +75,8 @@ export default function Create(props) {
                 params: {
                     search: data.paket[index].nama_instruktur,
                     kategori: data.kategori_kursus,
+                    kd_paket: data.paket[index].kd_paket,
+                    kantor_cabang_id: data.kantor_cabang_id,
                 },
             });
 
@@ -98,9 +101,10 @@ export default function Create(props) {
                 setShowModalInstruktur(true);
             }
         } catch (err) {
-            setShowModalInstruktur(false);
+            // setShowModalInstruktur(false);
             alert(
-                "Ups terjadi kesalahan saat melakukan pencarian data instruktur, silahkan lakukan kembali"
+                "Ups terjadi kesalahan saat melakukan pencarian data instruktur, silahkan lakukan kembali Err: " +
+                    err
             );
         }
     };
@@ -109,6 +113,7 @@ export default function Create(props) {
             const response = await axios.get(route("api.get-data-siswa"), {
                 params: {
                     search: data.siswa,
+                    kantor_cabang_id: data.kantor_cabang_id,
                 },
             });
 
@@ -264,6 +269,7 @@ export default function Create(props) {
                 params: {
                     search: value,
                     kategori: data.kategori_kursus,
+                    kantor_cabang_id: data.kantor_cabang_id,
                 },
             });
             if (response.data.length == 1) {
@@ -279,29 +285,31 @@ export default function Create(props) {
 
                 const newPaketList = [...data.paket];
                 newPaketList[index] = newPaket; // karena kita menambahkan 1 row di depan
-
+                const total_pertemuan = newPaketList.reduce(
+                    (acc, curr) => acc + (curr?.jumlah_pertemuan || 0),
+                    0
+                );
+                const total_materi = newPaketList.reduce(
+                    (acc, curr) => acc + (curr?.jumlah_materi || 0),
+                    0
+                );
+                const total_harga = newPaketList.reduce(
+                    (acc, curr) => acc + (curr?.harga || 0),
+                    0
+                );
+                const total_diskon = newPaketList.reduce(
+                    (acc, curr) => acc + (curr?.diskont || 0),
+                    0
+                );
+                const total_netto = total_harga - total_diskon;
                 const updatedData = {
                     ...data,
                     paket: newPaketList,
-                    total_pertemuan:
-                        data.paket.length === 1
-                            ? response.data[0].total_pertemuan
-                            : data.total_pertemuan +
-                              response.data[0].total_pertemuan,
-                    total_materi:
-                        data.paket.length === 1
-                            ? response.data[0].total_materi
-                            : data.total_materi + response.data[0].total_materi,
-                    total_harga:
-                        data.paket.length === 1
-                            ? response.data[0].harga
-                            : data.total_harga + response.data[0].harga,
-                    total_netto:
-                        data.paket.length === 1
-                            ? response.data[0].harga
-                            : data.total_netto + response.data[0].harga,
-                    total_discount:
-                        data.paket.length === 1 ? 0 : data.total_discount + 0,
+                    total_pertemuan,
+                    total_materi,
+                    total_harga,
+                    total_discount: total_diskon,
+                    total_netto,
                 };
 
                 setData(updatedData);
@@ -456,51 +464,7 @@ export default function Create(props) {
                                             value={data.tanggal}
                                         />
                                     </div>
-                                    {/* Kategori Kursus */}
-                                    <div className="flex gap-x-3 items-center">
-                                        <InputLabel
-                                            id="kategori_kursus"
-                                            name="kategori_kursus"
-                                            className="w-[140px] text-right"
-                                        >
-                                            Kategori Kursus
-                                        </InputLabel>
-                                        <div className="w-1/2">
-                                            <SelectOption
-                                                disabled={
-                                                    dataResponse == null
-                                                        ? false
-                                                        : true
-                                                }
-                                                size="small"
-                                                name="kategori_kursus"
-                                                id="kategori_kursus"
-                                                value={data.kategori_kursus}
-                                                errors={errors?.kategori_kursus}
-                                                onChange={(e) =>
-                                                    setData((prev) => ({
-                                                        ...prev,
-                                                        [e.target.name]:
-                                                            e.target.value,
-                                                    }))
-                                                }
-                                            >
-                                                <MenuItem value="">
-                                                    Pilih Kategori
-                                                </MenuItem>
-                                                {kategori.map((item, key) => (
-                                                    <MenuItem
-                                                        value={
-                                                            item.nama_kategori
-                                                        }
-                                                        key={key}
-                                                    >
-                                                        {item.nama_kategori}
-                                                    </MenuItem>
-                                                ))}
-                                            </SelectOption>
-                                        </div>
-                                    </div>
+
                                     {/* siswa */}
                                     <div className="flex gap-x-3 items-center">
                                         <InputLabel
@@ -658,6 +622,45 @@ export default function Create(props) {
                                     </InputLabel>
                                     <InputText disabled value={data.user} />
                                 </div>
+                                <div className="flex gap-x-3 items-center my-3">
+                                    <InputLabel
+                                        id="kantor_cabang_id"
+                                        className="w-[190px] text-right"
+                                    >
+                                        Kantor Cabang :
+                                    </InputLabel>
+                                    <div className="w-full">
+                                        <SelectOption
+                                            className={"w-[80%]"}
+                                            label="Kantor"
+                                            name="kantor_cabang_id"
+                                            value={data.kantor_cabang_id}
+                                            errors={errors.kantor_cabang_id}
+                                            onChange={(e) =>
+                                                setData((prev) => ({
+                                                    ...prev,
+                                                    [e.target.name]:
+                                                        e.target.value,
+                                                }))
+                                            }
+                                        >
+                                            <MenuItem value="">
+                                                Pilih Kantor
+                                            </MenuItem>
+                                            {kantor_cabang.map((item, key) => (
+                                                <MenuItem
+                                                    key={key}
+                                                    value={item.id}
+                                                    className="capitalize"
+                                                >
+                                                    {item.nama +
+                                                        " | " +
+                                                        item.status}
+                                                </MenuItem>
+                                            ))}
+                                        </SelectOption>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -774,6 +777,7 @@ export default function Create(props) {
                                                     };
                                                     setData((prev) => ({
                                                         ...prev,
+                                                        index_form: index,
                                                         paket: updatePaket,
                                                     }));
                                                 }}

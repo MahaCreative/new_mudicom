@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('kas', function (Blueprint $table) {
             $table->id();
-
+            $table->foreignId('kantor_cabang_id')->constrained('kantor_cabangs')->onDelete('cascade')->default(1);
             $table->date('tanggal');
             $table->enum('jenis_transaksi', ['pemasukan', 'pengeluaran']);
             $table->string('sumber')->nullable();

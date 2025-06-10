@@ -31,8 +31,10 @@ return new class extends Migration
             $table->string('nama_ayah')->nullable();
             $table->string('nama_ibu')->nullable();
             $table->string('foto')->default('image/default_profile.png');
-            $table->string('kantor_cabang')->default('mudicom');
             $table->string('status')->default('aktif');
+            $table->string('status_konfirmasi')->default('menunggu konfirmasi');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

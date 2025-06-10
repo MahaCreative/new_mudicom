@@ -124,7 +124,7 @@ export default function Index(props) {
                                                 {item.kd_transaksi}
                                             </Tables.Td>
                                             <Tables.Td className="text-xs">
-                                                {item.siswa.nama_lengkap}
+                                                {item.siswa?.nama_lengkap}
                                             </Tables.Td>
                                             <Tables.Td className="text-xs">
                                                 {item.detail.length}

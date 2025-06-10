@@ -74,11 +74,23 @@ export default function Index(props) {
                                 Jabatan
                             </Tables.Th>
                             <Tables.Th className="text-xs capitalize">
-                                petugas Cabang
+                                By_Kantor
+                            </Tables.Th>
+                            <Tables.Th className="text-xs capitalize">
+                                Status Konfirmasi
                             </Tables.Th>
 
                             <Tables.Th className="text-xs capitalize">
                                 Status
+                            </Tables.Th>
+                            <Tables.Th className="text-xs capitalize">
+                                Updated_at
+                            </Tables.Th>
+                            <Tables.Th className="text-xs capitalize">
+                                Created_by
+                            </Tables.Th>
+                            <Tables.Th className="text-xs capitalize">
+                                Updated_by
                             </Tables.Th>
                         </thead>
                         <Tables.Tbody>
@@ -90,7 +102,6 @@ export default function Index(props) {
                                                 "flex flex-row items-center gap-x-1"
                                             }
                                         >
-                                            <p>{key + 1}</p>
                                             <Tooltip
                                                 title={`Edit ${item.nama_lengkap}`}
                                             >
@@ -175,12 +186,34 @@ export default function Index(props) {
                                         </Tables.Td>
                                         <Tables.Td>
                                             <p className="w-[100px] capitalize text-xs text-wrap line-clamp-1">
-                                                {item.kantor_cabang}
+                                                {item.nama_kantor}
+                                            </p>
+                                        </Tables.Td>
+                                        <Tables.Td>
+                                            <p className="w-[140px] capitalize text-xs text-wrap line-clamp-1">
+                                                {item.status_konfirmasi}
+                                            </p>
+                                        </Tables.Td>
+                                        <Tables.Td>
+                                            <p className="w-[50px] capitalize text-xs text-wrap line-clamp-1">
+                                                {item.status}
                                             </p>
                                         </Tables.Td>
                                         <Tables.Td>
                                             <p className="w-[100px] capitalize text-xs text-wrap line-clamp-1">
-                                                {item.status}
+                                                {moment(item.updated_at).format(
+                                                    "LL"
+                                                )}
+                                            </p>
+                                        </Tables.Td>
+                                        <Tables.Td>
+                                            <p className="w-[100px] capitalize text-xs text-wrap line-clamp-1">
+                                                {item.created_by}
+                                            </p>
+                                        </Tables.Td>
+                                        <Tables.Td>
+                                            <p className="w-[100px] capitalize text-xs text-wrap line-clamp-1">
+                                                {item.updated_by}
                                             </p>
                                         </Tables.Td>
                                     </tr>

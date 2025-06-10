@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('tag_line');
             $table->string('thumbnail');
             $table->string('status')->default('aktif');
+            $table->string('status_konfirmasi')->default('menunggu konfirmasi');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

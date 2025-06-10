@@ -22,6 +22,7 @@ class ApiPendaftaranKursusController extends Controller
                     });
             });
         }
+
         $pesanan = $query->get();
         return response()->json($pesanan);
     }

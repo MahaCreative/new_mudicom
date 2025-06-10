@@ -180,7 +180,7 @@ export default function Index({ payment }) {
                                                     // )}
                                                     className="py-1 px-2 text-white bg-blue-500 hover:bg-blue-600 usetransisi text-xs rounded-md drop-shadow-md"
                                                 >
-                                                    Lihat
+                                                    Cetak Invoice
                                                 </Link>
                                                 <Link
                                                     // href={route(
@@ -191,14 +191,6 @@ export default function Index({ payment }) {
                                                 >
                                                     Edit
                                                 </Link>
-                                                <button
-                                                    onClick={() =>
-                                                        deleteHandler(item.id)
-                                                    }
-                                                    className="py-1 px-2 text-white bg-red-500 hover:bg-red-600 usetransisi text-xs rounded-md drop-shadow-md"
-                                                >
-                                                    Delete
-                                                </button>
                                             </Tables.Td>
                                         </tr>
                                     ))

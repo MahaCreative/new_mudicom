@@ -37,6 +37,7 @@ import { ResponsePesananRecoil } from "./Recoil/ResponsePesanan";
 
 export default function Update(props) {
     const pendaftaran = props.pendaftaran;
+    const kantor_cabang = props.kantor_cabang;
     const payment = props.payment;
     const detail = props.detail;
     const siswa = props.siswa;
@@ -75,7 +76,7 @@ export default function Update(props) {
             const response = await axios.get(route("api.data-instruktur"), {
                 params: {
                     search: data.paket[index].nama_instruktur,
-                    kategori: data.kategori_kursus,
+                    kd_paket: data.paket[index].kd_paket,
                 },
             });
 
@@ -352,7 +353,7 @@ export default function Update(props) {
 
             no_transaksi: kd_transaksi,
             tanggal: moment(new Date()).format("D-M-Y"),
-            kategori_kursus: "",
+
             siswa: siswa.nama_lengkap,
             kd_siswa: siswa.kd_siswa,
             nik_siswa: siswa.nik_ktp,
@@ -360,6 +361,7 @@ export default function Update(props) {
             alamat_siswa: siswa.alamat,
             telp_siswa: siswa.telp,
             paket: paket,
+            kantor_cabang_id: pendaftaran.kantor_cabang_id,
             total_pertemuan: pendaftaran.total_pertemuan,
             total_harga: pendaftaran.total_harga,
             total_materi: pendaftaran.total_materi,
@@ -378,6 +380,8 @@ export default function Update(props) {
             })
         );
     };
+    console.log();
+
     return (
         <div>
             <ComponentPembayaran />
@@ -431,51 +435,7 @@ export default function Update(props) {
                                             value={data.tanggal}
                                         />
                                     </div>
-                                    {/* Kategori Kursus */}
-                                    <div className="flex gap-x-3 items-center">
-                                        <InputLabel
-                                            id="kategori_kursus"
-                                            name="kategori_kursus"
-                                            className="w-[140px] text-right"
-                                        >
-                                            Kategori Kursus
-                                        </InputLabel>
-                                        <div className="w-1/2">
-                                            <SelectOption
-                                                disabled={
-                                                    dataResponse == null
-                                                        ? false
-                                                        : true
-                                                }
-                                                size="small"
-                                                name="kategori_kursus"
-                                                id="kategori_kursus"
-                                                value={data.kategori_kursus}
-                                                errors={errors?.kategori_kursus}
-                                                onChange={(e) =>
-                                                    setData((prev) => ({
-                                                        ...prev,
-                                                        [e.target.name]:
-                                                            e.target.value,
-                                                    }))
-                                                }
-                                            >
-                                                <MenuItem value="">
-                                                    Pilih Kategori
-                                                </MenuItem>
-                                                {kategori.map((item, key) => (
-                                                    <MenuItem
-                                                        value={
-                                                            item.nama_kategori
-                                                        }
-                                                        key={key}
-                                                    >
-                                                        {item.nama_kategori}
-                                                    </MenuItem>
-                                                ))}
-                                            </SelectOption>
-                                        </div>
-                                    </div>
+
                                     {/* siswa */}
                                     <div className="flex gap-x-3 items-center">
                                         <InputLabel
@@ -632,6 +592,45 @@ export default function Update(props) {
                                         User :
                                     </InputLabel>
                                     <InputText disabled value={data.user} />
+                                </div>
+                                <div className="flex gap-x-3 items-center my-3">
+                                    <InputLabel
+                                        id="kantor_cabang_id"
+                                        className="w-[190px] text-right"
+                                    >
+                                        Kantor Cabang :
+                                    </InputLabel>
+                                    <div className="w-full">
+                                        <SelectOption
+                                            className={"w-[80%]"}
+                                            label="Kantor"
+                                            name="kantor_cabang_id"
+                                            value={data.kantor_cabang_id}
+                                            errors={errors.kantor_cabang_id}
+                                            onChange={(e) =>
+                                                setData((prev) => ({
+                                                    ...prev,
+                                                    [e.target.name]:
+                                                        e.target.value,
+                                                }))
+                                            }
+                                        >
+                                            <MenuItem value="">
+                                                Pilih Kantor
+                                            </MenuItem>
+                                            {kantor_cabang.map((item, key) => (
+                                                <MenuItem
+                                                    key={key}
+                                                    value={item.id}
+                                                    className="capitalize"
+                                                >
+                                                    {item.nama +
+                                                        " | " +
+                                                        item.status}
+                                                </MenuItem>
+                                            ))}
+                                        </SelectOption>
+                                    </div>
                                 </div>
                             </div>
                         </div>

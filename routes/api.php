@@ -4,7 +4,9 @@ use App\Http\Controllers\Api\ApiInstrukturController;
 use App\Http\Controllers\Api\ApiPaketController;
 use App\Http\Controllers\Api\ApiPendaftaranKursusController;
 use App\Http\Controllers\Api\ApiSiswaController;
+use App\Http\Controllers\Api\SubKategoriController;
 use App\Http\Controllers\ManagementPendaftaranKursusController;
+use App\Models\KategoriKursus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,3 +31,5 @@ Route::get('get-data-paket', [ApiPaketController::class, 'index'])->name('api.ge
 ROute::post('store-pendaftaran-kursus', [ManagementPendaftaranKursusController::class, 'store'])->name('admin.store-pendaftaran-kursus');
 
 Route::get('get-data-pendaftaran-kursus', [ApiPendaftaranKursusController::class, 'index'])->name('api.get-data-pendaftaran-kursus');
+
+Route::get('get-sub-kategori', [SubKategoriController::class, 'index'])->name('api.get-all-sub-kategori');

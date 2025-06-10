@@ -8,20 +8,19 @@ import { MenuItem } from "@mui/material";
 import React, { useState } from "react";
 import Form from "./Form";
 import { formatRupiah } from "@/Pages/Function/FormatRupiah";
-import { router } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import { data } from "autoprefixer";
+import moment from "moment";
 
 export default function Index(props) {
     const paket = props.paket;
+    const kantor_cabang = props.kantor_cabang;
     const kategori = props.kategori;
     const sub = props.sub;
     const jenis = props.jenis;
     const [modal, setModal] = useState(false);
     const [model, setModel] = useState(null);
-    const editHandler = (value) => {
-        setModel(value);
-        setModal(true);
-    };
+
     const deleteHandler = (id) => {
         router.delete(route("admin.delete-management-paket-kursus", { id }));
     };
@@ -36,6 +35,7 @@ export default function Index(props) {
                 }}
             >
                 <Form
+                    kantor_cabang={kantor_cabang}
                     onClose={() => {
                         setModel(null);
                         setModal(false);
@@ -105,12 +105,15 @@ export default function Index(props) {
                 <div className="bg-white py-2 px-4 rounded-md drop-shadow-md border border-gray-200 my-2">
                     <div className="w-full flex justify-between items-center">
                         <div>
-                            <button
-                                onClick={() => setModal(true)}
+                            <Link
+                                as="button"
+                                href={route(
+                                    "admin.create-management-paket-kursus"
+                                )}
                                 className="py-2 px-4 rounded-md bg-blue-500 text-white tracking-tighter font-medium"
                             >
-                                Tambah Materi
-                            </button>
+                                Tambah Paket Kursus
+                            </Link>
                         </div>
                         <div className="flex ga-x-3 items-center w-[600px]">
                             <div className="w-full px-1">
@@ -176,80 +179,150 @@ export default function Index(props) {
                     <div className="py-2 w-full min-h-[300px]  max-h-[300px] overflow-x-auto overflow-y-auto">
                         <Tables>
                             <thead className="w-full">
-                                <Tables.Th>#</Tables.Th>
-                                <Tables.Th>Kode Paket</Tables.Th>
-                                <Tables.Th>Nama Paket</Tables.Th>
-                                <Tables.Th>Kategori</Tables.Th>
-                                <Tables.Th>Sub Kategori</Tables.Th>
-                                <Tables.Th>Jenis Kursus</Tables.Th>
-                                <Tables.Th>Total Materi</Tables.Th>
-                                <Tables.Th>Total Pertemuan</Tables.Th>
-                                <Tables.Th>Harga Paket</Tables.Th>
-                                <Tables.Th>Status</Tables.Th>
-                                <Tables.Th>Aksi</Tables.Th>
+                                <Tables.Th className={"text-xs capitalize"}>
+                                    #
+                                </Tables.Th>
+                                <Tables.Th className={"text-xs capitalize"}>
+                                    Kode Paket
+                                </Tables.Th>
+                                <Tables.Th className={"text-xs capitalize"}>
+                                    Nama Paket
+                                </Tables.Th>
+                                <Tables.Th className={"text-xs capitalize"}>
+                                    Kategori
+                                </Tables.Th>
+                                <Tables.Th className={"text-xs capitalize"}>
+                                    Sub Kategori
+                                </Tables.Th>
+                                <Tables.Th className={"text-xs capitalize"}>
+                                    Jenis Kursus
+                                </Tables.Th>
+                                <Tables.Th className={"text-xs capitalize"}>
+                                    Total Materi
+                                </Tables.Th>
+                                <Tables.Th className={"text-xs capitalize"}>
+                                    Total Pertemuan
+                                </Tables.Th>
+                                <Tables.Th className={"text-xs capitalize"}>
+                                    Harga Paket
+                                </Tables.Th>
+                                <Tables.Th className="text-xs capitalize">
+                                    By_Kantor
+                                </Tables.Th>
+                                <Tables.Th className="text-xs capitalize">
+                                    Status Konfirmasi
+                                </Tables.Th>
+
+                                <Tables.Th className="text-xs capitalize">
+                                    Status
+                                </Tables.Th>
+                                <Tables.Th className="text-xs capitalize">
+                                    Updated_at
+                                </Tables.Th>
+                                <Tables.Th className="text-xs capitalize">
+                                    Created_by
+                                </Tables.Th>
+                                <Tables.Th className="text-xs capitalize">
+                                    Updated_by
+                                </Tables.Th>
+                                <Tables.Th className={"text-xs capitalize"}>
+                                    Aksi
+                                </Tables.Th>
                             </thead>
                             <Tables.Tbody>
                                 {paket.length > 0 ? (
                                     paket.map((item, key) => (
                                         <tr className="odd:bg-gray-200 w-full">
-                                            <Tables.Td>{key + 1}</Tables.Td>
-                                            <Tables.Td>
-                                                <p>{item.kd_paket}</p>
+                                            <Tables.Td className={"text-xs"}>
+                                                {key + 1}
                                             </Tables.Td>
-                                            <Tables.Td>
-                                                <p className=" capitalize">
+                                            <Tables.Td className={"text-xs"}>
+                                                <p className="w-[70px]">
+                                                    {item.kd_paket}
+                                                </p>
+                                            </Tables.Td>
+                                            <Tables.Td className={"text-xs"}>
+                                                <p className=" capitalize w-[100px]">
                                                     {item.nama_paket}
                                                 </p>
                                             </Tables.Td>
-                                            <Tables.Td>
-                                                <p className=" capitalize">
+                                            <Tables.Td className={"text-xs"}>
+                                                <p className=" capitalize w-[70px]">
                                                     {item.kategori_kursus}
                                                 </p>
                                             </Tables.Td>
-                                            <Tables.Td>
-                                                <p className=" capitalize">
+                                            <Tables.Td className={"text-xs"}>
+                                                <p className=" capitalize w-[70px]">
                                                     {item.sub_kategori_kursus}
                                                 </p>
                                             </Tables.Td>
-                                            <Tables.Td>
-                                                <p className=" capitalize">
+                                            <Tables.Td className={"text-xs"}>
+                                                <p className=" capitalize w-[70px]">
                                                     {item.jenis_kursus}
                                                 </p>
                                             </Tables.Td>
-                                            <Tables.Td>
-                                                <p className=" capitalize">
+                                            <Tables.Td className={"text-xs"}>
+                                                <p className=" capitalize w-[80px]">
                                                     {item.total_materi +
                                                         " Materi"}
                                                 </p>
                                             </Tables.Td>
-                                            <Tables.Td>
-                                                <p className=" capitalize">
+                                            <Tables.Td className={"text-xs"}>
+                                                <p className=" capitalize w-[80px]">
                                                     {item.total_pertemuan +
                                                         "X Pertemuan"}
                                                 </p>
                                             </Tables.Td>
-                                            <Tables.Td>
-                                                <p className=" capitalize">
+                                            <Tables.Td className={"text-xs"}>
+                                                <p className=" capitalize w-[80px]">
                                                     {formatRupiah(item.harga)}
                                                 </p>
                                             </Tables.Td>
                                             <Tables.Td>
-                                                <p className=" capitalize">
+                                                <p className="w-[100px] capitalize text-xs text-wrap line-clamp-1">
+                                                    {item.nama_kantor}
+                                                </p>
+                                            </Tables.Td>
+                                            <Tables.Td>
+                                                <p className="w-[140px] capitalize text-xs text-wrap line-clamp-1">
+                                                    {item.status_konfirmasi}
+                                                </p>
+                                            </Tables.Td>
+                                            <Tables.Td>
+                                                <p className="w-[50px] capitalize text-xs text-wrap line-clamp-1">
                                                     {item.status}
+                                                </p>
+                                            </Tables.Td>
+                                            <Tables.Td>
+                                                <p className="w-[100px] capitalize text-xs text-wrap line-clamp-1">
+                                                    {moment(
+                                                        item.updated_at
+                                                    ).format("LL")}
+                                                </p>
+                                            </Tables.Td>
+                                            <Tables.Td>
+                                                <p className="w-[100px] capitalize text-xs text-wrap line-clamp-1">
+                                                    {item.created_by}
+                                                </p>
+                                            </Tables.Td>
+                                            <Tables.Td>
+                                                <p className="w-[100px] capitalize text-xs text-wrap line-clamp-1">
+                                                    {item.updated_by}
                                                 </p>
                                             </Tables.Td>
 
                                             <Tables.Td
                                                 className={"flex gap-x-2"}
                                             >
-                                                <button
-                                                    onClick={() =>
-                                                        editHandler(item)
-                                                    }
+                                                <Link
+                                                    href={route(
+                                                        "admin.edit-management-paket-kursus",
+                                                        item.slug
+                                                    )}
                                                     className="py-1 px-2 text-white bg-orange-500 hover:bg-orange-600 usetransisi text-xs rounded-md drop-shadow-md"
                                                 >
                                                     Edit
-                                                </button>
+                                                </Link>
                                                 <button
                                                     onClick={() =>
                                                         deleteHandler(item.id)

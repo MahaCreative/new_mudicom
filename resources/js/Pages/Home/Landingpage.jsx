@@ -12,6 +12,7 @@ import {
 } from "@mui/icons-material";
 import React, { useState } from "react";
 import Slider from "react-slick";
+import { formatRupiah } from "../Function/FormatRupiah";
 
 export default function Landingpage(props) {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -206,66 +207,59 @@ export default function Landingpage(props) {
                         </h1>
                         <div className="my-6 px-4">
                             <SliderPaket setActiveIndex={setActiveIndex}>
-                                {[1, 2, 3, 4].map((item, key) => (
+                                {paket.map((item, key) => (
                                     <Link
+                                        href={route(
+                                            "detail-paket-kursus",
+                                            item.slug
+                                        )}
                                         as="div"
-                                        className="mx-4 hover:cursor-pointer"
+                                        className="mx-5 hover:cursor-pointer"
                                     >
                                         <div
-                                            className={`${
-                                                activeIndex == key
-                                                    ? "bg-primary text-white"
-                                                    : ""
-                                            } py-3 rounded-md drop-shadow-md px-4  border border-primary/20 flex justify-between flex-row gap-x-3 items-start  transition-all duration-500 ease-in-out`}
+                                            className={` py-3 rounded-md drop-shadow-md px-4  border border-primary/20 flex justify-between flex-row gap-x-3 items-start  transition-all duration-500 ease-in-out group hover:bg-primary`}
                                         >
-                                            <div className="w-[300px] ">
+                                            <div className="w-[200px] ">
                                                 <img
-                                                    src="/storage/image/thumbnail_mobil.png"
+                                                    src={
+                                                        "/storage/" +
+                                                        item.thumbnail
+                                                    }
                                                     alt=""
-                                                    className="w-[200px] h-[200px] object-cover"
+                                                    className="w-[400px] h-[200px] object-cover"
                                                 />
                                             </div>
                                             <div className="w-full font-heebo">
                                                 <h1
-                                                    className={`font-bold text-lg md:text-2xl ${
-                                                        activeIndex == key
-                                                            ? "text-white"
-                                                            : "text-primary"
-                                                    }  transition-all duration-500 ease-in-out`}
+                                                    className={`font-bold text-lg md:text-lg  transition-all duration-500 ease-in-out group-hover:text-white`}
                                                 >
-                                                    Aplikasi Perkantoran
+                                                    {item.nama_paket}
                                                 </h1>
-                                                <p className="line-clamp-3 my-3 text-sm md:text-base">
-                                                    Lorem ipsum dolor sit amet,
-                                                    consectetur adipisicing
-                                                    elit. Mollitia nesciunt
-                                                    similique fugit at alias
-                                                    error earum nobis, sunt,
-                                                    reiciendis asperiores soluta
-                                                    libero corrupti! Minima
-                                                    laudantium, dolorem illum
-                                                    nobis a aperiam eius ea ipsa
-                                                    consequuntur molestiae
-                                                    laboriosam alias quae!
-                                                    Expedita sunt voluptatibus
-                                                    dolores mollitia nihil?
-                                                    Accusantium fuga qui alias
-                                                    molestiae vero?
-                                                </p>
-                                                <div className="flex flex-col md:flex-row gap-x-3 md:items-center ">
+                                                <p
+                                                    className="line-clamp-3 my-3 text-sm md:text-sm group-hover:text-white"
+                                                    dangerouslySetInnerHTML={{
+                                                        __html: item.deskripsi,
+                                                    }}
+                                                />
+
+                                                <div className="flex flex-col  gap-x-3  ">
                                                     <p
-                                                        className={`inline my-3 ${
-                                                            activeIndex == key
-                                                                ? "bg-white text-primary"
-                                                                : "bg-primary text-white"
-                                                        }   font-extrabold text-xl py-3 px-4 transition-all duration-500 ease-in-out`}
+                                                        className={`inline my-3 group-hover:bg-white group-hover:text-primary bg-primary  text-white    font-extrabold text-4xl md:text-sm py-3 px-4 transition-all duration-500 ease-in-out`}
                                                     >
-                                                        Rp. 1.250.000
+                                                        {formatRupiah(
+                                                            item.harga
+                                                        )}
                                                     </p>
-                                                    <span className="text-xs md:text-base ">
-                                                        3 Materi / 16X Pertemuan
+                                                    <span className="text-xs md:text-sm group-hover:text-white">
+                                                        {item.total_materi +
+                                                            " Materi " +
+                                                            item.total_pertemuan +
+                                                            " / Pertemuan"}
                                                     </span>
                                                 </div>
+                                                <button className="text-primary border py-2 px-3 border-primary rounded-md group-hover:text-white group-hover:border-white">
+                                                    Selengkapnya
+                                                </button>
                                             </div>
                                         </div>
                                     </Link>

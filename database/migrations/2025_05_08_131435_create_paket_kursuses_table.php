@@ -13,19 +13,25 @@ return new class extends Migration
     {
         Schema::create('paket_kursuses', function (Blueprint $table) {
             $table->id();
+
             $table->string('kd_paket');
             $table->string('nama_paket');
             $table->string('kategori_kursus');
             $table->string('sub_kategori_kursus');
             $table->string('jenis_kursus');
+            $table->string('slug');
             $table->longText('deskripsi');
             $table->string('thumbnail')->default('image/default_thumnbnail.jpg');
             $table->tinyInteger('total_pertemuan');
             $table->tinyInteger('total_materi');
             $table->bigInteger('harga');
+            $table->bigInteger('harga_promo')->default(0);
             $table->string('status')->default('aktif'); //aktif, non aktif
-            $table->string('kantor_cabang')->default('mudicom');
-
+            $table->string('status_konfirmasi')->default('menunggu konfirmasi');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
+            $table->string('judul_alasan')->nullable();
+            $table->bigInteger('views')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

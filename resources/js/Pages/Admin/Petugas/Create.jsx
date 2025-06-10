@@ -29,7 +29,7 @@ export default function Create(props) {
         telp: "",
         pendidikan: "",
         foto: "",
-        kantor_cabang: "",
+        kantor_cabang_id: "",
         status: "",
         jabatan: "",
         email: "",
@@ -368,9 +368,9 @@ export default function Create(props) {
                                 <div className="w-full">
                                     <SelectOption
                                         label="Kantor"
-                                        name="kantor_cabang"
-                                        value={data.kantor_cabang}
-                                        errors={errors.kantor_cabang}
+                                        name="kantor_cabang_id"
+                                        value={data.kantor_cabang_id}
+                                        errors={errors.kantor_cabang_id}
                                         onChange={(e) =>
                                             setData((prev) => ({
                                                 ...prev,
@@ -384,7 +384,7 @@ export default function Create(props) {
                                         {kantor_cabang.map((item, key) => (
                                             <MenuItem
                                                 key={key}
-                                                value={item.nama}
+                                                value={item.id}
                                                 className="capitalize"
                                             >
                                                 {item.nama +

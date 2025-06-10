@@ -8,9 +8,11 @@ import Dialogs from "@/Components/Dialogs";
 import { router } from "@inertiajs/react";
 import FormSub from "./FormSub";
 import FormJenis from "./FormJenis";
+import moment from "moment";
 
 export default function Index(props) {
     const kategori = props.kategori;
+    const kantor_cabang = props.kantor_cabang;
     const sub = props.sub;
     const jenis = props.jenis;
     const [modalKategori, setModalKategori] = useState(false);
@@ -56,6 +58,7 @@ export default function Index(props) {
                 }}
             >
                 <FormKategoriKursus
+                    kantor_cabang={kantor_cabang}
                     model={model}
                     onClose={() => {
                         setModalKategori(false);
@@ -76,6 +79,7 @@ export default function Index(props) {
                 }}
             >
                 <FormSub
+                    kantor_cabang={kantor_cabang}
                     model={model}
                     kategori={kategori}
                     onClose={() => {
@@ -85,6 +89,7 @@ export default function Index(props) {
                 />
             </Dialogs>
             <Dialogs
+                kantor_cabang={kantor_cabang}
                 open={modalJenis}
                 title={model ? "Edit Jenis Kursus" : "Tambah Jenis Kursus"}
                 handleClose={() => {
@@ -92,15 +97,14 @@ export default function Index(props) {
                     setModel(null);
                 }}
             >
-                {status == "jenis" && (
-                    <FormJenis
-                        model={model}
-                        onClose={() => {
-                            setModalJenis(false);
-                            setModel(null);
-                        }}
-                    />
-                )}
+                <FormJenis
+                    kantor_cabang={kantor_cabang}
+                    model={model}
+                    onClose={() => {
+                        setModalJenis(false);
+                        setModel(null);
+                    }}
+                />
             </Dialogs>
             <div className="py-6 px-8 w-full">
                 <h1 className="text-blue-950 font-semibold text-3xl tracking-tight">
@@ -160,7 +164,7 @@ export default function Index(props) {
                         </p>
                     </div>
                 </div>
-                <div className="grid grid-cols-2 gap-x-3 py-4">
+                <div className="grid grid-cols-1 gap-3 py-4">
                     {/* kategori kursus */}
                     <div className="bg-white py-2 px-4 rounded-md drop-shadow-md border border-gray-200">
                         <h3 className="text-blue-950 font-semibold text-xl tracking-tight">
@@ -203,6 +207,26 @@ export default function Index(props) {
                                             className={"text-black text-xs"}
                                         >
                                             Deskripsi Kategori
+                                        </Tables.Th>
+                                        <Tables.Th
+                                            className={"text-black text-xs"}
+                                        >
+                                            Kantor
+                                        </Tables.Th>
+                                        <Tables.Th
+                                            className={"text-black text-xs"}
+                                        >
+                                            Updated_at
+                                        </Tables.Th>
+                                        <Tables.Th
+                                            className={"text-black text-xs"}
+                                        >
+                                            Created_by
+                                        </Tables.Th>
+                                        <Tables.Th
+                                            className={"text-black text-xs"}
+                                        >
+                                            Updated_by
                                         </Tables.Th>
                                         <Tables.Th
                                             className={"text-black text-xs"}
@@ -252,6 +276,36 @@ export default function Index(props) {
                                                     />
                                                 </Tables.Td>
                                                 <Tables.Td
+                                                    className={
+                                                        "text-black text-xs"
+                                                    }
+                                                >
+                                                    {item.nama_kantor}
+                                                </Tables.Td>
+                                                <Tables.Td
+                                                    className={
+                                                        "text-black text-xs"
+                                                    }
+                                                >
+                                                    {moment(
+                                                        item.updated_at
+                                                    ).format("ll")}
+                                                </Tables.Td>
+                                                <Tables.Td
+                                                    className={
+                                                        "text-black text-xs"
+                                                    }
+                                                >
+                                                    {item.created_by}
+                                                </Tables.Td>
+                                                <Tables.Td
+                                                    className={
+                                                        "text-black text-xs"
+                                                    }
+                                                >
+                                                    {item.updated_by}
+                                                </Tables.Td>
+                                                <Tables.Td
                                                     className={"flex gap-2"}
                                                 >
                                                     <button
@@ -278,7 +332,7 @@ export default function Index(props) {
                                     ) : (
                                         <tr>
                                             <Tables.Td
-                                                colSpan={3}
+                                                colSpan={10}
                                                 className="text-center"
                                             >
                                                 Belum ada kategori yang telah
@@ -344,6 +398,26 @@ export default function Index(props) {
                                         <Tables.Th
                                             className={"text-black text-xs"}
                                         >
+                                            Kantor
+                                        </Tables.Th>
+                                        <Tables.Th
+                                            className={"text-black text-xs"}
+                                        >
+                                            Updated_at
+                                        </Tables.Th>
+                                        <Tables.Th
+                                            className={"text-black text-xs"}
+                                        >
+                                            Created_by
+                                        </Tables.Th>
+                                        <Tables.Th
+                                            className={"text-black text-xs"}
+                                        >
+                                            Updated_by
+                                        </Tables.Th>
+                                        <Tables.Th
+                                            className={"text-black text-xs"}
+                                        >
                                             Aksi
                                         </Tables.Th>
                                     </tr>
@@ -374,10 +448,7 @@ export default function Index(props) {
                                                         "text-black text-xs"
                                                     }
                                                 >
-                                                    {
-                                                        item.kategori
-                                                            .nama_kategori
-                                                    }
+                                                    {item.nama_kategori}
                                                 </Tables.Td>
                                                 <Tables.Td
                                                     className={
@@ -397,6 +468,36 @@ export default function Index(props) {
                                                             __html: item.deskripsi,
                                                         }}
                                                     />
+                                                </Tables.Td>
+                                                <Tables.Td
+                                                    className={
+                                                        "text-black text-xs"
+                                                    }
+                                                >
+                                                    {item.nama_kantor}
+                                                </Tables.Td>
+                                                <Tables.Td
+                                                    className={
+                                                        "text-black text-xs"
+                                                    }
+                                                >
+                                                    {moment(
+                                                        item.updated_at
+                                                    ).format("ll")}
+                                                </Tables.Td>
+                                                <Tables.Td
+                                                    className={
+                                                        "text-black text-xs"
+                                                    }
+                                                >
+                                                    {item.created_by}
+                                                </Tables.Td>
+                                                <Tables.Td
+                                                    className={
+                                                        "text-black text-xs"
+                                                    }
+                                                >
+                                                    {item.updated_by}
                                                 </Tables.Td>
                                                 <Tables.Td
                                                     className={"flex gap-2"}
@@ -423,7 +524,7 @@ export default function Index(props) {
                                     ) : (
                                         <tr>
                                             <Tables.Td
-                                                colSpan={3}
+                                                colSpan={10}
                                                 className="text-center"
                                             >
                                                 Belum ada sub kategori yang
@@ -477,6 +578,18 @@ export default function Index(props) {
                                         Total Benefit
                                     </Tables.Th>
                                     <Tables.Th className={"text-black text-xs"}>
+                                        Kantor
+                                    </Tables.Th>
+                                    <Tables.Th className={"text-black text-xs"}>
+                                        Updated_at
+                                    </Tables.Th>
+                                    <Tables.Th className={"text-black text-xs"}>
+                                        Created_by
+                                    </Tables.Th>
+                                    <Tables.Th className={"text-black text-xs"}>
+                                        Updated_by
+                                    </Tables.Th>
+                                    <Tables.Th className={"text-black text-xs"}>
                                         Aksi
                                     </Tables.Th>
                                 </tr>
@@ -520,6 +633,28 @@ export default function Index(props) {
                                                 className={"text-black text-xs"}
                                             >
                                                 {item.benefit.length}
+                                            </Tables.Td>
+                                            <Tables.Td
+                                                className={"text-black text-xs"}
+                                            >
+                                                {item.nama_kantor}
+                                            </Tables.Td>
+                                            <Tables.Td
+                                                className={"text-black text-xs"}
+                                            >
+                                                {moment(item.updated_at).format(
+                                                    "ll"
+                                                )}
+                                            </Tables.Td>
+                                            <Tables.Td
+                                                className={"text-black text-xs"}
+                                            >
+                                                {item.created_by}
+                                            </Tables.Td>
+                                            <Tables.Td
+                                                className={"text-black text-xs"}
+                                            >
+                                                {item.updated_by}
                                             </Tables.Td>
                                             <Tables.Td className={"flex gap-2"}>
                                                 <button

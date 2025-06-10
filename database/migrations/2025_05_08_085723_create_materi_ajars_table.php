@@ -19,6 +19,9 @@ return new class extends Migration
             $table->longText('deskripsi');
             $table->string('modul')->nullable();
             $table->string('silabus')->nullable();
+            $table->string('status_konfirmasi')->default('menunggu konfirmasi');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

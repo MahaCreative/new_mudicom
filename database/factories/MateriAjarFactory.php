@@ -22,7 +22,7 @@ class MateriAjarFactory extends Factory
             'nama_materi' => fake()->sentence(),
             'thumbnail' => fake()->imageUrl(),
             'deskripsi' => fake()->paragraph(2),
-
+            'kantor_cabang_id' => 1,
         ];
     }
 }

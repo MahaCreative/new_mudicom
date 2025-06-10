@@ -9,6 +9,12 @@ h6{
   color: rgb(5, 5, 105);
   font-weight: 600;
 }
+.ql-size-huge {
+    font-size: 2.5rem; /* atau ukuran sesuai keinginan */
+}
+.ql-size-large {
+    font-size: 1.5rem; /* atau ukuran sesuai keinginan */
+}
 .navItem{
     position: relative;
 }

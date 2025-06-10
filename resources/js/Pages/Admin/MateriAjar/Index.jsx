@@ -6,9 +6,11 @@ import { ClassTwoTone } from "@mui/icons-material";
 import React, { useState } from "react";
 import Form from "./form";
 import { Link, router } from "@inertiajs/react";
+import moment from "moment";
 
 export default function Index(props) {
     const sub = props.sub;
+    const kantor_cabang = props.kantor_cabang;
     const materi = props.materi;
     const [modal, setModal] = useState(false);
     const [model, setModel] = useState(null);
@@ -31,6 +33,7 @@ export default function Index(props) {
                 title={model ? "Edit Materi" : "Tambah Materi "}
             >
                 <Form
+                    kantor_cabang={kantor_cabang}
                     model={model}
                     sub={sub}
                     setOpen={() => {
@@ -83,13 +86,43 @@ export default function Index(props) {
                     <div className="py-2 w-full min-h-[300px]  max-h-[300px] overflow-x-auto overflow-y-auto">
                         <Tables>
                             <thead className="w-full">
-                                <Tables.Th>#</Tables.Th>
-                                <Tables.Th>Kategori</Tables.Th>
-                                <Tables.Th>Nama Materi</Tables.Th>
-                                <Tables.Th>Deskripsi</Tables.Th>
-                                <Tables.Th>Modul</Tables.Th>
-                                <Tables.Th>Silabus</Tables.Th>
-                                <Tables.Th>Aksi</Tables.Th>
+                                <Tables.Th className="text-xs capitalize">
+                                    #
+                                </Tables.Th>
+                                <Tables.Th className="text-xs capitalize">
+                                    Kategori
+                                </Tables.Th>
+                                <Tables.Th className="text-xs capitalize">
+                                    Nama Materi
+                                </Tables.Th>
+                                <Tables.Th className="text-xs capitalize">
+                                    Deskripsi
+                                </Tables.Th>
+                                <Tables.Th className="text-xs capitalize">
+                                    Modul
+                                </Tables.Th>
+                                <Tables.Th className="text-xs capitalize">
+                                    Silabus
+                                </Tables.Th>
+                                <Tables.Th className="text-xs capitalize">
+                                    By_Kantor
+                                </Tables.Th>
+                                <Tables.Th className="text-xs capitalize">
+                                    Status Konfirmasi
+                                </Tables.Th>
+
+                                <Tables.Th className="text-xs capitalize">
+                                    Updated_at
+                                </Tables.Th>
+                                <Tables.Th className="text-xs capitalize">
+                                    Created_by
+                                </Tables.Th>
+                                <Tables.Th className="text-xs capitalize">
+                                    Updated_by
+                                </Tables.Th>
+                                <Tables.Th className="text-xs capitalize">
+                                    Aksi
+                                </Tables.Th>
                             </thead>
                             <Tables.Tbody>
                                 {materi.length > 0 ? (
@@ -97,7 +130,7 @@ export default function Index(props) {
                                         <tr className="odd:bg-gray-200 w-full">
                                             <Tables.Td>{key + 1}</Tables.Td>
                                             <Tables.Td>
-                                                <p>
+                                                <p className="text-xs w-[100px]">
                                                     {
                                                         item.kategori
                                                             .nama_sub_kategori
@@ -105,13 +138,13 @@ export default function Index(props) {
                                                 </p>
                                             </Tables.Td>
                                             <Tables.Td>
-                                                <p className="w-[150px]">
+                                                <p className="w-[150px] text-xs">
                                                     {item.nama_materi}
                                                 </p>
                                             </Tables.Td>
                                             <Tables.Td>
                                                 <p
-                                                    className="line-clamp-2 w-[200px]"
+                                                    className="line-clamp-2 w-[200px] text-xs"
                                                     dangerouslySetInnerHTML={{
                                                         __html: item.deskripsi,
                                                     }}
@@ -145,6 +178,34 @@ export default function Index(props) {
                                                     </a>
                                                 </p>
                                             </Tables.Td>
+                                            <Tables.Td>
+                                                <p className="w-[100px] capitalize text-xs text-wrap line-clamp-1">
+                                                    {item.nama_kantor}
+                                                </p>
+                                            </Tables.Td>
+                                            <Tables.Td>
+                                                <p className="w-[140px] capitalize text-xs text-wrap line-clamp-1">
+                                                    {item.status_konfirmasi}
+                                                </p>
+                                            </Tables.Td>
+
+                                            <Tables.Td>
+                                                <p className="w-[100px] capitalize text-xs text-wrap line-clamp-1">
+                                                    {moment(
+                                                        item.updated_at
+                                                    ).format("LL")}
+                                                </p>
+                                            </Tables.Td>
+                                            <Tables.Td>
+                                                <p className="w-[100px] capitalize text-xs text-wrap line-clamp-1">
+                                                    {item.created_by}
+                                                </p>
+                                            </Tables.Td>
+                                            <Tables.Td>
+                                                <p className="w-[100px] capitalize text-xs text-wrap line-clamp-1">
+                                                    {item.updated_by}
+                                                </p>
+                                            </Tables.Td>
                                             <Tables.Td
                                                 className={"flex gap-x-2"}
                                             >
@@ -170,7 +231,7 @@ export default function Index(props) {
                                 ) : (
                                     <tr>
                                         <Tables.Td
-                                            colspan={6}
+                                            colspan={13}
                                             className={
                                                 "text-center w-full bg-gray-100"
                                             }

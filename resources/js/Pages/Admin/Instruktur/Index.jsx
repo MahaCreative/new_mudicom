@@ -75,12 +75,25 @@ export default function Index(props) {
                             <Tables.Th className="text-xs capitalize">
                                 Instruktur
                             </Tables.Th>
+
                             <Tables.Th className="text-xs capitalize">
-                                Instruktur Cabang
+                                By_Kantor
+                            </Tables.Th>
+                            <Tables.Th className="text-xs capitalize">
+                                Status Konfirmasi
                             </Tables.Th>
 
                             <Tables.Th className="text-xs capitalize">
                                 Status
+                            </Tables.Th>
+                            <Tables.Th className="text-xs capitalize">
+                                Updated_at
+                            </Tables.Th>
+                            <Tables.Th className="text-xs capitalize">
+                                Created_by
+                            </Tables.Th>
+                            <Tables.Th className="text-xs capitalize">
+                                Updated_by
                             </Tables.Th>
                         </thead>
                         <Tables.Tbody>
@@ -130,7 +143,7 @@ export default function Index(props) {
                                             </p>
                                         </Tables.Td>
                                         <Tables.Td>
-                                            <p className="w-[150px] capitalize text-xs">
+                                            <p className="w-[190px] capitalize text-xs">
                                                 {item.nama_lengkap}
                                             </p>
                                         </Tables.Td>
@@ -159,7 +172,7 @@ export default function Index(props) {
                                             </p>
                                         </Tables.Td>
                                         <Tables.Td>
-                                            <p className="w-[140px] capitalize text-xs text-wrap line-clamp-1">
+                                            <p className="w-[100px] capitalize text-xs text-wrap line-clamp-1">
                                                 {item.pendidikan}
                                             </p>
                                         </Tables.Td>
@@ -172,17 +185,39 @@ export default function Index(props) {
                                         </Tables.Td>
                                         <Tables.Td>
                                             <p className="w-[100px] capitalize text-xs text-wrap line-clamp-1">
-                                                {"mobil"}
+                                                {item.nama_kategori}
                                             </p>
                                         </Tables.Td>
                                         <Tables.Td>
                                             <p className="w-[100px] capitalize text-xs text-wrap line-clamp-1">
-                                                {item.kantor_cabang}
+                                                {item.nama_kantor}
                                             </p>
                                         </Tables.Td>
                                         <Tables.Td>
-                                            <p className="w-[100px] capitalize text-xs text-wrap line-clamp-1">
+                                            <p className="w-[140px] capitalize text-xs text-wrap line-clamp-1">
+                                                {item.status_konfirmasi}
+                                            </p>
+                                        </Tables.Td>
+                                        <Tables.Td>
+                                            <p className="w-[50px] capitalize text-xs text-wrap line-clamp-1">
                                                 {item.status}
+                                            </p>
+                                        </Tables.Td>
+                                        <Tables.Td>
+                                            <p className="w-[100px] capitalize text-xs text-wrap line-clamp-1">
+                                                {moment(item.updated_at).format(
+                                                    "LL"
+                                                )}
+                                            </p>
+                                        </Tables.Td>
+                                        <Tables.Td>
+                                            <p className="w-[100px] capitalize text-xs text-wrap line-clamp-1">
+                                                {item.created_by}
+                                            </p>
+                                        </Tables.Td>
+                                        <Tables.Td>
+                                            <p className="w-[100px] capitalize text-xs text-wrap line-clamp-1">
+                                                {item.updated_by}
                                             </p>
                                         </Tables.Td>
                                     </tr>

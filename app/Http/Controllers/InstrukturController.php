@@ -14,7 +14,9 @@ class InstrukturController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Instruktur::query();
+        $query = Instruktur::query()->join('kantor_cabangs', 'kantor_cabangs.id', 'instrukturs.kantor_cabang_id')
+            ->join('kategori_kursuses', 'kategori_kursuses.id', 'instrukturs.kategori_kursus_id')
+            ->select('kantor_cabangs.nama as nama_kantor', 'instrukturs.*', 'kategori_kursuses.nama_kategori as nama_kategori');
         $instruktur = $query->latest()->get();
         return inertia('Admin/Instruktur/Index', compact('instruktur'));
     }
@@ -44,7 +46,7 @@ class InstrukturController extends Controller
             "telp" => 'required|numeric|digits_between:10,15|unique:instrukturs,telp',
             "pendidikan" => 'required',
             "foto" => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            "kantor_cabang" => 'required',
+            "kantor_cabang_id" => 'required',
             "status" => 'required|in:aktif,keluar',
 
         ]);
@@ -105,8 +107,9 @@ class InstrukturController extends Controller
                 'foto' => $foto,
                 'tanggal_masuk' => $request->tanggal_masuk,
                 'tanggal_keluar' => $request->tanggal_keluar,
-                'kantor_cabang' => $request->kantor_cabang,
+                'kantor_cabang_id' => $request->kantor_cabang_id,
                 'status' => $request->status,
+                'created_by' => $request->user()->name
             ]);
             foreach ($request->sosial_media as $i => $item) {
                 if ($request->sosial_media[$i]['kategori'] && $request->sosial_media[$i]['name']  && $request->sosial_media[$i]['link']) {
@@ -154,7 +157,7 @@ class InstrukturController extends Controller
             "telp" => 'required|numeric|digits_between:10,15|unique:instrukturs,telp,' . $instruktur->id,
             "pendidikan" => 'required',
             "foto" => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            "kantor_cabang" => 'required',
+            "kantor_cabang_id" => 'required',
             "status" => 'required|in:aktif,keluar',
 
         ]);
@@ -223,7 +226,8 @@ class InstrukturController extends Controller
             'foto' => $foto,
             'tanggal_masuk' => $request->tanggal_masuk,
             'tanggal_keluar' => $request->tanggal_keluar,
-            'kantor_cabang' => $request->kantor_cabang,
+            'kantor_cabang_id' => $request->kantor_cabang_id,
+            'updated_by' => $request->user()->name,
             'status' => $request->status,
         ]);
 

@@ -5,12 +5,13 @@ import { Add, Delete } from "@mui/icons-material";
 import { MenuItem } from "@mui/material";
 import React, { useEffect } from "react";
 
-export default function FormJenis({ model, onClose }) {
+export default function FormJenis({ model, onClose, kantor_cabang }) {
     const { data, setData, post, reset, errors } = useForm({
         jenis_kursus: "",
         deskripsi: "",
         thumbnail: "",
         benefit: "",
+        kantor_cabang_id: "",
         benefits: [],
     });
     const submitHandler = (e) => {
@@ -28,6 +29,7 @@ export default function FormJenis({ model, onClose }) {
             id: model ? model.id : "",
             jenis_kursus: model ? model.jenis_kursus : "",
             deskripsi: model ? model.deskripsi : "",
+            kantor_cabang_id: model ? model.kantor_cabang_id : "",
             thumbnail: model ? model.thumbnail : "",
         });
     }, [model]);
@@ -66,10 +68,35 @@ export default function FormJenis({ model, onClose }) {
     return (
         <form
             onSubmit={model ? updateHandler : submitHandler}
-            className="w-full  "
+            className="w-full py-9 "
         >
             <div className="flex flex-col lg:flex-row items-start gap-x-3">
                 <div>
+                    <div className="w-full">
+                        <SelectOption
+                            label="Kantor"
+                            name="kantor_cabang_id"
+                            value={data.kantor_cabang_id}
+                            errors={errors.kantor_cabang_id}
+                            onChange={(e) =>
+                                setData((prev) => ({
+                                    ...prev,
+                                    [e.target.name]: e.target.value,
+                                }))
+                            }
+                        >
+                            <MenuItem value="">Pilih Kantor Mengajar</MenuItem>
+                            {kantor_cabang.map((item, key) => (
+                                <MenuItem
+                                    key={key}
+                                    value={item.id}
+                                    className="capitalize"
+                                >
+                                    {item.nama + " | " + item.status}
+                                </MenuItem>
+                            ))}
+                        </SelectOption>
+                    </div>
                     <div className="p-2">
                         <InputText
                             name={"jenis_kursus"}

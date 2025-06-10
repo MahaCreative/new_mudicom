@@ -96,7 +96,7 @@ export default function ComponentPaket({ kategori, paket_ref }) {
     };
     useEffect(() => {
         searchPaket();
-    }, []);
+    }, [params]);
 
     return (
         <>
@@ -109,126 +109,50 @@ export default function ComponentPaket({ kategori, paket_ref }) {
                 }}
             >
                 <div className="py-2 px-4 w-full min-w-[1000px]">
-                    <div className="flex py-1 items-start w-full gap-x-3">
+                    <div className="flex  items-start w-full gap-x-3 py-5">
                         <div className="w-full">
-                            <div className="w-1/4">
-                                <InputText
-                                    variant="filled"
-                                    label="Cari Paket"
-                                    value={params.search}
-                                    onChange={(e) =>
-                                        setParams({
-                                            ...params,
-                                            search: e.target.value,
-                                        })
-                                    }
-                                />
-                            </div>
-                            <div className="w-1/4">
-                                <InputLabel
-                                    id="kategori_kursus"
-                                    name="kategori_kursus"
-                                    className="w-[140px] text-left"
+                            <InputText
+                                variant="filled"
+                                label="Cari Paket"
+                                value={params.search}
+                                onChange={(e) =>
+                                    setParams({
+                                        ...params,
+                                        search: e.target.value,
+                                    })
+                                }
+                            />
+                        </div>
+                        <div className="w-full">
+                            <InputLabel
+                                id="kategori_kursus"
+                                name="kategori_kursus"
+                                className="w-[140px] text-left"
+                            >
+                                Kategori Kursus
+                            </InputLabel>
+                            <div className="w-full">
+                                <SelectOption
+                                    size="small"
+                                    name="kategori"
+                                    id="kategori"
+                                    value={params.kategori}
+                                    onChange={changeHandler}
                                 >
-                                    Kategori Kursus
-                                </InputLabel>
-                                <div className="w-full">
-                                    <SelectOption
-                                        size="small"
-                                        name="kategori"
-                                        id="kategori"
-                                        value={params.kategori}
-                                        onChange={changeHandler}
-                                    >
-                                        <MenuItem value="">
-                                            Pilih Kategori
+                                    <MenuItem value="">Pilih Kategori</MenuItem>
+                                    {kategori.map((item, key) => (
+                                        <MenuItem
+                                            value={item.nama_kategori}
+                                            key={key}
+                                        >
+                                            {item.nama_kategori}
                                         </MenuItem>
-                                        {kategori.map((item, key) => (
-                                            <MenuItem
-                                                value={item.nama_kategori}
-                                                key={key}
-                                            >
-                                                {item.nama_kategori}
-                                            </MenuItem>
-                                        ))}
-                                    </SelectOption>
-                                </div>
-                            </div>
-                            <div className="flex gap-x-3">
-                                <div className="w-1/4">
-                                    <InputLabel
-                                        id="kategori_kursus"
-                                        name="kategori_kursus"
-                                        className="w-[140px] text-left"
-                                    >
-                                        Kategori Kursus
-                                    </InputLabel>
-                                    <div className="w-full">
-                                        <SelectOption
-                                            size="small"
-                                            name="kategori"
-                                            id="kategori"
-                                            value={params.kategori}
-                                            onChange={changeHandler}
-                                        >
-                                            <MenuItem value="">
-                                                Pilih Kategori
-                                            </MenuItem>
-                                            {kategori.map((item, key) => (
-                                                <MenuItem
-                                                    value={item.nama_kategori}
-                                                    key={key}
-                                                >
-                                                    {item.nama_kategori}
-                                                </MenuItem>
-                                            ))}
-                                        </SelectOption>
-                                    </div>
-                                </div>
-                                <div className="w-1/4">
-                                    <InputLabel
-                                        id="kategori_kursus"
-                                        name="kategori_kursus"
-                                        className="w-[140px] text-left"
-                                    >
-                                        Kategori Kursus
-                                    </InputLabel>
-                                    <div className="w-full">
-                                        <SelectOption
-                                            size="small"
-                                            name="kategori"
-                                            id="kategori"
-                                            value={params.kategori}
-                                            onChange={changeHandler}
-                                        >
-                                            <MenuItem value="">
-                                                Pilih Kategori
-                                            </MenuItem>
-                                            {kategori.map((item, key) => (
-                                                <MenuItem
-                                                    value={item.nama_kategori}
-                                                    key={key}
-                                                >
-                                                    {item.nama_kategori}
-                                                </MenuItem>
-                                            ))}
-                                        </SelectOption>
-                                    </div>
-                                </div>
+                                    ))}
+                                </SelectOption>
                             </div>
                         </div>
                     </div>
-                    <div className="flex gap-x-3">
-                        <button
-                            onClick={() => searchPaket()}
-                            className="bg-blue-500 py-4 h-full px-4 rounded-md text-white tracking-tight flex items-center gap-x-1 leading-3"
-                        >
-                            <Search color="inherit" fontSize="inherit" />
-                        </button>
-                        <button className="bg-orange-500 py-4 h-full px-4 rounded-md text-white tracking-tight flex items-center gap-x-1 leading-3">
-                            <Refresh color="inherit" fontSize="inherit" />
-                        </button>
-                    </div>
+
                     <Tables>
                         <thead>
                             <tr>
@@ -237,7 +161,7 @@ export default function ComponentPaket({ kategori, paket_ref }) {
                                     Kode Paket
                                 </Tables.Th>
                                 <Tables.Th className={"text-xs"}>
-                                    Kategori
+                                    Judul Paket
                                 </Tables.Th>
                                 <Tables.Th className={"text-xs"}>
                                     Kategori / Sub Kategori

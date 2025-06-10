@@ -31,7 +31,7 @@ export default function Update(props) {
         deskripsi: "",
         pendidikan: "",
         foto: "",
-        kantor_cabang: "",
+        kantor_cabang_id: "",
         status: "",
         password: "",
         password_confirmation: "",
@@ -126,7 +126,7 @@ export default function Update(props) {
             email: instruktur.user ? instruktur.user.email : "",
             pendidikan: instruktur.pendidikan,
             foto: "",
-            kantor_cabang: instruktur.kantor_cabang,
+            kantor_cabang_id: instruktur.kantor_cabang_id,
             status: instruktur.status,
             sosial_media: sosmed,
             password: "",
@@ -470,9 +470,9 @@ export default function Update(props) {
                                 <div className="w-full">
                                     <SelectOption
                                         label="Kantor"
-                                        name="kantor_cabang"
-                                        value={data.kantor_cabang}
-                                        errors={errors.kantor_cabang}
+                                        name="kantor_cabang_id"
+                                        value={data.kantor_cabang_id}
+                                        errors={errors.kantor_cabang_id}
                                         onChange={(e) =>
                                             setData((prev) => ({
                                                 ...prev,
@@ -486,7 +486,7 @@ export default function Update(props) {
                                         {kantor_cabang.map((item, key) => (
                                             <MenuItem
                                                 key={key}
-                                                value={item.nama}
+                                                value={item.id}
                                                 className="capitalize"
                                             >
                                                 {item.nama +

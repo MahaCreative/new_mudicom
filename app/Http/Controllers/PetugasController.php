@@ -12,7 +12,8 @@ class PetugasController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Petugas::query();
+        $query = Petugas::query()->join('kantor_cabangs', 'kantor_cabangs.id', 'petugas.kantor_cabang_id')
+            ->select('kantor_cabangs.nama as nama_kantor', 'petugas.*');
         $petugas = $query->latest()->get();
         return inertia('Admin/Petugas/Index', compact('petugas'));
     }
@@ -41,7 +42,7 @@ class PetugasController extends Controller
             "telp" => 'required|numeric|digits_between:10,15|unique:instrukturs,telp',
             "pendidikan" => 'required',
             "foto" => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            "kantor_cabang" => 'required',
+            "kantor_cabang_id" => 'required',
             "status" => 'required|in:aktif,keluar',
             "jabatan" => 'required',
 
@@ -85,9 +86,10 @@ class PetugasController extends Controller
                 'foto' => $foto,
                 'tanggal_masuk' => $request->tanggal_masuk,
                 'tanggal_keluar' => $request->tanggal_keluar,
-                'kantor_cabang' => $request->kantor_cabang,
+                'kantor_cabang_id' => $request->kantor_cabang_id,
                 'status' => $request->status,
                 'jabatan' => $request->jabatan,
+                'created_by' => $request->user()->name
             ]);
 
             DB::commit();
@@ -126,7 +128,7 @@ class PetugasController extends Controller
             "telp" => 'required|numeric|digits_between:10,15|unique:petugas,telp,' . $petugas->id,
             "pendidikan" => 'required',
             "foto" => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            "kantor_cabang" => 'required',
+            "kantor_cabang_id" => 'required',
             "status" => 'required|in:aktif,keluar',
             "jabatan" => 'required',
 
@@ -183,9 +185,10 @@ class PetugasController extends Controller
             'foto' => $foto,
             'tanggal_masuk' => $request->tanggal_masuk,
             'tanggal_keluar' => $request->tanggal_keluar,
-            'kantor_cabang' => $request->kantor_cabang,
+            'kantor_cabang_id' => $request->kantor_cabang_id,
             'status' => $request->status,
             'jabatan' => $request->jabatan,
+            'updated_by' => $request->user()->name
         ]);
     }
 }

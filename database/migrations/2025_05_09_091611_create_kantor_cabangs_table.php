@@ -27,6 +27,8 @@ return new class extends Migration
             $table->string('thumbnail')->default('image/default_thumnbnail.jpg'); //pusat, cabang
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
+            $table->string('status_konfirmasi')->default('menunggu konfirmasi');
+
             $table->timestamps();
             $table->softDeletes();
         });
