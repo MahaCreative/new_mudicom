@@ -18,7 +18,12 @@ class MateriAJarController extends Controller
 
         $materi = $query->latest()->get();
         $sub = SubKategoriKursus::latest()->get();
-        $kantor_cabang = KantorCabang::latest()->get();
+        if ($request->user()->can('only_kantor')) {
+
+            $kantor_cabang = KantorCabang::where('id', $request->user()->petugas->kantor_cabang_id)->latest()->get();
+        } else {
+            $kantor_cabang = KantorCabang::latest()->get();
+        };
         return inertia('Admin/MateriAjar/Index', compact('materi', 'sub', 'kantor_cabang'));
     }
 

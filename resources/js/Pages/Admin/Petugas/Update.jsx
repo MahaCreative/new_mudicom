@@ -48,7 +48,22 @@ export default function Create(props) {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        post(route("admin.update-management-petugas"));
+        post(route("admin.update-management-petugas"), {
+            onSuccess: () => {
+                showResponse(
+                    "success",
+                    "Berhasil",
+                    "Berhasil mengupdate petugas baru kedalam database"
+                );
+            },
+            onError: (err) => {
+                showResponse(
+                    "error",
+                    "Gagal",
+                    "Gagal mengupdate petugas, silahkan periksa isian anda kembali"
+                );
+            },
+        });
     };
 
     useEffect(() => {

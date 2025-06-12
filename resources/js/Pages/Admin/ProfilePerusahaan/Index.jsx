@@ -1,13 +1,17 @@
 import InputText from "@/Components/InputText";
+import SelectOption from "@/Components/SelectOption";
 import Tables from "@/Components/Tables";
 import AuthLayout from "@/Layouts/AuthLayout";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import { Delete, Edit } from "@mui/icons-material";
-import { Tooltip } from "@mui/material";
+import { MenuItem, Tooltip } from "@mui/material";
 import moment from "moment";
 import React from "react";
 
 export default function Index(props) {
+    const { auth } = usePage().props;
+    const roles = auth.roles;
+    const permissions = auth.permissions;
     const kantor = props.kantor;
     return (
         <div className="py-6 px-8 w-full">
@@ -21,14 +25,16 @@ export default function Index(props) {
             </p>
             <div className="bg-white py-2 px-4 rounded-md drop-shadow-md border border-gray-200 my-2">
                 <div className="w-full flex flex-row justify-between items-center">
-                    <Link
-                        href={route(
-                            "admin.create-management-profile-perusahaan"
-                        )}
-                        className="py-2 px-4 rounded-md bg-blue-500 text-white tracking-tighter font-medium"
-                    >
-                        Tambah Kantor Cabang
-                    </Link>
+                    {permissions.includes("create_kantor_cabang") && (
+                        <Link
+                            href={route(
+                                "admin.create-management-profile-perusahaan"
+                            )}
+                            className="py-2 px-4 rounded-md bg-blue-500 text-white tracking-tighter font-medium"
+                        >
+                            Tambah Kantor Cabang
+                        </Link>
+                    )}
                     <InputText
                         label={"Cari Instruktur"}
                         placeHolder="Cari Instruktur..."
@@ -64,6 +70,7 @@ export default function Index(props) {
                             <Tables.Th className="text-xs capitalize">
                                 Status
                             </Tables.Th>
+
                             <Tables.Th className="text-xs capitalize">
                                 Logo
                             </Tables.Th>
@@ -154,10 +161,42 @@ export default function Index(props) {
                                                 alt=""
                                             />
                                         </Tables.Td>
-                                        <Tables.Td>
-                                            <p className="w-[140px] capitalize text-xs text-wrap line-clamp-1">
-                                                {item.status_konfirmasi}
-                                            </p>
+                                        <Tables.Td
+                                            className={"text-black text-xs"}
+                                        >
+                                            {permissions.includes(
+                                                "confirm_kantor_cabang"
+                                            ) ? (
+                                                <SelectOption
+                                                    value={
+                                                        item.status_konfirmasi
+                                                    }
+                                                    onChange={(e) =>
+                                                        updateStatus(e, item.id)
+                                                    }
+                                                >
+                                                    <MenuItem
+                                                        className="capitalize"
+                                                        value="menunggu konfirmasi"
+                                                    >
+                                                        menunggu konfirmasi
+                                                    </MenuItem>
+                                                    <MenuItem
+                                                        className="capitalize"
+                                                        value="terima"
+                                                    >
+                                                        terima
+                                                    </MenuItem>
+                                                    <MenuItem
+                                                        className="capitalize"
+                                                        value="tolak"
+                                                    >
+                                                        tolak
+                                                    </MenuItem>
+                                                </SelectOption>
+                                            ) : (
+                                                item.status_konfirmasi
+                                            )}
                                         </Tables.Td>
                                         <Tables.Td>
                                             <p className="w-[140px] capitalize text-xs text-wrap line-clamp-1">
@@ -178,43 +217,50 @@ export default function Index(props) {
                                         </Tables.Td>
 
                                         <Tables.Td>
-                                            <Tooltip
-                                                title={`Edit ${item.nama}`}
-                                            >
-                                                <Link
-                                                    href={route(
-                                                        "admin.edit-management-profile-perusahaan",
-                                                        item.kode
-                                                    )}
-                                                    className="py-1 px-2 text-white bg-orange-500 hover:bg-orange-600 usetransisi text-xs rounded-md drop-shadow-md"
+                                            {permissions.includes(
+                                                "edit_kantor_cabang"
+                                            ) && (
+                                                <Tooltip
+                                                    title={`Edit ${item.nama}`}
                                                 >
-                                                    <Edit
-                                                        color="inherit"
-                                                        fontSize="inherit"
-                                                    />
-                                                </Link>
-                                            </Tooltip>
-                                            {item.status == "cabang" && (
-                                                <>
-                                                    <Tooltip
-                                                        title={`Delete ${item.nama}`}
+                                                    <Link
+                                                        href={route(
+                                                            "admin.edit-management-profile-perusahaan",
+                                                            item.kode
+                                                        )}
+                                                        className="py-1 px-2 text-white bg-orange-500 hover:bg-orange-600 usetransisi text-xs rounded-md drop-shadow-md"
                                                     >
-                                                        <button
-                                                            onClick={() =>
-                                                                deleteHandler(
-                                                                    item.id
-                                                                )
-                                                            }
-                                                            className="py-1 px-2 text-white bg-red-500 hover:bg-red-600 usetransisi text-xs rounded-md drop-shadow-md"
-                                                        >
-                                                            <Delete
-                                                                color="inherit"
-                                                                fontSize="inherit"
-                                                            />
-                                                        </button>
-                                                    </Tooltip>
-                                                </>
+                                                        <Edit
+                                                            color="inherit"
+                                                            fontSize="inherit"
+                                                        />
+                                                    </Link>
+                                                </Tooltip>
                                             )}
+                                            {item.status == "cabang" &&
+                                                permissions.includes(
+                                                    "delete_kantor_cabang"
+                                                ) && (
+                                                    <>
+                                                        <Tooltip
+                                                            title={`Delete ${item.nama}`}
+                                                        >
+                                                            <button
+                                                                onClick={() =>
+                                                                    deleteHandler(
+                                                                        item.id
+                                                                    )
+                                                                }
+                                                                className="py-1 px-2 text-white bg-red-500 hover:bg-red-600 usetransisi text-xs rounded-md drop-shadow-md"
+                                                            >
+                                                                <Delete
+                                                                    color="inherit"
+                                                                    fontSize="inherit"
+                                                                />
+                                                            </button>
+                                                        </Tooltip>
+                                                    </>
+                                                )}
                                         </Tables.Td>
                                     </tr>
                                 ))

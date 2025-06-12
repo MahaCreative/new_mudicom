@@ -1,5 +1,6 @@
 import InputText from "@/Components/InputText";
 import SelectOption from "@/Components/SelectOption";
+import ResponseAlert from "@/Hook/ResponseAlert";
 import AuthLayout from "@/Layouts/AuthLayout";
 import { useForm } from "@inertiajs/react";
 import { Add, Delete } from "@mui/icons-material";
@@ -7,6 +8,7 @@ import { Icon, MenuItem } from "@mui/material";
 import React, { useRef, useState } from "react";
 
 export default function Create(props) {
+    const { showResponse, ResponseMethode } = ResponseAlert();
     const kantor_cabang = props.kantor_cabang;
     const kategori = props.kategori;
     const imageRef = useRef(null);
@@ -75,7 +77,22 @@ export default function Create(props) {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        post(route("admin.store-management-instruktur"));
+        post(route("admin.store-management-instruktur"), {
+            onSuccess: () => {
+                showResponse(
+                    "success",
+                    "berhasil",
+                    "berhasil menambahkan data instruktur baru ke database"
+                );
+            },
+            onError: () => {
+                showResponse(
+                    "error",
+                    "Gagal",
+                    "gagal menambahkan data instruktur, silahkan periksa kembali isian anda"
+                );
+            },
+        });
     };
 
     return (

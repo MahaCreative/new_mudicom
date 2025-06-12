@@ -36,12 +36,6 @@ export default function ComponentSiswa() {
     };
 
     const pilihHandler = (value) => {
-        router.patch(
-            route("admin.update-siswa-pendaftar-kursus", formData.no_transaksi),
-            {
-                kd_siswa: value.kd_siswa,
-            }
-        );
         setParams((prev) => ({ ...prev, search: "" }));
         setFormData((prev) => ({
             ...prev,

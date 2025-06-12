@@ -1,5 +1,6 @@
 import InputText from "@/Components/InputText";
 import SelectOption from "@/Components/SelectOption";
+import ResponseAlert from "@/Hook/ResponseAlert";
 import AuthLayout from "@/Layouts/AuthLayout";
 import { useForm } from "@inertiajs/react";
 import { Add, Delete } from "@mui/icons-material";
@@ -7,10 +8,12 @@ import { Icon, MenuItem } from "@mui/material";
 import React, { useRef, useState } from "react";
 
 export default function Create(props) {
+    const { showResponse } = ResponseAlert();
     const kantor_cabang = props.kantor_cabang;
     const kategori = props.kategori;
     const imageRef = useRef(null);
     const [preview, setPreview] = useState(null);
+
     const { data, setData, post, reset, errors } = useForm({
         user_id: "",
         kd_siswa: "",
@@ -47,7 +50,24 @@ export default function Create(props) {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        post(route("admin.store-management-siswa"));
+        post(route("admin.store-management-siswa"), {
+            onSuccess: () => {
+                reset();
+                showResponse(
+                    "success",
+                    "Berhasil",
+                    "Berhasil mendaftarkan 1 siswa baru"
+                );
+            },
+            onError: (err) => {
+                showResponse(
+                    "error",
+                    "Gagal",
+                    "Gagal mendaftarkan siswa baru, periksa kembali isian anda Error Code: " +
+                        err
+                );
+            },
+        });
     };
 
     return (

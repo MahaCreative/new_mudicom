@@ -7,6 +7,7 @@ use App\Models\Petugas;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 
 class PetugasController extends Controller
 {
@@ -15,13 +16,20 @@ class PetugasController extends Controller
         $query = Petugas::query()->join('kantor_cabangs', 'kantor_cabangs.id', 'petugas.kantor_cabang_id')
             ->select('kantor_cabangs.nama as nama_kantor', 'petugas.*');
         $petugas = $query->latest()->get();
-        return inertia('Admin/Petugas/Index', compact('petugas'));
+
+        return inertia('Admin/Petugas/Index', compact('petugas',));
     }
     public function create(Request $request)
     {
-        $kantor_cabang = KantorCabang::latest()->get();
+        if ($request->user()->can('only_kantor')) {
 
-        return inertia('Admin/Petugas/Create', compact('kantor_cabang'));
+            $kantor_cabang = KantorCabang::where('id', $request->user()->petugas->kantor_cabang_id)->latest()->get();
+        } else {
+            $kantor_cabang = KantorCabang::latest()->get();
+        };
+        $roles = Role::latest()->get();
+
+        return inertia('Admin/Petugas/Create', compact('kantor_cabang', 'roles'));
     }
     public function store(Request $request)
     {

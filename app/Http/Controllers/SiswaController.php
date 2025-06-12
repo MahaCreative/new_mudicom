@@ -22,7 +22,12 @@ class SiswaController extends Controller
 
     public function create(Request $request)
     {
-        $kantor_cabang = KantorCabang::latest()->get();
+        if ($request->user()->can('only_kantor')) {
+
+            $kantor_cabang = KantorCabang::where('id', $request->user()->petugas->kantor_cabang_id)->latest()->get();
+        } else {
+            $kantor_cabang = KantorCabang::latest()->get();
+        };
         return inertia('Admin/Siswa/Create', compact('kantor_cabang'));
     }
 

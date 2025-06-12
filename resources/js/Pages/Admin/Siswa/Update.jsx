@@ -1,5 +1,6 @@
 import InputText from "@/Components/InputText";
 import SelectOption from "@/Components/SelectOption";
+import ResponseAlert from "@/Hook/ResponseAlert";
 import AuthLayout from "@/Layouts/AuthLayout";
 import { useForm } from "@inertiajs/react";
 import { Add, Delete } from "@mui/icons-material";
@@ -7,6 +8,7 @@ import { Icon, MenuItem } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 
 export default function Create(props) {
+    const { showResponse } = ResponseAlert();
     const kantor_cabang = props.kantor_cabang;
 
     const siswa = props.siswa;
@@ -48,7 +50,24 @@ export default function Create(props) {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        post(route("admin.update-management-siswa"));
+        post(route("admin.update-management-siswa"), {
+            onSuccess: () => {
+                reset();
+                showResponse(
+                    "success",
+                    "Berhasil",
+                    "Berhasil memperbaharui data siswa"
+                );
+            },
+            onError: (err) => {
+                showResponse(
+                    "error",
+                    "Gagal",
+                    "Gagal memperbaharui data siswa, periksa kembali isian anda Error Code: " +
+                        err
+                );
+            },
+        });
     };
 
     useEffect(() => {

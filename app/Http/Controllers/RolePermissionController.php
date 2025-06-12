@@ -16,4 +16,24 @@ class RolePermissionController extends Controller
 
         return inertia('Admin/Role/Index', compact('permission', 'role'));
     }
+
+    public function store(Request $request)
+    {
+
+        $request->validate([
+            'name' => 'required|alpha_dash|min:6|max:50',
+            'permissions' => 'array|min:1',
+            'permissions.*' => 'required|string'
+        ]);
+        $role = Role::create(['name' => $request->name]);
+        $role->syncPermissions($request->permissions);
+    }
+
+    public function update(Request $request, $id)
+    {
+
+        $role = Role::find($id);
+        $role->update(['name' => $request->name]);
+        $role->syncPermissions($request->permissions);
+    }
 }

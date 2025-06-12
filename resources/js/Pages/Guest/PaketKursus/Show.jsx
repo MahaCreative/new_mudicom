@@ -200,14 +200,17 @@ export default function Show(props) {
                                 </h1>
                             </div>
                             <div className="py-16 w-full">
-                                <div className="w-full flex flex-col justify-center items-center pb-9">
-                                    <p className="relative capitalize text-4xl font-extrabold text-center text-white inline-block   leading-3">
-                                        {formatRupiah(paket.harga)}
-                                        <span className="absolute h-full w-full top-0 left-0 flex flex-col justify-center items-center ">
-                                            <span className="h-1 bg-white w-[106%]"></span>
-                                        </span>
-                                    </p>
-                                </div>
+                                {paket.harga_promo !== 0 &&
+                                    paket.harga_promo !== null && (
+                                        <div className="w-full flex flex-col justify-center items-center pb-9">
+                                            <p className="relative capitalize text-4xl font-extrabold text-center text-white inline-block   leading-3">
+                                                {formatRupiah(paket.harga)}
+                                                <span className="absolute h-full w-full top-0 left-0 flex flex-col justify-center items-center ">
+                                                    <span className="h-1 bg-white w-[106%]"></span>
+                                                </span>
+                                            </p>
+                                        </div>
+                                    )}
                                 <p className="capitalize text-4xl font-extrabold text-center text-white">
                                     Hanya
                                 </p>

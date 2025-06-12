@@ -47,7 +47,12 @@ class ManagementPendaftaranKursusController extends Controller
         $sub = SubKategoriKursus::with('kategori')->latest()->get();
         $jenis = JenisKursus::latest()->get();
         $kd_transaksi = 'tr-' . now()->format('my') . '-00' . PesananKursus::count() + 1;
-        $kantor_cabang = KantorCabang::latest()->get();
+        if ($request->user()->can('only_kantor')) {
+
+            $kantor_cabang = KantorCabang::where('id', $request->user()->petugas->kantor_cabang_id)->latest()->get();
+        } else {
+            $kantor_cabang = KantorCabang::latest()->get();
+        };
         return inertia('Global/PendaftaranKursuss/Create', compact(
             'kategori',
             'sub',
@@ -57,16 +62,7 @@ class ManagementPendaftaranKursusController extends Controller
         ));
     }
 
-    public function update_siswa(Request $request, $kd_transaksi)
-    {
 
-        $pesanan = PesananKursus::where('kd_transaksi', $kd_transaksi);
-        $siswa = Siswa::where('kd_siswa', $request->kd_siswa)->first();
-
-        if ($siswa) {
-            $pesanan->update(['siswa_id' => $siswa->id]);
-        }
-    }
     public function store(Request $request)
     {
         // Validasi awal
@@ -149,6 +145,7 @@ class ManagementPendaftaranKursusController extends Controller
                 'installments' => 1,
                 'installment_number' => 1,
                 'kantor_cabang_id' => $request->kantor_cabang_id,
+                'created_by' => $request->user()->name,
             ]);
             $kas = Kas::create([
                 'tanggal' => now(),
@@ -162,8 +159,9 @@ class ManagementPendaftaranKursusController extends Controller
                 'petugas_id' => auth()->id() ?? 1,
                 'model_id' => $pembayaran->id,
                 'model_type' => Payment::class,
+                'created_by' => $request->user()->name,
             ]);
-
+            $this->sendMessage($siswa->telp, $pesanan->kd_transaksi, $pesanan->created_at, $pesanan->total_harga);
             DB::commit();
 
             return response()->json(['pesanan' => $pesanan, 'paket' => $paket, 'pembayaran' => $pembayaran]);
@@ -183,6 +181,22 @@ class ManagementPendaftaranKursusController extends Controller
 
         return inertia('Global/PendaftaranKursuss/Invoice', compact('pendaftaran', 'payment', 'detail', 'siswa'));
     }
+    public function invoice_all(Request $request, $kd_transaksi)
+    {
+        $pendaftaran = PesananKursus::where('kd_transaksi', $kd_transaksi)->first();
+        $detail = DetailPesananKursus::with('paket')->where('pesanan_kursus_id', $pendaftaran->id)->get();
+        $siswa = Siswa::find($pendaftaran->siswa_id);
+        $payment = Payment::where('pesanan_kursus_id', $pendaftaran->id)->latest()->get();
+        return inertia('Global/PendaftaranKursuss/InvoiceAll', compact('pendaftaran', 'payment', 'detail', 'siswa'));
+    }
+    public function invoice_one(Request $request,  $order_id)
+    {
+        $payment = Payment::where('order_id', $order_id)->where('order_id', $order_id)->first();
+        $pendaftaran = PesananKursus::where('id', $payment->pesanan_kursus_id)->first();
+        $detail = DetailPesananKursus::with('paket')->where('pesanan_kursus_id', $pendaftaran->id)->get();
+        $siswa = Siswa::find($pendaftaran->siswa_id);
+        return inertia('Global/PendaftaranKursuss/InvoiceOne', compact('pendaftaran', 'payment', 'detail', 'siswa'));
+    }
 
     public function edit(Request $request, $kd_transaksi)
     {
@@ -192,7 +206,12 @@ class ManagementPendaftaranKursusController extends Controller
         // dd($detail);
         $payment = Payment::where('pesanan_kursus_id', $pendaftaran->id)->latest()->get();
         $siswa = Siswa::find($pendaftaran->siswa_id);
-        $kantor_cabang = KantorCabang::latest()->get();
+        if ($request->user()->can('only_kantor')) {
+
+            $kantor_cabang = KantorCabang::where('id', $request->user()->petugas->kantor_cabang_id)->latest()->get();
+        } else {
+            $kantor_cabang = KantorCabang::latest()->get();
+        };
         return inertia('Global/PendaftaranKursuss/Update', compact('pendaftaran', 'payment', 'detail', 'siswa', 'kategori', 'kd_transaksi', 'kantor_cabang'));
     }
 
@@ -307,5 +326,46 @@ class ManagementPendaftaranKursusController extends Controller
     {
         $lastKas = \App\Models\Kas::orderBy('id', 'desc')->first();
         return $lastKas ? $lastKas->saldo : 0;
+    }
+    public function sendMessage($phone, $kd_transaksi, $created_at, $total_pembayaran)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.fonnte.com/send',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array(
+                'target' => "$phone",
+                'message' => "
+Terimakasih telah melakukan pendaftaran kursus ke mudicom
+Rincian Pesanan
+Kode Transaksi      : $kd_transaksi
+Tanggal Pesanan     : $created_at
+Total Pembayaran    : $total_pembayaran                 
+
+            
+                ",
+
+            ),
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: oAMf+vjnQeV9gmqAGRb8'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        if (curl_errno($curl)) {
+            $error_msg = curl_error($curl);
+        }
+        curl_close($curl);
+
+        if (isset($error_msg)) {
+            echo $error_msg;
+        }
     }
 }

@@ -1,11 +1,13 @@
 import InputText from "@/Components/InputText";
 import SelectOption from "@/Components/SelectOption";
+import ResponseAlert from "@/Hook/ResponseAlert";
 import { router, useForm } from "@inertiajs/react";
 import { Add, Delete } from "@mui/icons-material";
 import { MenuItem } from "@mui/material";
 import React, { useEffect } from "react";
 
 export default function FormJenis({ model, onClose, kantor_cabang }) {
+    const { showResponse, ResponseMethode } = ResponseAlert();
     const { data, setData, post, reset, errors } = useForm({
         jenis_kursus: "",
         deskripsi: "",
@@ -16,11 +18,41 @@ export default function FormJenis({ model, onClose, kantor_cabang }) {
     });
     const submitHandler = (e) => {
         e.preventDefault();
-        post(route("admin.store-jenis-kategori-kursus"));
+        post(route("admin.store-jenis-kategori-kursus"), {
+            onSuccess: () => {
+                showResponse(
+                    "success",
+                    "Berhasil",
+                    "Berhasil menambahkan data jenis kursus"
+                );
+            },
+            onError: (err) => {
+                showResponse(
+                    "error",
+                    "Gagal",
+                    "Gagal menambahkan jenis kursus, silahkan periksa kembali isian anda"
+                );
+            },
+        });
     };
     const updateHandler = (e) => {
         e.preventDefault();
-        post(route("admin.update-jenis-kategori-kursus"));
+        post(route("admin.update-jenis-kategori-kursus"), {
+            onSuccess: () => {
+                showResponse(
+                    "success",
+                    "Berhasil",
+                    "Berhasil memperbaharui data jenis kursus"
+                );
+            },
+            onError: (err) => {
+                showResponse(
+                    "error",
+                    "Gagal",
+                    "Gagal memperbaharui jenis kursus, silahkan periksa kembali isian anda"
+                );
+            },
+        });
     };
     useEffect(() => {
         setData({

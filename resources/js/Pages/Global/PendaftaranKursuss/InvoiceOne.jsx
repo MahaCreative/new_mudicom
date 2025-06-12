@@ -3,7 +3,9 @@ import { formatRupiah } from "@/Pages/Function/FormatRupiah";
 import moment from "moment";
 import React, { useEffect } from "react";
 
-export default function Invoice({ payment, siswa, detail, pendaftaran }) {
+export default function InvoiceOne({ payment, siswa, detail, pendaftaran }) {
+    console.log(payment);
+
     function terbilangRupiah(angka) {
         const angkaStr = angka.toString().replace(/[^0-9]/g, "");
         const satuan = [
@@ -70,11 +72,11 @@ export default function Invoice({ payment, siswa, detail, pendaftaran }) {
             ? "nol rupiah"
             : konversi(angka).replace(/\s+/g, " ").trim() + " rupiah";
     }
-    useEffect(() => {
-        setTimeout(() => {
-            window.print();
-        }, 1000); // beri jeda untuk memastikan halaman sudah siap
-    }, []);
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         window.print();
+    //     }, 1000); // beri jeda untuk memastikan halaman sudah siap
+    // }, []);
 
     return (
         <div className="w-full min-h-screen bg-white py-10 px-4 flex justify-center items-start capitalize">
@@ -221,33 +223,96 @@ export default function Invoice({ payment, siswa, detail, pendaftaran }) {
                             </tr>
                             <tr className="bg-gray-100 font-semibold text-sm">
                                 <Tables.Td colspan={4} className="text-right">
-                                    Jumlah Dibayar
+                                    Jumlah Bayar
                                 </Tables.Td>
                                 <Tables.Td colspan={3}>
-                                    {formatRupiah(payment.gross_amount)}
+                                    {formatRupiah(pendaftaran.jumlah_bayar)}
                                 </Tables.Td>
                             </tr>
                             <tr className="bg-gray-100 font-semibold text-sm">
                                 <Tables.Td colspan={4} className="text-right">
-                                    Terbilang
-                                </Tables.Td>
-                                <Tables.Td colspan={3} className="capitalize">
-                                    {terbilangRupiah(payment.gross_amount)}
-                                </Tables.Td>
-                            </tr>
-                            <tr className="bg-gray-100 font-semibold text-sm">
-                                <Tables.Td colspan={4} className="text-right">
-                                    Sisa Pembayaran
+                                    Jumlah Bayar
                                 </Tables.Td>
                                 <Tables.Td colspan={3}>
-                                    {formatRupiah(payment.remaining_amount)}
+                                    {formatRupiah(pendaftaran.sisa_bayar)}
                                 </Tables.Td>
                             </tr>
                         </Tables.Tbody>
                     </Tables>
                 </div>
 
+                <div className="min-h-1 w-full border-b border-dashed border-primary my-3"></div>
                 {/* Footer */}
+
+                <div className="w-full max-w-5xl bg-white shadow-xl rounded-md p-3 border border-gray-200 my-2">
+                    <div className="text-right mb-8">
+                        <h2 className="text-2xl font-bold text-blue-900 uppercase">
+                            Invoice Pembayaran
+                        </h2>
+                        <p className="text-gray-700 mt-2">
+                            Nomor Invoice:{" "}
+                            <span className="font-medium">
+                                {payment.order_id}
+                            </span>
+                        </p>
+                        <p className="text-gray-700">
+                            Tanggal:{" "}
+                            <span className="font-medium">
+                                {moment(payment.created_at).format(
+                                    "DD MMMM YYYY"
+                                )}
+                            </span>
+                        </p>
+                        <p className="text-gray-700">
+                            Petugas Menerima:{" "}
+                            <span className="font-medium">
+                                {payment.created_by}
+                            </span>
+                        </p>
+                    </div>
+                    <tr className="bg-gray-100 font-semibold text-sm">
+                        <Tables.Td colspan={4} className="text-right">
+                            Jumlah Dibayar
+                        </Tables.Td>
+                        <Tables.Td colspan={3}>
+                            {formatRupiah(payment.gross_amount)}
+                        </Tables.Td>
+                    </tr>
+                    <tr className="bg-gray-100 font-semibold text-sm">
+                        <Tables.Td colspan={4} className="text-right">
+                            Terbilang
+                        </Tables.Td>
+                        <Tables.Td colspan={3} className="capitalize">
+                            {terbilangRupiah(payment.gross_amount)}
+                        </Tables.Td>
+                    </tr>
+                    <tr className="bg-gray-100 font-semibold text-sm">
+                        <Tables.Td colspan={4} className="text-right">
+                            Sisa Pembayaran
+                        </Tables.Td>
+                        <Tables.Td colspan={3}>
+                            {formatRupiah(payment.remaining_amount)}
+                        </Tables.Td>
+                    </tr>
+                    <p className="flex w-full justify-end">
+                        {"Mamuju, " + moment(new Date()).format("lll")}
+                    </p>
+                    <div className="flex justify-between items-start">
+                        <div className="w-[300px] ">
+                            <p className="text-center">Pembayar</p>
+                            <p className="text-center font-bold mt-9 capitalize">
+                                {siswa.nama_lengkap}
+                            </p>
+                        </div>
+                        <div>
+                            <p className="text-center">Petugas Menerima</p>
+                            <p className="text-center font-bold mt-9 capitalize">
+                                {payment.created_by}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
                 <div className="mt-2 text-center text-xs text-gray-500 italic">
                     Terima kasih atas pembayaran Anda. Jika ada pertanyaan,
                     silakan hubungi kami.

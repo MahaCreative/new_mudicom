@@ -1,5 +1,6 @@
 import InputText from "@/Components/InputText";
 import SelectOption from "@/Components/SelectOption";
+import ResponseAlert from "@/Hook/ResponseAlert";
 import AuthLayout from "@/Layouts/AuthLayout";
 import { useForm } from "@inertiajs/react";
 import { Add, Delete } from "@mui/icons-material";
@@ -7,6 +8,7 @@ import { Icon, MenuItem } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 
 export default function Update(props) {
+    const { showResponse, ResponseMethode } = ResponseAlert();
     const kantor_cabang = props.kantor_cabang;
     const kategori = props.kategori;
     const instruktur = props.instruktur;
@@ -81,6 +83,20 @@ export default function Update(props) {
         e.preventDefault();
         post(route("admin.update-management-instruktur"), {
             preserveState: true,
+            onSuccess: () => {
+                showResponse(
+                    "success",
+                    "Berhasil",
+                    "Berhasil memperbaharui data instruktur"
+                );
+            },
+            onError: (err) => {
+                showResponse(
+                    "error",
+                    "Gagal",
+                    "Gagal memperbaharui data instruktur, periksa kembali isian anda"
+                );
+            },
         });
     };
 

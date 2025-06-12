@@ -6,7 +6,9 @@ import {
     Close,
     Dashboard,
     Face,
+    Home,
     ListAltOutlined,
+    Logout,
     Menu,
     Payments,
     School,
@@ -56,11 +58,28 @@ export default function AuthLayout({ children }) {
                             openSidebar
                                 ? "w-[90%] md:w-[40%] lg:w-[30%]"
                                 : "w-0 overflow-x-hidden"
-                        } h-full bg-blue-950 usetransisi fixed z-10 top-18`}
+                        } h-full bg-blue-950 usetransisi fixed z-10 top-18 overflow-y-auto py-6`}
                     >
                         {openSidebar && (
                             <div>
-                                <Link className="flex flex-row gap-3 items-center px-4 py-2 border-b border-x-white text-white tracking-tighter leading-3 font-medium text-lg hover:bg-blue-900 usetransisi">
+                                <Link
+                                    href={route("home")}
+                                    className="flex flex-row gap-3 items-center px-4 py-2 border-b border-x-white text-white tracking-tighter leading-3 font-medium text-lg hover:bg-blue-900 usetransisi"
+                                >
+                                    <Home />
+                                    <p>Home</p>
+                                </Link>
+                                <Link
+                                    href={route("logout")}
+                                    className="flex flex-row gap-3 items-center px-4 py-2 border-b border-x-white text-white tracking-tighter leading-3 font-medium text-lg hover:bg-blue-900 usetransisi"
+                                >
+                                    <Logout />
+                                    <p>Logout Sementara</p>
+                                </Link>
+                                <Link
+                                    href={route("dashboard")}
+                                    className="flex flex-row gap-3 items-center px-4 py-2 border-b border-x-white text-white tracking-tighter leading-3 font-medium text-lg hover:bg-blue-900 usetransisi"
+                                >
                                     <Dashboard />
                                     <p>Dashboard</p>
                                 </Link>
@@ -88,13 +107,9 @@ export default function AuthLayout({ children }) {
                                             title={"Management Slider"}
                                         />
                                     )}
-                                    {permissions.includes(
-                                        "view_role_permission"
-                                    ) && (
+                                    {roles == "super admin" && (
                                         <DropdownLinks.Item
-                                            href={route(
-                                                "admin.management-profile-perusahaan"
-                                            )}
+                                            href={route("auth.role-permission")}
                                             icon={<ListAltOutlined />}
                                             title={"Management Role Permission"}
                                         />

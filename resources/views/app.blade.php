@@ -19,7 +19,8 @@
     <link
         rel="stylesheet"
         href="https://unpkg.com/react-quill@1.3.3/dist/quill.snow.css" />
-
+    <script src="sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
     @routes
     @viteReactRefresh
     @vite(['resources/js/app.jsx', "resources/js/Pages/{$page['component']}.jsx"])

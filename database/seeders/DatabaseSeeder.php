@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $permissions = [
+            'only_kantor',
             'view_kantor_cabang',
             'create_kantor_cabang',
             'edit_kantor_cabang',
@@ -47,66 +48,66 @@ class DatabaseSeeder extends Seeder
             'edit_petugas',
             'delete_petugas',
             'confirm_petugas',
-            'only_kantor',
+
+            'view_siswa',
+            'create_siswa',
+            'edit_siswa',
+            'delete_siswa',
+            'confirm_siswa',
+
 
             'view_instruktur',
             'create_instruktur',
             'edit_instruktur',
             'delete_instruktur',
             'confirm_instruktur',
-            'only_kantor',
 
             'view_kategori',
             'create_kategori',
             'edit_kategori',
             'delete_kategori',
             'confirm_kategori',
-            'only_kantor',
             'create_sub_kategori',
             'edit_sub_kategori',
             'delete_sub_kategori',
             'confirm_sub_kategori',
-            'only_kantor',
             'create_jenis',
             'edit_jenis',
             'delete_jenis',
             'confirm_jenis',
-            'only_kantor',
 
             'view_materi',
             'create_materi',
             'edit_materi',
             'delete_materi',
             'confirm_materi',
-            'only_kantor',
+
+            'view_pesanan_kursus',
+
 
             'view_paket',
             'create_paket',
             'edit_paket',
             'delete_paket',
             'confirm_paket',
-            'only_kantor',
 
             'view_pendaftaran_kursus',
             'create_pendaftaran_kursus',
             'edit_pendaftaran_kursus',
             'delete_pendaftaran_kursus',
             'confirm_pendaftaran_kursus',
-            'only_kantor',
 
             'view_pembayaran_kursus',
             'create_pembayaran_kursus',
             'edit_pembayaran_kursus',
             'delete_pembayaran_kursus',
             'confirm_pembayaran_kursus',
-            'only_kantor',
 
             'view_kas',
             'create_kas',
             'edit_kas',
             'delete_kas',
             'confirm_kas',
-            'only_kantor',
 
         ];
 

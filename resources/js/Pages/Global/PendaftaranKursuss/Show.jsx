@@ -3,7 +3,7 @@ import SelectOption from "@/Components/SelectOption";
 import Tables from "@/Components/Tables";
 import useRealtimeJam from "@/Hook/RealtimeJam";
 import AuthLayout from "@/Layouts/AuthLayout";
-import { router, useForm } from "@inertiajs/react";
+import { Link, router, useForm } from "@inertiajs/react";
 import {
     Add,
     CreateNewFolder,
@@ -106,6 +106,7 @@ export default function Show(props) {
                                     </div>
                                 </div>
                             </div>
+
                             {/* show data instruktur dan siswa */}
                             <div>
                                 {siswa && (
@@ -188,6 +189,15 @@ export default function Show(props) {
                             </div>
                         </div>
                     </div>
+                    <Link
+                        href={route(
+                            "admin.all-invoice-pendaftaran-kursus",
+                            kd_transaksi
+                        )}
+                        className="bg-green-500 text-white font-bold py-2 px-4 rounded-md"
+                    >
+                        <Print /> <span>Cetak Semua Invoice </span>
+                    </Link>
                     <div className="my-3 min-h-[100px] max-h-[300px] overflow-y-auto py-4">
                         <h1 className="font-bold text-xl text-blue-500">
                             Rincian Pesanan Paket Kursus

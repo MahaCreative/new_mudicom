@@ -30,7 +30,10 @@ function Tbody({ className, children }) {
 }
 function Td({ className, children, ...props }) {
     return (
-        <td {...props} className={`${className} p-2   font-medium  `}>
+        <td
+            {...props}
+            className={`${className} p-2   font-medium capitalize text-xs  `}
+        >
             {children}
         </td>
     );

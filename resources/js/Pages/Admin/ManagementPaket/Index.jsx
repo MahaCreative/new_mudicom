@@ -8,11 +8,14 @@ import { MenuItem } from "@mui/material";
 import React, { useState } from "react";
 import Form from "./Form";
 import { formatRupiah } from "@/Pages/Function/FormatRupiah";
-import { Link, router } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import { data } from "autoprefixer";
 import moment from "moment";
 
 export default function Index(props) {
+    const { auth } = usePage().props;
+    const roles = auth.roles;
+    const permissions = auth.permissions;
     const paket = props.paket;
     const kantor_cabang = props.kantor_cabang;
     const kategori = props.kategori;
@@ -105,15 +108,17 @@ export default function Index(props) {
                 <div className="bg-white py-2 px-4 rounded-md drop-shadow-md border border-gray-200 my-2">
                     <div className="w-full flex justify-between items-center">
                         <div>
-                            <Link
-                                as="button"
-                                href={route(
-                                    "admin.create-management-paket-kursus"
-                                )}
-                                className="py-2 px-4 rounded-md bg-blue-500 text-white tracking-tighter font-medium"
-                            >
-                                Tambah Paket Kursus
-                            </Link>
+                            {permissions.includes("create_paket") && (
+                                <Link
+                                    as="button"
+                                    href={route(
+                                        "admin.create-management-paket-kursus"
+                                    )}
+                                    className="py-2 px-4 rounded-md bg-blue-500 text-white tracking-tighter font-medium"
+                                >
+                                    Tambah Paket Kursus
+                                </Link>
+                            )}
                         </div>
                         <div className="flex ga-x-3 items-center w-[600px]">
                             <div className="w-full px-1">
@@ -283,10 +288,45 @@ export default function Index(props) {
                                                     {item.nama_kantor}
                                                 </p>
                                             </Tables.Td>
-                                            <Tables.Td>
-                                                <p className="w-[140px] capitalize text-xs text-wrap line-clamp-1">
-                                                    {item.status_konfirmasi}
-                                                </p>
+                                            <Tables.Td
+                                                className={"text-black text-xs"}
+                                            >
+                                                {permissions.includes(
+                                                    "confirm_paket"
+                                                ) ? (
+                                                    <SelectOption
+                                                        value={
+                                                            item.status_konfirmasi
+                                                        }
+                                                        onChange={(e) =>
+                                                            updateStatus(
+                                                                e,
+                                                                item.id
+                                                            )
+                                                        }
+                                                    >
+                                                        <MenuItem
+                                                            className="capitalize"
+                                                            value="menunggu konfirmasi"
+                                                        >
+                                                            menunggu konfirmasi
+                                                        </MenuItem>
+                                                        <MenuItem
+                                                            className="capitalize"
+                                                            value="terima"
+                                                        >
+                                                            terima
+                                                        </MenuItem>
+                                                        <MenuItem
+                                                            className="capitalize"
+                                                            value="tolak"
+                                                        >
+                                                            tolak
+                                                        </MenuItem>
+                                                    </SelectOption>
+                                                ) : (
+                                                    item.status_konfirmasi
+                                                )}
                                             </Tables.Td>
                                             <Tables.Td>
                                                 <p className="w-[50px] capitalize text-xs text-wrap line-clamp-1">
@@ -314,23 +354,33 @@ export default function Index(props) {
                                             <Tables.Td
                                                 className={"flex gap-x-2"}
                                             >
-                                                <Link
-                                                    href={route(
-                                                        "admin.edit-management-paket-kursus",
-                                                        item.slug
-                                                    )}
-                                                    className="py-1 px-2 text-white bg-orange-500 hover:bg-orange-600 usetransisi text-xs rounded-md drop-shadow-md"
-                                                >
-                                                    Edit
-                                                </Link>
-                                                <button
-                                                    onClick={() =>
-                                                        deleteHandler(item.id)
-                                                    }
-                                                    className="py-1 px-2 text-white bg-red-500 hover:bg-red-600 usetransisi text-xs rounded-md drop-shadow-md"
-                                                >
-                                                    Delete
-                                                </button>
+                                                {permissions.includes(
+                                                    "edit_paket"
+                                                ) && (
+                                                    <Link
+                                                        href={route(
+                                                            "admin.edit-management-paket-kursus",
+                                                            item.slug
+                                                        )}
+                                                        className="py-1 px-2 text-white bg-orange-500 hover:bg-orange-600 usetransisi text-xs rounded-md drop-shadow-md"
+                                                    >
+                                                        Edit
+                                                    </Link>
+                                                )}
+                                                {permissions.includes(
+                                                    "delete_paket"
+                                                ) && (
+                                                    <button
+                                                        onClick={() =>
+                                                            deleteHandler(
+                                                                item.id
+                                                            )
+                                                        }
+                                                        className="py-1 px-2 text-white bg-red-500 hover:bg-red-600 usetransisi text-xs rounded-md drop-shadow-md"
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                )}
                                             </Tables.Td>
                                         </tr>
                                     ))

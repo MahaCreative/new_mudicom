@@ -1,12 +1,17 @@
 import InputText from "@/Components/InputText";
+import SelectOption from "@/Components/SelectOption";
 import Tables from "@/Components/Tables";
-import { Link } from "@inertiajs/react";
+import AuthLayout from "@/Layouts/AuthLayout";
+import { Link, usePage } from "@inertiajs/react";
 import { Delete, Edit } from "@mui/icons-material";
-import { Tooltip } from "@mui/material";
+import { MenuItem, Tooltip } from "@mui/material";
 import moment from "moment";
 import React from "react";
 
 export default function Index(props) {
+    const { auth } = usePage().props;
+    const roles = auth.roles;
+    const permissions = auth.permissions;
     const slider = props.slider;
     return (
         <div>
@@ -21,12 +26,14 @@ export default function Index(props) {
                 </p>
                 <div className="bg-white py-2 px-4 rounded-md drop-shadow-md border border-gray-200 my-2">
                     <div className="w-full flex flex-row justify-between items-center">
-                        <Link
-                            href={route("admin.create-management-slider")}
-                            className="py-2 px-4 rounded-md bg-blue-500 text-white tracking-tighter font-medium"
-                        >
-                            Tambah Kantor Cabang
-                        </Link>
+                        {permissions.includes("create_slider") && (
+                            <Link
+                                href={route("admin.create-management-slider")}
+                                className="py-2 px-4 rounded-md bg-blue-500 text-white tracking-tighter font-medium"
+                            >
+                                Tambah Kantor Cabang
+                            </Link>
+                        )}
                         <InputText
                             label={"Cari Slider"}
                             placeHolder="Cari Slider..."
@@ -115,10 +122,43 @@ export default function Index(props) {
                                                     {item.status}
                                                 </p>
                                             </Tables.Td>
-                                            <Tables.Td>
-                                                <p className="w-[100px] capitalize text-xs">
-                                                    {item.status_konfirmasi}
-                                                </p>
+                                            <Tables.Td
+                                                className={"text-black text-xs"}
+                                            >
+                                                {permissions.includes(
+                                                    "confirm_slider"
+                                                ) ? (
+                                                    <SelectOption
+                                                        value={item.status}
+                                                        onChange={(e) =>
+                                                            updateStatus(
+                                                                e,
+                                                                item.id
+                                                            )
+                                                        }
+                                                    >
+                                                        <MenuItem
+                                                            className="capitalize"
+                                                            value="menunggu konfirmasi"
+                                                        >
+                                                            menunggu konfirmasi
+                                                        </MenuItem>
+                                                        <MenuItem
+                                                            className="capitalize"
+                                                            value="terima"
+                                                        >
+                                                            terima
+                                                        </MenuItem>
+                                                        <MenuItem
+                                                            className="capitalize"
+                                                            value="tolak"
+                                                        >
+                                                            tolak
+                                                        </MenuItem>
+                                                    </SelectOption>
+                                                ) : (
+                                                    item.status_konfirmasi
+                                                )}
                                             </Tables.Td>
                                             <Tables.Td>
                                                 <p className="w-[100px] capitalize text-xs">
@@ -144,39 +184,47 @@ export default function Index(props) {
                                             </Tables.Td>
 
                                             <Tables.Td>
-                                                <Tooltip
-                                                    title={`Edit ${item.judul}`}
-                                                >
-                                                    <Link
-                                                        href={route(
-                                                            "admin.edit-management-profile-perusahaan",
-                                                            item.id
-                                                        )}
-                                                        className="py-1 px-2 text-white bg-orange-500 hover:bg-orange-600 usetransisi text-xs rounded-md drop-shadow-md"
+                                                {permissions.includes(
+                                                    "edit_slider"
+                                                ) && (
+                                                    <Tooltip
+                                                        title={`Edit ${item.judul}`}
                                                     >
-                                                        <Edit
-                                                            color="inherit"
-                                                            fontSize="inherit"
-                                                        />
-                                                    </Link>
-                                                </Tooltip>
-                                                <Tooltip
-                                                    title={`Delete ${item.judul}`}
-                                                >
-                                                    <button
-                                                        onClick={() =>
-                                                            deleteHandler(
+                                                        <Link
+                                                            href={route(
+                                                                "admin.edit-management-profile-perusahaan",
                                                                 item.id
-                                                            )
-                                                        }
-                                                        className="py-1 px-2 text-white bg-red-500 hover:bg-red-600 usetransisi text-xs rounded-md drop-shadow-md"
+                                                            )}
+                                                            className="py-1 px-2 text-white bg-orange-500 hover:bg-orange-600 usetransisi text-xs rounded-md drop-shadow-md"
+                                                        >
+                                                            <Edit
+                                                                color="inherit"
+                                                                fontSize="inherit"
+                                                            />
+                                                        </Link>
+                                                    </Tooltip>
+                                                )}
+                                                {permissions.includes(
+                                                    "delete_slider"
+                                                ) && (
+                                                    <Tooltip
+                                                        title={`Delete ${item.judul}`}
                                                     >
-                                                        <Delete
-                                                            color="inherit"
-                                                            fontSize="inherit"
-                                                        />
-                                                    </button>
-                                                </Tooltip>
+                                                        <button
+                                                            onClick={() =>
+                                                                deleteHandler(
+                                                                    item.id
+                                                                )
+                                                            }
+                                                            className="py-1 px-2 text-white bg-red-500 hover:bg-red-600 usetransisi text-xs rounded-md drop-shadow-md"
+                                                        >
+                                                            <Delete
+                                                                color="inherit"
+                                                                fontSize="inherit"
+                                                            />
+                                                        </button>
+                                                    </Tooltip>
+                                                )}
                                             </Tables.Td>
                                         </tr>
                                     ))
@@ -200,3 +248,5 @@ export default function Index(props) {
         </div>
     );
 }
+
+Index.layout = (page) => <AuthLayout children={page} />;

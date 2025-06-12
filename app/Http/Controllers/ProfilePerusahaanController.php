@@ -96,6 +96,7 @@ class ProfilePerusahaanController extends Controller
                     'misi' => $item,
                 ]);
             }
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();

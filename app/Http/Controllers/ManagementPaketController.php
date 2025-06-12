@@ -43,7 +43,12 @@ class ManagementPaketController extends Controller
         $kategori = KategoriKursus::latest()->get();
         $sub = SubKategoriKursus::latest()->get();
         $jenis = JenisKursus::latest()->get();
-        $kantor_cabang = KantorCabang::latest()->get();
+        if ($request->user()->can('only_kantor')) {
+
+            $kantor_cabang = KantorCabang::where('id', $request->user()->petugas->kantor_cabang_id)->latest()->get();
+        } else {
+            $kantor_cabang = KantorCabang::latest()->get();
+        };
         return inertia('Admin/ManagementPaket/Form', compact(
             'kategori',
             'sub',
@@ -161,7 +166,12 @@ class ManagementPaketController extends Controller
         $kategori = KategoriKursus::latest()->get();
         $sub = SubKategoriKursus::latest()->get();
         $jenis = JenisKursus::latest()->get();
-        $kantor_cabang = KantorCabang::latest()->get();
+        if ($request->user()->can('only_kantor')) {
+
+            $kantor_cabang = KantorCabang::where('id', $request->user()->petugas->kantor_cabang_id)->latest()->get();
+        } else {
+            $kantor_cabang = KantorCabang::latest()->get();
+        };
         $paket = PaketKursus::with(
             'detail',
             'reason',

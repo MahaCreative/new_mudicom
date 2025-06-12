@@ -5,12 +5,17 @@ import { ClassTwoTone } from "@mui/icons-material";
 import React, { useState } from "react";
 import FormKategoriKursus from "./FormKategoriKursus";
 import Dialogs from "@/Components/Dialogs";
-import { router } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 import FormSub from "./FormSub";
 import FormJenis from "./FormJenis";
 import moment from "moment";
+import SelectOption from "@/Components/SelectOption";
+import { MenuItem } from "@mui/material";
 
 export default function Index(props) {
+    const { auth } = usePage().props;
+    const roles = auth.roles;
+    const permissions = auth.permissions;
     const kategori = props.kategori;
     const kantor_cabang = props.kantor_cabang;
     const sub = props.sub;
@@ -45,6 +50,9 @@ export default function Index(props) {
     const deleteJenis = (id) => {
         router.delete(route("admin.delete-jenis-kategori-kursus", { id }));
     };
+    const updateStatus = (e, id) => {};
+    const updateStatusSub = (e, id) => {};
+    const updateStatusJenis = (e, id) => {};
     return (
         <>
             <Dialogs
@@ -66,6 +74,7 @@ export default function Index(props) {
                     }}
                 />
             </Dialogs>
+
             <Dialogs
                 open={modalSub}
                 title={
@@ -88,6 +97,7 @@ export default function Index(props) {
                     }}
                 />
             </Dialogs>
+
             <Dialogs
                 kantor_cabang={kantor_cabang}
                 open={modalJenis}
@@ -177,12 +187,14 @@ export default function Index(props) {
                             Komputer, Manajemen, Bahasa Inggris, dan lainnya
                         </p>
                         <div className="py-2 w-full min-h-[300px] max-h-[300px] overflow-x-auto overflow-y-auto">
-                            <button
-                                onClick={() => setModalKategori(true)}
-                                className="py-1 px-2 text-white bg-blue-500 hover:bg-blue-600 usetransisi  rounded-md drop-shadow-md my-2"
-                            >
-                                Tambah Kategori
-                            </button>
+                            {permissions.includes("create_kategori") && (
+                                <button
+                                    onClick={() => setModalKategori(true)}
+                                    className="py-1 px-2 text-white bg-blue-500 hover:bg-blue-600 usetransisi  rounded-md drop-shadow-md my-2"
+                                >
+                                    Tambah Kategori
+                                </button>
+                            )}
                             <Tables>
                                 <thead>
                                     <tr>
@@ -212,6 +224,11 @@ export default function Index(props) {
                                             className={"text-black text-xs"}
                                         >
                                             Kantor
+                                        </Tables.Th>
+                                        <Tables.Th
+                                            className={"text-black text-xs"}
+                                        >
+                                            Status
                                         </Tables.Th>
                                         <Tables.Th
                                             className={"text-black text-xs"}
@@ -287,6 +304,49 @@ export default function Index(props) {
                                                         "text-black text-xs"
                                                     }
                                                 >
+                                                    {permissions.includes(
+                                                        "confirm_kategori"
+                                                    ) ? (
+                                                        <SelectOption
+                                                            value={
+                                                                item.status_konfirmasi
+                                                            }
+                                                            onChange={(e) =>
+                                                                updateStatus(
+                                                                    e,
+                                                                    item.id
+                                                                )
+                                                            }
+                                                        >
+                                                            <MenuItem
+                                                                className="capitalize"
+                                                                value="menunggu konfirmasi"
+                                                            >
+                                                                menunggu
+                                                                konfirmasi
+                                                            </MenuItem>
+                                                            <MenuItem
+                                                                className="capitalize"
+                                                                value="terima"
+                                                            >
+                                                                terima
+                                                            </MenuItem>
+                                                            <MenuItem
+                                                                className="capitalize"
+                                                                value="tolak"
+                                                            >
+                                                                tolak
+                                                            </MenuItem>
+                                                        </SelectOption>
+                                                    ) : (
+                                                        item.status_konfirmasi
+                                                    )}
+                                                </Tables.Td>
+                                                <Tables.Td
+                                                    className={
+                                                        "text-black text-xs"
+                                                    }
+                                                >
                                                     {moment(
                                                         item.updated_at
                                                     ).format("ll")}
@@ -308,24 +368,34 @@ export default function Index(props) {
                                                 <Tables.Td
                                                     className={"flex gap-2"}
                                                 >
-                                                    <button
-                                                        onClick={() =>
-                                                            editKategori(item)
-                                                        }
-                                                        className="py-1 px-2 text-white bg-orange-500 hover:bg-orange-600 usetransisi text-xs rounded-md drop-shadow-md"
-                                                    >
-                                                        Edit
-                                                    </button>
-                                                    <button
-                                                        onClick={() =>
-                                                            deleteKategori(
-                                                                item.id
-                                                            )
-                                                        }
-                                                        className="py-1 px-2 text-white bg-red-500 hover:bg-red-600 usetransisi text-xs rounded-md drop-shadow-md"
-                                                    >
-                                                        Delete
-                                                    </button>
+                                                    {permissions.includes(
+                                                        "edit_kategori"
+                                                    ) && (
+                                                        <button
+                                                            onClick={() =>
+                                                                editKategori(
+                                                                    item
+                                                                )
+                                                            }
+                                                            className="py-1 px-2 text-white bg-orange-500 hover:bg-orange-600 usetransisi text-xs rounded-md drop-shadow-md"
+                                                        >
+                                                            Edit
+                                                        </button>
+                                                    )}
+                                                    {permissions.includes(
+                                                        "delete_kategori"
+                                                    ) && (
+                                                        <button
+                                                            onClick={() =>
+                                                                deleteKategori(
+                                                                    item.id
+                                                                )
+                                                            }
+                                                            className="py-1 px-2 text-white bg-red-500 hover:bg-red-600 usetransisi text-xs rounded-md drop-shadow-md"
+                                                        >
+                                                            Delete
+                                                        </button>
+                                                    )}
                                                 </Tables.Td>
                                             </tr>
                                         ))
@@ -399,6 +469,11 @@ export default function Index(props) {
                                             className={"text-black text-xs"}
                                         >
                                             Kantor
+                                        </Tables.Th>
+                                        <Tables.Th
+                                            className={"text-black text-xs"}
+                                        >
+                                            Status
                                         </Tables.Th>
                                         <Tables.Th
                                             className={"text-black text-xs"}
@@ -481,6 +556,47 @@ export default function Index(props) {
                                                         "text-black text-xs"
                                                     }
                                                 >
+                                                    {permissions.includes(
+                                                        "confirm_sub_kategori"
+                                                    ) ? (
+                                                        <SelectOption
+                                                            value={item.status}
+                                                            onChange={(e) =>
+                                                                updateStatusSub(
+                                                                    e,
+                                                                    item.id
+                                                                )
+                                                            }
+                                                        >
+                                                            <MenuItem
+                                                                className="capitalize"
+                                                                value="menunggu konfirmasi"
+                                                            >
+                                                                menunggu
+                                                                konfirmasi
+                                                            </MenuItem>
+                                                            <MenuItem
+                                                                className="capitalize"
+                                                                value="terima"
+                                                            >
+                                                                terima
+                                                            </MenuItem>
+                                                            <MenuItem
+                                                                className="capitalize"
+                                                                value="tolak"
+                                                            >
+                                                                tolak
+                                                            </MenuItem>
+                                                        </SelectOption>
+                                                    ) : (
+                                                        item.status_konfirmasi
+                                                    )}
+                                                </Tables.Td>
+                                                <Tables.Td
+                                                    className={
+                                                        "text-black text-xs"
+                                                    }
+                                                >
                                                     {moment(
                                                         item.updated_at
                                                     ).format("ll")}
@@ -502,22 +618,32 @@ export default function Index(props) {
                                                 <Tables.Td
                                                     className={"flex gap-2"}
                                                 >
-                                                    <button
-                                                        onClick={() =>
-                                                            editSub(item)
-                                                        }
-                                                        className="py-1 px-2 text-white bg-orange-500 hover:bg-orange-600 usetransisi text-xs rounded-md drop-shadow-md"
-                                                    >
-                                                        Edit
-                                                    </button>
-                                                    <button
-                                                        onClick={() =>
-                                                            deleteSub(item.id)
-                                                        }
-                                                        className="py-1 px-2 text-white bg-red-500 hover:bg-red-600 usetransisi text-xs rounded-md drop-shadow-md"
-                                                    >
-                                                        Delete
-                                                    </button>
+                                                    {permissions.includes(
+                                                        "edit_sub_kategori"
+                                                    ) && (
+                                                        <button
+                                                            onClick={() =>
+                                                                editSub(item)
+                                                            }
+                                                            className="py-1 px-2 text-white bg-orange-500 hover:bg-orange-600 usetransisi text-xs rounded-md drop-shadow-md"
+                                                        >
+                                                            Edit
+                                                        </button>
+                                                    )}
+                                                    {permissions.includes(
+                                                        "delete_sub_kategori"
+                                                    ) && (
+                                                        <button
+                                                            onClick={() =>
+                                                                deleteSub(
+                                                                    item.id
+                                                                )
+                                                            }
+                                                            className="py-1 px-2 text-white bg-red-500 hover:bg-red-600 usetransisi text-xs rounded-md drop-shadow-md"
+                                                        >
+                                                            Delete
+                                                        </button>
+                                                    )}
                                                 </Tables.Td>
                                             </tr>
                                         ))
@@ -581,6 +707,9 @@ export default function Index(props) {
                                         Kantor
                                     </Tables.Th>
                                     <Tables.Th className={"text-black text-xs"}>
+                                        Status
+                                    </Tables.Th>
+                                    <Tables.Th className={"text-black text-xs"}>
                                         Updated_at
                                     </Tables.Th>
                                     <Tables.Th className={"text-black text-xs"}>
@@ -642,6 +771,44 @@ export default function Index(props) {
                                             <Tables.Td
                                                 className={"text-black text-xs"}
                                             >
+                                                {permissions.includes(
+                                                    "confirm_jenisi"
+                                                ) ? (
+                                                    <SelectOption
+                                                        value={item.status}
+                                                        onChange={(e) =>
+                                                            updateStatusJenis(
+                                                                e,
+                                                                item.id
+                                                            )
+                                                        }
+                                                    >
+                                                        <MenuItem
+                                                            className="capitalize"
+                                                            value="menunggu konfirmasi"
+                                                        >
+                                                            menunggu konfirmasi
+                                                        </MenuItem>
+                                                        <MenuItem
+                                                            className="capitalize"
+                                                            value="terima"
+                                                        >
+                                                            terima
+                                                        </MenuItem>
+                                                        <MenuItem
+                                                            className="capitalize"
+                                                            value="tolak"
+                                                        >
+                                                            tolak
+                                                        </MenuItem>
+                                                    </SelectOption>
+                                                ) : (
+                                                    item.status_konfirmasi
+                                                )}
+                                            </Tables.Td>
+                                            <Tables.Td
+                                                className={"text-black text-xs"}
+                                            >
                                                 {moment(item.updated_at).format(
                                                     "ll"
                                                 )}
@@ -657,22 +824,30 @@ export default function Index(props) {
                                                 {item.updated_by}
                                             </Tables.Td>
                                             <Tables.Td className={"flex gap-2"}>
-                                                <button
-                                                    onClick={() =>
-                                                        editJenis(item)
-                                                    }
-                                                    className="py-1 px-2 text-white bg-orange-500 hover:bg-orange-600 usetransisi text-xs rounded-md drop-shadow-md"
-                                                >
-                                                    Edit
-                                                </button>
-                                                <button
-                                                    onClick={() =>
-                                                        deleteJenis(item.id)
-                                                    }
-                                                    className="py-1 px-2 text-white bg-red-500 hover:bg-red-600 usetransisi text-xs rounded-md drop-shadow-md"
-                                                >
-                                                    Delete
-                                                </button>
+                                                {permissions.includes(
+                                                    "edit_jenis"
+                                                ) && (
+                                                    <button
+                                                        onClick={() =>
+                                                            editJenis(item)
+                                                        }
+                                                        className="py-1 px-2 text-white bg-orange-500 hover:bg-orange-600 usetransisi text-xs rounded-md drop-shadow-md"
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                )}
+                                                {permissions.includes(
+                                                    "delete_jenis"
+                                                ) && (
+                                                    <button
+                                                        onClick={() =>
+                                                            deleteJenis(item.id)
+                                                        }
+                                                        className="py-1 px-2 text-white bg-red-500 hover:bg-red-600 usetransisi text-xs rounded-md drop-shadow-md"
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                )}
                                             </Tables.Td>
                                         </tr>
                                     ))

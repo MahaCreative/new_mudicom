@@ -1,10 +1,12 @@
 import InputText from "@/Components/InputText";
 import SelectOption from "@/Components/SelectOption";
+import ResponseAlert from "@/Hook/ResponseAlert";
 import { useForm } from "@inertiajs/react";
 import { MenuItem } from "@mui/material";
 import React, { useEffect } from "react";
 
 export default function FormKategoriKursus({ model, onClose, kantor_cabang }) {
+    const { showResponse, ResponseMethode } = ResponseAlert();
     const { data, setData, post, reset, errors } = useForm({
         nama_kategori: "",
         deskripsi: "",
@@ -13,11 +15,41 @@ export default function FormKategoriKursus({ model, onClose, kantor_cabang }) {
     });
     const submitHandler = (e) => {
         e.preventDefault();
-        post(route("admin.post-management-kursus"));
+        post(route("admin.post-management-kursus"), {
+            onSuccess: () => {
+                showResponse(
+                    "success",
+                    "Berhasil",
+                    "Berhasil menambahkan kategori"
+                );
+            },
+            onError: (err) => {
+                showResponse(
+                    "error",
+                    "Gagal",
+                    "Gagal menambahkan kategori, silahkan periksa kembali isian anda"
+                );
+            },
+        });
     };
     const updateHandler = (e) => {
         e.preventDefault();
-        post(route("admin.update-management-kursus"));
+        post(route("admin.update-management-kursus"), {
+            onSuccess: () => {
+                showResponse(
+                    "success",
+                    "Berhasil",
+                    "Berhasil memperbaharui kategori"
+                );
+            },
+            onError: (err) => {
+                showResponse(
+                    "error",
+                    "Gagal",
+                    "Gagal memperbaharui kategori, silahkan periksa kembali isian anda"
+                );
+            },
+        });
     };
     useEffect(() => {
         setData({

@@ -3,7 +3,7 @@ import InputText from "@/Components/InputText";
 import Tables from "@/Components/Tables";
 import AuthLayout from "@/Layouts/AuthLayout";
 import { formatRupiah } from "@/Pages/Function/FormatRupiah";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import {
     Cancel,
     ClassTwoTone,
@@ -16,6 +16,9 @@ import React, { useState } from "react";
 import FormCreate from "./FormCreate";
 
 export default function Index({ payment }) {
+    const { auth } = usePage().props;
+    const roles = auth.roles;
+    const permissions = auth.permissions;
     const [modal, setModal] = useState(false);
     const [model, setModel] = useState([]);
     return (
@@ -75,12 +78,14 @@ export default function Index({ payment }) {
                 </div>
                 <div className="bg-white py-2 px-4 rounded-md drop-shadow-md border border-gray-200 my-2">
                     <div className="w-full flex flex-row justify-between items-center">
-                        <button
-                            onClick={() => setModal(true)}
-                            className="py-2 px-4 rounded-md bg-blue-500 text-white tracking-tighter font-medium"
-                        >
-                            Buat Pembayaran Baru
-                        </button>
+                        {permissions.includes("create_pembayaran_kursus") && (
+                            <button
+                                onClick={() => setModal(true)}
+                                className="py-2 px-4 rounded-md bg-blue-500 text-white tracking-tighter font-medium"
+                            >
+                                Buat Pembayaran Baru
+                            </button>
+                        )}
                         <InputText
                             label={"Cari Pembayaran"}
                             placeHolder="Cari Pembayaran..."
@@ -174,22 +179,13 @@ export default function Index({ payment }) {
                                                 className={"flex gap-x-2"}
                                             >
                                                 <Link
-                                                    // href={route(
-                                                    //     "admin.show-pendaftaran-kursus",
-                                                    //     item.kd_transaksi
-                                                    // )}
+                                                    href={route(
+                                                        "admin.one-invoice-pendaftaran-kursus",
+                                                        item.order_id
+                                                    )}
                                                     className="py-1 px-2 text-white bg-blue-500 hover:bg-blue-600 usetransisi text-xs rounded-md drop-shadow-md"
                                                 >
                                                     Cetak Invoice
-                                                </Link>
-                                                <Link
-                                                    // href={route(
-                                                    //     "admin.edit-pendaftaran-kursus",
-                                                    //     item.kd_transaksi
-                                                    // )}
-                                                    className="py-1 px-2 text-white bg-orange-500 hover:bg-orange-600 usetransisi text-xs rounded-md drop-shadow-md"
-                                                >
-                                                    Edit
                                                 </Link>
                                             </Tables.Td>
                                         </tr>

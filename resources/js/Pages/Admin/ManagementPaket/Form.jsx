@@ -2,6 +2,7 @@ import InputText from "@/Components/InputText";
 import Quils from "@/Components/Quils";
 import SelectOption from "@/Components/SelectOption";
 import Tables from "@/Components/Tables";
+import ResponseAlert from "@/Hook/ResponseAlert";
 import AuthLayout from "@/Layouts/AuthLayout";
 
 import { router, useForm, usePage } from "@inertiajs/react";
@@ -25,6 +26,7 @@ export default function Form({
 
     kantor_cabang,
 }) {
+    const { showResponse } = ResponseAlert();
     const [showReason, setShowReason] = useState(false);
     const [previewReason, setPreviewReason] = useState([""]);
 
@@ -116,9 +118,19 @@ export default function Form({
         post(route("admin.update-management-paket-kursus"), {
             onSuccess: () => {
                 // reset();
+                showResponse(
+                    "success",
+                    "Berhasil",
+                    "Berhasil memperbaharui paket kursus"
+                );
             },
             onError: (err) => {
                 console.log(err);
+                showResponse(
+                    "error",
+                    "Gagal",
+                    "Gagal memperbaharui paket kursus, sihkan periksa kembali isian anda"
+                );
             },
         });
     };
@@ -127,10 +139,48 @@ export default function Form({
         if (data.materi.length == 0 || paket?.detail.length === 0) return;
         post(route("admin.store-management-paket-kursus"), {
             onSuccess: () => {
-                reset();
+                reset(
+                    "nama_paket",
+                    "kategori_kursus",
+                    "sub_kategori_kursus",
+                    "jenis_kursus",
+                    "deskripsi",
+                    "thumbnail",
+                    "harga",
+                    "harga_promo",
+                    "status",
+                    "judul_alasan",
+                    "materi_input",
+                    "pertemuan_input",
+                    "kantor_cabang_id",
+                    "materi",
+                    "pertemuan",
+                    "reason",
+                    "reason_id",
+                    "icon",
+                    "reason",
+                    "trouble",
+                    "reason_id",
+                    "deskripsi_trouble",
+                    "image_solusi",
+                    "deskripsi_solusi",
+                    "image_criteria",
+                    "deskripsi_criteria",
+                    "image_funfact",
+                    "deskripsi_funfact"
+                );
+                showResponse(
+                    "success",
+                    "Berhasil",
+                    "Brehasil menambahkan 1 paket kursus baru kedalam database"
+                );
             },
             onError: (err) => {
-                console.log(err);
+                showResponse(
+                    "error",
+                    "Gagal",
+                    "Gagal menambahkan paket, silahkan periksa kembali isian anda"
+                );
             },
         });
     };

@@ -23,7 +23,12 @@ class KategoriKursusController extends Controller
             ->select('kantor_cabangs.nama as nama_kantor', 'jenis_kursuses.*')
             ->with('benefit')->latest()->get();
 
-        $kantor_cabang = KantorCabang::latest()->get();
+        if ($request->user()->can('only_kantor')) {
+
+            $kantor_cabang = KantorCabang::where('id', $request->user()->petugas->kantor_cabang_id)->latest()->get();
+        } else {
+            $kantor_cabang = KantorCabang::latest()->get();
+        };
         return inertia('Admin/ManagementKursus/Index', compact('kategori', 'sub', 'jenis', 'kantor_cabang'));
     }
 

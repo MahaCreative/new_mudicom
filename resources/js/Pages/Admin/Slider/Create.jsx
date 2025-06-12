@@ -30,6 +30,7 @@ export default function Create(props) {
                 <div className="py-2 px-3 bg-blue-800 text-white">
                     <h1>Slider</h1>
                 </div>
+
                 <div className="w-full px-4 py-6">
                     <div className="py-2">
                         <InputText

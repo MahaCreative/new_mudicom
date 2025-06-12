@@ -5,17 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 function DropdownLinks({ icon, title, active, children, ...props }) {
     const [open, setOpen] = useState(false);
     const ref = useRef(null);
-    useEffect(() => {
-        const handler = (e) => {
-            if (ref.current && !ref.current.contains(e.target)) {
-                setOpen(false);
-            }
-        };
-        document.addEventListener("mousedown", handler);
-        return () => {
-            document.removeEventListener("mousedown", handler);
-        };
-    }, []);
+
     return (
         <button
             ref={ref}
