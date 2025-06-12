@@ -30,8 +30,8 @@ class SliderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'judul' => 'required|min:40|max:100',
-            'tag_line' => 'required|string|min:40|max:255',
+            'judul' => 'required|min:20|max:100',
+            'tag_line' => 'required|string|min:20|max:255',
             'thumbnail' => 'required|image|mimes:jpeg,jpg,png,webp',
             'status' => 'required',
             'kantor_cabang_id' => 'required',

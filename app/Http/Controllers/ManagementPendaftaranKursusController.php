@@ -81,7 +81,7 @@ class ManagementPendaftaranKursusController extends Controller
             'paket.*.kd_paket' => 'required|string|exists:paket_kursuses,kd_paket',
             'paket.*.nama_paket' => 'required|string',
             'paket.*.harga' => 'required|numeric|min:50000',
-            'paket.*.diskont' => 'required|numeric|min:0',
+            'paket.*.diskont' => 'required|numeric|min:0|max:100',
             'paket.*.kd_instruktur' => 'required',
             'paket.*.nama_instruktur' => 'required|string',
         ]);
