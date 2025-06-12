@@ -20,7 +20,7 @@ class DashboardController extends Controller
         $petugas = Petugas::count();
         $pendaftaran = PesananKursus::whereMonth('created_at', now()->format('m'))->count();
         $kas = Kas::where('kantor_cabang_id', 1)->latest()->first();
-        dd($kas);
+
         $total_kas = $kas ? $kas->saldo : 0;
         $pemasukan = Kas::where('kantor_cabang_id', 1)->whereMonth('created_at', now()->format('m'))->sum('debit');
         $pengeluaran = Kas::where('kantor_cabang_id', 1)->whereMonth('created_at', now()->format('m'))->sum('kredit');
