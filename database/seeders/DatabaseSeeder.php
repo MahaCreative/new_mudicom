@@ -172,22 +172,22 @@ class DatabaseSeeder extends Seeder
             'jabatan' => 'super admin',
         ]);
 
-        KategoriKursus::create([
-            'nama_kategori' => 'Mobil',
-            'deskripsi' => fake()->paragraph(2),
-            'thumbnail' => fake()->imageUrl(),
-            'kantor_cabang_id' => 1
-        ]);
-        KategoriKursus::create([
-            'nama_kategori' => 'Komputer',
-            'deskripsi' => fake()->paragraph(2),
-            'thumbnail' => fake()->imageUrl(),
-            'kantor_cabang_id' => 1
-        ]);
-        $this->call([
-            JenisKursusSeeder::class,
-        ]);
-        SubKategoriKursus::factory(10)->create();
-        MateriAjar::factory(15)->create();
+        // KategoriKursus::create([
+        //     'nama_kategori' => 'Mobil',
+        //     'deskripsi' => fake()->paragraph(2),
+        //     'thumbnail' => fake()->imageUrl(),
+        //     'kantor_cabang_id' => 1
+        // ]);
+        // KategoriKursus::create([
+        //     'nama_kategori' => 'Komputer',
+        //     'deskripsi' => fake()->paragraph(2),
+        //     'thumbnail' => fake()->imageUrl(),
+        //     'kantor_cabang_id' => 1
+        // ]);
+        // $this->call([
+        //     JenisKursusSeeder::class,
+        // ]);
+        // SubKategoriKursus::factory(10)->create();
+        // MateriAjar::factory(15)->create();
     }
 }
