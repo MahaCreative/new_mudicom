@@ -1,4 +1,5 @@
 // src/pages/ForgotPassword.jsx
+import InputText from "@/Components/InputText";
 import { Link, usePage } from "@inertiajs/react";
 import { InsertEmoticon } from "@mui/icons-material";
 import { useState } from "react";
@@ -6,6 +7,7 @@ import { useState } from "react";
 export default function ForgotPassword() {
     const { profile } = usePage().props;
     const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
     const [sent, setSent] = useState(false);
 
     const handleSubmit = (e) => {
@@ -33,7 +35,7 @@ export default function ForgotPassword() {
                     Forgot Password
                 </h1>
                 <p className="text-center text-blue-800/70 mt-1 mb-6">
-                    Enter your email to reset your password
+                    Enter your email and phone to reset your password
                 </p>
 
                 {sent ? (
@@ -59,14 +61,22 @@ export default function ForgotPassword() {
                             >
                                 Email Address
                             </label>
-                            <input
-                                id="email"
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                            <InputText
                                 required
-                                className="mt-1 w-full rounded-lg border-slate-300 focus:ring-blue-700 focus:border-blue-700"
-                                placeholder="you@example.com"
+                                placeholder="example@gmail.com"
+                            />
+                        </div>
+                        <div>
+                            <label
+                                htmlFor="email"
+                                className="block text-sm font-medium"
+                            >
+                                Phone Number (WhatsApp Only)
+                            </label>
+                            <InputText
+                                required
+                                type="number"
+                                placeholder="+62"
                             />
                         </div>
 

@@ -23,6 +23,8 @@ export default function FormSub({ model, kategori, onClose, kantor_cabang }) {
                     "Berhasil",
                     "Berhasil menambahkan data sub kategori"
                 );
+                onClose();
+                reset();
             },
             onError: (err) => {
                 showResponse(
@@ -30,6 +32,7 @@ export default function FormSub({ model, kategori, onClose, kantor_cabang }) {
                     "Gagal",
                     "Gagal menambahkan data kategori, silahkan periksa kembali isian anda"
                 );
+                onClose();
             },
         });
     };
@@ -42,6 +45,7 @@ export default function FormSub({ model, kategori, onClose, kantor_cabang }) {
                     "Berhasil",
                     "Berhasil memperbaharui data sub kategori"
                 );
+                onClose();
             },
             onError: (err) => {
                 showResponse(
@@ -49,6 +53,7 @@ export default function FormSub({ model, kategori, onClose, kantor_cabang }) {
                     "Gagal",
                     "Gagal memperbaharui data kategori, silahkan periksa kembali isian anda"
                 );
+                onClose();
             },
         });
     };

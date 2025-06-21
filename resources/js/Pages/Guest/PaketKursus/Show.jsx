@@ -28,17 +28,24 @@ export default function Show(props) {
                             {paket.nama_paket}
                         </h1>
                         <h1 className="font-bold text-white text-7xl">
-                            {formatRupiah(paket.harga)}
+                            {formatRupiah(paket.harga - paket.harga_promo)}
                         </h1>
                         <p
                             className="font-light font-nunito text-white tracking-tight mt-6 line-clamp-5"
                             dangerouslySetInnerHTML={{
-                                __html: profile.deskripsi,
+                                __html: paket.deskripsi,
                             }}
                         />
-                        <button className="my-16 text-white font-bold text-xl leading-3 border py-5 px-3 border-white rounded-md hover:bg-white hover:text-primary hover:border-primary">
+                        <Link
+                            href={route(
+                                "siswa.create-pesanan-kursus",
+                                paket.kd_paket
+                            )}
+                            as="button"
+                            className="my-16 text-white font-bold text-xl leading-3 border py-5 px-3 border-white rounded-md hover:bg-white hover:text-primary hover:border-primary"
+                        >
                             Daftar Sekarang
-                        </button>
+                        </Link>
                     </div>
                     <img
                         src={"/storage/" + profile.thumbnail}
@@ -218,20 +225,28 @@ export default function Show(props) {
                                     {formatRupiah(
                                         paket.harga_promo == 0
                                             ? paket.harga
-                                            : paket.harga_promo
+                                            : paket.harga - paket.harga_promo
                                     )}
                                 </p>
                                 <p className="capitalize text-2xl font-extrabold text-center text-white">
-                                    Spesial Promo Hemat 75%
+                                    Spesial Promo Hemat{" "}
+                                    {(paket.harga_promo / paket.harga) * 100}%
                                 </p>
                                 <p className="text-center px-4 text-white font-light my-5">
                                     daftarkan diri anda segera untuk mendapatkan
                                     mentor terbaik anda
                                 </p>
                                 <div className="w-full flex flex-col justify-center items-center">
-                                    <button className="my-9 text-white font-bold text-xl leading-3 border py-5 px-3 border-white rounded-md hover:bg-white hover:text-primary hover:border-primary">
+                                    <Link
+                                        href={route(
+                                            "siswa.create-pesanan-kursus",
+                                            paket.kd_paket
+                                        )}
+                                        as="button"
+                                        className="my-9 text-white font-bold text-xl leading-3 border py-5 px-3 border-white rounded-md hover:bg-white hover:text-primary hover:border-primary"
+                                    >
                                         Daftar Sekarang
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>

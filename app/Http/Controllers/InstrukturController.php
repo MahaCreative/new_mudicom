@@ -198,11 +198,13 @@ class InstrukturController extends Controller
                 $request->validate([
                     "email" => 'required|email|unique:users,email,' . $instruktur->user_id,
                     "password" => 'nullable|string|confirmed|min:8|max:50',
+                    'phone' => $request->telp,
                 ]);
             }
 
             $user->update([
                 'email' => $request->email,
+                'phone' => $request->telp,
                 'password' => $request->password ? bcrypt($request->password) : $user->password
             ]);
         } else {
@@ -211,14 +213,15 @@ class InstrukturController extends Controller
                     "email" => 'required|email|unique:users,email',
                     "password" => 'required|string|confirmed|min:8|max:50',
                 ]);
+                $user = User::create([
+                    'name' => $request->nama_lengkap,
+                    'email' => $request->email,
+                    'phone' => $request->telp,
+                    'password' => bcrypt($request->password),
+                ]);
+                $user->assignRole('Instruktur');
+                $userId = $user->id;
             }
-            $user = User::create([
-                'name' => $request->nama_lengkap,
-                'email' => $request->email,
-                'password' => bcrypt($request->password),
-            ]);
-            $user->assignRole('Instruktur');
-            $userId = $user->id;
         }
         $instruktur->update([
             'user_id' => $userId,
@@ -268,5 +271,21 @@ class InstrukturController extends Controller
                 }
             }
         }
+    }
+
+    public function delete(Request $request, $id)
+    {
+
+        $instruktur = Instruktur::find($id);
+        $instruktur->delete();
+    }
+
+    public function confirm(Request $request)
+    {
+        $instruktur = Instruktur::find($request->id);
+        $instruktur->update([
+            'status_konfirmasi' => $request->value,
+            'updated_by' => $request->user()->name
+        ]);
     }
 }

@@ -1,5 +1,6 @@
 import InputText from "@/Components/InputText";
 import SelectOption from "@/Components/SelectOption";
+import ResponseAlert from "@/Hook/ResponseAlert";
 import AuthLayout from "@/Layouts/AuthLayout";
 import { useForm } from "@inertiajs/react";
 import {
@@ -15,6 +16,7 @@ import React, { useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 export default function Update(props) {
+    const { showResponse } = ResponseAlert();
     const kantor = props.kantor;
     const { data, setData, post, reset, errors } = useForm({
         nama: "",
@@ -145,7 +147,23 @@ export default function Update(props) {
     ];
     const submitHandler = (e) => {
         e.preventDefault();
-        post(route("admin.update-management-profile-perusahaan"));
+        post(route("admin.update-management-profile-perusahaan"), {
+            onSuccess: () => {
+                showResponse(
+                    "success",
+                    "Berhasil",
+                    "Berhasil memperbaharui data kantor"
+                );
+            },
+            onError: (err) => {
+                showResponse(
+                    "error",
+                    "Gagal",
+                    "Gagal memperbaharui kantor, silahkan periksa isian anda kembali Err Code: " +
+                        err
+                );
+            },
+        });
     };
     useEffect(() => {
         const sosmed = [];

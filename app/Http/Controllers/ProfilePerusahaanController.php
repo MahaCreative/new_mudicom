@@ -221,4 +221,9 @@ class ProfilePerusahaanController extends Controller
             dd($e);
         }
     }
+
+    public function delete(Request $request, $id)
+    {
+        $profile = KantorCabang::find($id)->delete();
+    }
 }

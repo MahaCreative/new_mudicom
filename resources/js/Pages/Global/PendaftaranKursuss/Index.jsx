@@ -3,13 +3,17 @@ import SelectOption from "@/Components/SelectOption";
 import Tables from "@/Components/Tables";
 import AuthLayout from "@/Layouts/AuthLayout";
 import { formatRupiah } from "@/Pages/Function/FormatRupiah";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import { ClassTwoTone, Done, LockClock } from "@mui/icons-material";
+import { MenuItem } from "@mui/material";
 import moment from "moment";
 import React from "react";
 
 export default function Index(props) {
     const pesanan = props.pesanan;
+    const { auth } = usePage().props;
+    const roles = auth.roles;
+    const permissions = auth.permissions;
 
     return (
         <>
@@ -104,6 +108,15 @@ export default function Index(props) {
                                 <Tables.Th className={"text-xs"}>
                                     Status Pembayaran
                                 </Tables.Th>
+                                <Tables.Th className={"text-xs"}>
+                                    Status Pesanan
+                                </Tables.Th>
+                                <Tables.Th className={"text-xs"}>
+                                    Status Konfirmasi
+                                </Tables.Th>
+                                <Tables.Th className={"text-xs"}>
+                                    Tipe
+                                </Tables.Th>
 
                                 <Tables.Th className={"text-xs"}>
                                     Proses By
@@ -149,6 +162,90 @@ export default function Index(props) {
                                             <Tables.Td className="text-xs">
                                                 {item.status_pembayaran}
                                             </Tables.Td>
+                                            <Tables.Td
+                                                className={"text-black text-xs"}
+                                            >
+                                                {item.status_pesanan !==
+                                                "cancell" ? (
+                                                    <SelectOption
+                                                        value={
+                                                            item.status_pesanan
+                                                        }
+                                                        onChange={(e) =>
+                                                            updateStatus(
+                                                                e,
+                                                                item.id
+                                                            )
+                                                        }
+                                                    >
+                                                        <MenuItem
+                                                            className="capitalize"
+                                                            value="proses"
+                                                        >
+                                                            proses
+                                                        </MenuItem>
+                                                        <MenuItem
+                                                            className="capitalize"
+                                                            value="selesai"
+                                                        >
+                                                            selesai
+                                                        </MenuItem>
+                                                        <MenuItem
+                                                            className="capitalize"
+                                                            value="cancell"
+                                                        >
+                                                            cancell
+                                                        </MenuItem>
+                                                    </SelectOption>
+                                                ) : (
+                                                    item.status_pesanan
+                                                )}
+                                            </Tables.Td>
+                                            <Tables.Td
+                                                className={"text-black text-xs"}
+                                            >
+                                                {permissions.includes(
+                                                    "confirm_instruktur"
+                                                ) &&
+                                                item.status_konfirmasi !==
+                                                    "terima" ? (
+                                                    <SelectOption
+                                                        value={
+                                                            item.status_konfirmasi
+                                                        }
+                                                        onChange={(e) =>
+                                                            updateStatus(
+                                                                e,
+                                                                item.id
+                                                            )
+                                                        }
+                                                    >
+                                                        <MenuItem
+                                                            className="capitalize"
+                                                            value="menunggu konfirmasi"
+                                                        >
+                                                            menunggu konfirmasi
+                                                        </MenuItem>
+                                                        <MenuItem
+                                                            className="capitalize"
+                                                            value="terima"
+                                                        >
+                                                            terima
+                                                        </MenuItem>
+                                                        <MenuItem
+                                                            className="capitalize"
+                                                            value="tolak"
+                                                        >
+                                                            tolak
+                                                        </MenuItem>
+                                                    </SelectOption>
+                                                ) : (
+                                                    item.status_konfirmasi
+                                                )}
+                                            </Tables.Td>
+                                            <Tables.Td className="text-xs capitalize">
+                                                {item.type_pesanan}
+                                            </Tables.Td>
 
                                             <Tables.Td className="text-xs">
                                                 {item.petugas.name}
@@ -175,14 +272,19 @@ export default function Index(props) {
                                                 >
                                                     Edit
                                                 </Link>
-                                                <button
-                                                    onClick={() =>
-                                                        deleteHandler(item.id)
-                                                    }
-                                                    className="py-1 px-2 text-white bg-red-500 hover:bg-red-600 usetransisi text-xs rounded-md drop-shadow-md"
-                                                >
-                                                    Delete
-                                                </button>
+                                                {item.status_pembayaran !==
+                                                    "lunas" && (
+                                                    <button
+                                                        onClick={() =>
+                                                            deleteHandler(
+                                                                item.id
+                                                            )
+                                                        }
+                                                        className="py-1 px-2 text-white bg-red-500 hover:bg-red-600 usetransisi text-xs rounded-md drop-shadow-md"
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                )}
                                             </Tables.Td>
                                         </tr>
                                     ))

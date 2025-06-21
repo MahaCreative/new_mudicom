@@ -21,7 +21,7 @@ class RolePermissionController extends Controller
     {
 
         $request->validate([
-            'name' => 'required|alpha_dash|min:6|max:50',
+            'name' => 'required|alpha_dash|min:3|max:50|unique:roles,name',
             'permissions' => 'array|min:1',
             'permissions.*' => 'required|string'
         ]);
@@ -31,9 +31,18 @@ class RolePermissionController extends Controller
 
     public function update(Request $request, $id)
     {
-
+        $request->validate([
+            'name' => 'required|alpha_dash|min:3|max:50|unique:roles,name',
+            'permissions' => 'array|min:1',
+            'permissions.*' => 'required|string'
+        ]);
         $role = Role::find($id);
         $role->update(['name' => $request->name]);
         $role->syncPermissions($request->permissions);
+    }
+
+    public function delete(Request $request, $id)
+    {
+        Role::find($id)->delete();
     }
 }

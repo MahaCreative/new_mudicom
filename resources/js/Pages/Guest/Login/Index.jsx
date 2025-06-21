@@ -1,4 +1,4 @@
-import { Link, useForm, usePage } from "@inertiajs/react";
+import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import React from "react";
 
 export default function Index() {
@@ -17,6 +17,7 @@ export default function Index() {
     };
     return (
         <div>
+            <Head title="Login" />
             <div className="min-h-screen flex flex-col justify-center items-center bg-slate-50 px-4">
                 {/* logo */}
                 <div className="flex items-center mb-8">
@@ -110,12 +111,13 @@ export default function Index() {
                     {/* sign‑up link */}
                     <p className="mt-6 text-center text-sm">
                         Don’t have an account?{" "}
-                        <button
-                            type="button"
+                        <Link
+                            href={route("register")}
+                            as="button"
                             className="font-semibold text-blue-700 hover:underline"
                         >
                             Sign Up
-                        </button>
+                        </Link>
                     </p>
                 </div>
             </div>

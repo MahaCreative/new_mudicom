@@ -12,16 +12,24 @@ class KategoriKursusController extends Controller
 {
     public function index(Request $request)
     {
-        $kategori = KategoriKursus::join('kantor_cabangs', 'kantor_cabangs.id', 'kategori_kursuses.kantor_cabang_id')
-            ->select('kantor_cabangs.nama as nama_kantor', 'kategori_kursuses.*')
-            ->latest()->get();
-        $sub = SubKategoriKursus::join('kantor_cabangs', 'kantor_cabangs.id', 'sub_kategori_kursuses.kantor_cabang_id')
+        $kategoriQuery = KategoriKursus::join('kantor_cabangs', 'kantor_cabangs.id', 'kategori_kursuses.kantor_cabang_id')
+            ->select('kantor_cabangs.nama as nama_kantor', 'kategori_kursuses.*');
+
+        $subQuery = SubKategoriKursus::join('kantor_cabangs', 'kantor_cabangs.id', 'sub_kategori_kursuses.kantor_cabang_id')
             ->join('kategori_kursuses', 'kategori_kursuses.id', 'sub_kategori_kursuses.kategori_kursus_id')
-            ->select('kantor_cabangs.nama as nama_kantor', 'sub_kategori_kursuses.*', 'kategori_kursuses.nama_kategori as nama_kategori')
-            ->latest()->get();
-        $jenis = JenisKursus::leftJoin('kantor_cabangs', 'kantor_cabangs.id', 'jenis_kursuses.kantor_cabang_id')
+            ->select('kantor_cabangs.nama as nama_kantor', 'sub_kategori_kursuses.*', 'kategori_kursuses.nama_kategori as nama_kategori');
+
+        $jenisQuery = JenisKursus::leftJoin('kantor_cabangs', 'kantor_cabangs.id', 'jenis_kursuses.kantor_cabang_id')
             ->select('kantor_cabangs.nama as nama_kantor', 'jenis_kursuses.*')
-            ->with('benefit')->latest()->get();
+            ->with('benefit');
+        if ($request->user()->can('only_kantor')) {
+            $kategoriQuery->where('kantor_cabangs.id', $request->user()->petugas->kantor_cabang_id);
+            $subQuery->where('kantor_cabangs.id', $request->user()->petugas->kantor_cabang_id);
+            $jenisQuery->where('kantor_cabangs.id', $request->user()->petugas->kantor_cabang_id);
+        }
+        $kategori =  $kategoriQuery->latest()->get();
+        $sub = $subQuery->latest()->get();
+        $jenis = $jenisQuery->latest()->get();
 
         if ($request->user()->can('only_kantor')) {
 
@@ -67,5 +75,10 @@ class KategoriKursusController extends Controller
     public function delete(Request $request)
     {
         KategoriKursus::find($request->id)->delete();
+    }
+
+    public function confirm(Request $request)
+    {
+        KategoriKursus::find($request->id)->update(['status_konfirmasi' => $request->value, 'updated_by' => $request->user()->name]);
     }
 }

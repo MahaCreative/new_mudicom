@@ -250,7 +250,7 @@ export default function Show(props) {
                                             {siswa.nama_lengkap}
                                         </Tables.Td>
                                         <Tables.Td>
-                                            {item.instruktur.nama_lengkap}
+                                            {item.instruktur?.nama_lengkap}
                                         </Tables.Td>
                                         <Tables.Td>
                                             {item.paket.total_pertemuan +

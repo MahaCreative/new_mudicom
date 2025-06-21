@@ -25,6 +25,8 @@ export default function FormJenis({ model, onClose, kantor_cabang }) {
                     "Berhasil",
                     "Berhasil menambahkan data jenis kursus"
                 );
+                onClose();
+                reset();
             },
             onError: (err) => {
                 showResponse(
@@ -32,6 +34,7 @@ export default function FormJenis({ model, onClose, kantor_cabang }) {
                     "Gagal",
                     "Gagal menambahkan jenis kursus, silahkan periksa kembali isian anda"
                 );
+                onClose();
             },
         });
     };
@@ -44,6 +47,7 @@ export default function FormJenis({ model, onClose, kantor_cabang }) {
                     "Berhasil",
                     "Berhasil memperbaharui data jenis kursus"
                 );
+                onClose();
             },
             onError: (err) => {
                 showResponse(
@@ -51,13 +55,14 @@ export default function FormJenis({ model, onClose, kantor_cabang }) {
                     "Gagal",
                     "Gagal memperbaharui jenis kursus, silahkan periksa kembali isian anda"
                 );
+                onClose();
             },
         });
     };
     useEffect(() => {
         setData({
             ...data,
-
+            benefits: [],
             id: model ? model.id : "",
             jenis_kursus: model ? model.jenis_kursus : "",
             deskripsi: model ? model.deskripsi : "",
@@ -96,6 +101,7 @@ export default function FormJenis({ model, onClose, kantor_cabang }) {
             );
         }
     };
+    console.log(data.benefit);
 
     return (
         <form
@@ -131,6 +137,7 @@ export default function FormJenis({ model, onClose, kantor_cabang }) {
                     </div>
                     <div className="p-2">
                         <InputText
+                            required
                             name={"jenis_kursus"}
                             value={data.jenis_kursus}
                             errors={errors.jenis_kursus}
@@ -146,6 +153,7 @@ export default function FormJenis({ model, onClose, kantor_cabang }) {
                     </div>
                     <div className="p-2">
                         <InputText
+                            required
                             name={"deskripsi"}
                             value={data.deskripsi}
                             errors={errors.deskripsi}
@@ -185,6 +193,9 @@ export default function FormJenis({ model, onClose, kantor_cabang }) {
                     <div className="p-2 flex gap-x-3 items-center">
                         <div className="w-full">
                             <InputText
+                                required={
+                                    data.benefits.length > 0 ? false : true
+                                }
                                 name={"benefit"}
                                 value={data.benefit}
                                 errors={errors.benefit}
@@ -223,7 +234,7 @@ export default function FormJenis({ model, onClose, kantor_cabang }) {
                             <div className="space-y-6 relative ml-2">
                                 <div className="absolute left-3 top-2 bottom-2 w-1 bg-white rounded"></div>
                                 {model &&
-                                    model?.benefit.length > 0 &&
+                                    model?.benefit &&
                                     model?.benefit.map((item, index) => (
                                         <div
                                             key={index}

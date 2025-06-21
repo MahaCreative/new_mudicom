@@ -101,7 +101,7 @@ class ManagementPendaftaranKursusController extends Controller
 
             $status_lunas = $request->bayar >= $request->total_netto ? 'lunas' : 'belum_lunas';
             $sisa_bayar = max(0, $request->total_netto - $request->bayar);
-
+            $ppn = (int) round($request->total_netto * 0.11);
             $pesanan = PesananKursus::create([
                 'kd_transaksi' => $kd_transaksi,
                 'siswa_id' => $siswa->id,
@@ -111,10 +111,12 @@ class ManagementPendaftaranKursusController extends Controller
                 'total_materi' => $request->total_materi,
                 'total_discount' => $request->total_discount ?? 0,
                 'total_harga' => $request->total_harga,
-                'total_netto' => $request->total_netto,
+                'total_netto' =>  $request->total_netto + $ppn,
+                'ppn' =>  $ppn, // KASI MUNCUL NANTI INI KARNA DIPAKE
                 'jumlah_bayar' => $request->bayar >= $request->total_netto ? $request->total_netto : $request->bayar,
                 'sisa_bayar' => $sisa_bayar,
                 'status_pembayaran' => $status_lunas,
+                'status_konfirmasi' => 'terima',
                 'tanggal_pesan' => now(),
                 'tanggal_pembayaran_terakhir' => now(),
             ]);
@@ -146,6 +148,7 @@ class ManagementPendaftaranKursusController extends Controller
                 'installment_number' => 1,
                 'kantor_cabang_id' => $request->kantor_cabang_id,
                 'created_by' => $request->user()->name,
+                'status_konfirmasi' => 'terima',
             ]);
             $kas = Kas::create([
                 'tanggal' => now(),
@@ -153,13 +156,14 @@ class ManagementPendaftaranKursusController extends Controller
                 'jenis_transaksi' => 'pemasukan',
                 'sumber' => 'pembayaran kursus',
                 'keterangan' => 'pendaftaran kursus ' . $pesanan->kd_transaksi,
-                'debit' => $request->bayar,      // uang masuk
+                'debit' => $request->bayar >= $pesanan->total_netto ? $pesanan->total_netto : $request->bayar,      // uang masuk
                 'kredit' => 0,                   // tidak ada uang keluar
-                'saldo' => $this->getSaldoTerbaru() + $request->bayar,
+                'saldo' => $this->getSaldoTerbaru() + $request->bayar >= $pesanan->total_netto ? $pesanan->total_netto : $request->bayar,
                 'petugas_id' => auth()->id() ?? 1,
                 'model_id' => $pembayaran->id,
                 'model_type' => Payment::class,
                 'created_by' => $request->user()->name,
+                'status_konfirmasi' => 'terima',
             ]);
             $this->sendMessage($siswa->telp, $pesanan->kd_transaksi, $pesanan->created_at, $pesanan->total_harga);
             DB::commit();

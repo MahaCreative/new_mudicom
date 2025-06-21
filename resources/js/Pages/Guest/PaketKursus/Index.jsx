@@ -99,7 +99,9 @@ export default function Index(props) {
                                         <p
                                             className={`inline my-3 group-hover:bg-white group-hover:text-primary bg-primary  text-white    font-extrabold text-2xl md:text-sm py-3 px-4 transition-all duration-500 ease-in-out`}
                                         >
-                                            {formatRupiah(item.harga)}
+                                            {formatRupiah(
+                                                item.harga - item.harga_promo
+                                            )}
                                         </p>
                                         <span className="text-xs md:text-sm group-hover:text-white">
                                             {item.total_materi +

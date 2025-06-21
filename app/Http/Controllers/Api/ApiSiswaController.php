@@ -10,7 +10,7 @@ class ApiSiswaController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Siswa::query();
+        $query = Siswa::query()->where('status_konfirmasi', '=', 'terima');
         if ($request->search) {
             $query->where('kd_siswa', 'like', '%' . $request->search . '%')
                 ->orWhere('nama_lengkap', 'like', '%' . $request->search . '%')

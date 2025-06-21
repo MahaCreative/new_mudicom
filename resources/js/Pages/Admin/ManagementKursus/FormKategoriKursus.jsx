@@ -15,6 +15,7 @@ export default function FormKategoriKursus({ model, onClose, kantor_cabang }) {
     });
     const submitHandler = (e) => {
         e.preventDefault();
+
         post(route("admin.post-management-kursus"), {
             onSuccess: () => {
                 showResponse(
@@ -22,6 +23,8 @@ export default function FormKategoriKursus({ model, onClose, kantor_cabang }) {
                     "Berhasil",
                     "Berhasil menambahkan kategori"
                 );
+                onClose();
+                reset();
             },
             onError: (err) => {
                 showResponse(
@@ -29,6 +32,7 @@ export default function FormKategoriKursus({ model, onClose, kantor_cabang }) {
                     "Gagal",
                     "Gagal menambahkan kategori, silahkan periksa kembali isian anda"
                 );
+                onClose();
             },
         });
     };
@@ -36,6 +40,7 @@ export default function FormKategoriKursus({ model, onClose, kantor_cabang }) {
         e.preventDefault();
         post(route("admin.update-management-kursus"), {
             onSuccess: () => {
+                onClose();
                 showResponse(
                     "success",
                     "Berhasil",

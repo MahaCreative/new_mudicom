@@ -47,4 +47,9 @@ class SubKategoriController extends Controller
     {
         SubKategoriKursus::find($request->id)->delete();
     }
+
+    public function confirm(Request $request)
+    {
+        SubKategoriKursus::find($request->id)->update(['status_konfirmasi' => $request->value, 'updated_by' => $request->user()->name]);
+    }
 }

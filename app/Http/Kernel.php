@@ -73,5 +73,7 @@ class Kernel extends HttpKernel
         'role' => RoleMiddleware::class,
         'permission' => PermissionMiddleware::class,
         'role_or_permission' => RoleOrPermissionMiddleware::class,
+        'verified.otp' => \App\Http\Middleware\RedirectIsNotVerified::class,
+        'cek.profil.siswa' => \App\Http\Middleware\CekProfilSiswa::class,
     ];
 }

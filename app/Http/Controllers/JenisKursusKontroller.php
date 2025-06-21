@@ -10,12 +10,12 @@ class JenisKursusKontroller extends Controller
 {
     public function store(Request $request)
     {
-        // dd($request->all());
+
         $request->validate([
             'jenis_kursus' => 'required|string|min:3|max:25|unique:jenis_kursuses,jenis_kursus',
-            'deskripsi' => 'required|string|min:25|max:255',
+            'deskripsi' => 'required|string|min:3|max:255',
             'thumbnail' => 'required|image|mimes:jpeg,jpeg,jpg,png,webp,gif',
-            'benefits.*.benefit' => 'required|string|min:25|max:100',
+            'benefits.*.benefit' => 'required|string|min:3|max:100',
             'kantor_cabang_id' => 'required',
         ]);
         $thumbnail = $request->file('thumbnail')->store('jenis_kursus');
@@ -26,6 +26,7 @@ class JenisKursusKontroller extends Controller
             'deskripsi' => $request->deskripsi,
             'thumbnail' => $thumbnail,
         ]);
+
         foreach ($request->benefits as $item) {
 
             $benefit = BenefitJenisKursus::create([
@@ -41,9 +42,9 @@ class JenisKursusKontroller extends Controller
         $jenis = JenisKursus::find($request->id);
         $request->validate([
             'jenis_kursus' => 'required|string|min:3|max:25|unique:jenis_kursuses,jenis_kursus,' . $jenis->id,
-            'deskripsi' => 'required|string|min:25|max:255',
+            'deskripsi' => 'required|string|min:3|max:255',
             'kantor_cabang_id' => 'required',
-            'benefits.*.benefit' => 'required|string|min:25|max:100'
+            'benefits.*.benefit' => 'required|string|min:3|max:100'
         ]);
         $thumbnail = $jenis->thumbnail;
         if ($request->file('thumbnail')) {
@@ -76,5 +77,9 @@ class JenisKursusKontroller extends Controller
     public function delete_benefit(Request $request)
     {
         BenefitJenisKursus::find($request->id)->delete();
+    }
+    public function confirm(Request $request)
+    {
+        JenisKursus::find($request->id)->update(['status_konfirmasi' => $request->value, 'updated_by' => $request->user()->name]);
     }
 }

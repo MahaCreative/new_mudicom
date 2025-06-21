@@ -32,7 +32,7 @@ export default function Index({ payment }) {
             </Dialogs>
             <div className="py-6 px-8 w-full">
                 <h1 className="text-blue-950 font-semibold text-3xl tracking-tight">
-                    Management Pendaftaran Kursus
+                    Management Pembayaran Kursus
                 </h1>
                 <p>
                     Lorem, ipsum dolor sit amet consectetur adipisicing elit.
@@ -112,6 +112,7 @@ export default function Index({ payment }) {
                                 <Tables.Th className={"text-xs"}>
                                     Pembayaran
                                 </Tables.Th>
+
                                 <Tables.Th className={"text-xs"}>
                                     Status
                                 </Tables.Th>
@@ -159,6 +160,7 @@ export default function Index({ payment }) {
                                             <Tables.Td className="text-xs capitalize">
                                                 {item.installment_number}
                                             </Tables.Td>
+
                                             <Tables.Td className="text-xs capitalize">
                                                 {item.status}
                                             </Tables.Td>

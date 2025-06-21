@@ -19,7 +19,9 @@ export default function ComponentPembayaran() {
     );
     const inputRef = useRef(null);
     const handleBayarChange = (e) => {
-        const totalNetto = parseInt(formData.total_netto); // Mengambil total netto dan mengonversinya menjadi integer
+        const totalNetto = parseInt(
+            formData.total_netto + (formData.total_netto * 11) / 100
+        ); // Mengambil total netto dan mengonversinya menjadi integer
         let value = e.target.value.replace(/[^0-9]/g, "");
         const bayar = parseInt(value); // Mengambil nilai bayar dan mengonversinya menjadi integer
         // Pastikan nilai bayar valid
@@ -59,7 +61,7 @@ export default function ComponentPembayaran() {
                 );
             }
         } catch (err) {
-            console.log(err);
+            console.log(err.response);
 
             alert("Error + ", err);
         }
@@ -151,7 +153,10 @@ export default function ComponentPembayaran() {
                         <p className="font-bold text-3xl w-[250px]">Total :</p>
                         <div className="h-[70px] text-right flex flex-col items-center justify-center text-5xl font-extrabold w-full bg-yellow-400">
                             <p className="w-full">
-                                {formatRupiah(formData.total_netto)}
+                                {formatRupiah(
+                                    formData.total_netto +
+                                        (formData.total_netto * 11) / 100
+                                )}
                             </p>
                         </div>
                     </div>

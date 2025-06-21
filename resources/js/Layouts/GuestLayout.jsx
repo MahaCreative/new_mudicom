@@ -12,8 +12,7 @@ import React from "react";
 import Slider from "react-slick";
 
 export default function GuestLayout({ children }) {
-    const { sub_kategori, count, profile } = usePage().props;
-    console.log(profile);
+    const { sub_kategori, count, auth, profile } = usePage().props;
 
     return (
         <div>
@@ -97,7 +96,36 @@ export default function GuestLayout({ children }) {
                                 Berita
                             </Link>
                         </li>
-                        <li>
+                        {auth.user ? (
+                            <>
+                                <li>
+                                    {auth.roles[0] == "siswa" ? (
+                                        <Link
+                                            href={route("siswa.dashboard")}
+                                            as="button"
+                                            className="bg-orange-500  px-4  rounded-md text-xs md:text-base lg:text-lg text-white py-1.5 md:py-3 border-orange-500 font-medium  transition-all duration-300 ease-in-out  h-full "
+                                        >
+                                            Profile
+                                        </Link>
+                                    ) : (
+                                        <Link
+                                            href={route("dashboard")}
+                                            as="button"
+                                            className="bg-orange-500  px-4  rounded-md text-xs md:text-base lg:text-lg text-white py-1.5 md:py-3 border-orange-500 font-medium  transition-all duration-300 ease-in-out  h-full "
+                                        >
+                                            Dasboard
+                                        </Link>
+                                    )}
+                                    <Link
+                                        href={route("logout")}
+                                        as="button"
+                                        className="mx-2 bg-red-500  px-4  rounded-md text-xs md:text-base lg:text-lg text-white py-1.5 md:py-3 border-orange-500 font-medium  transition-all duration-300 ease-in-out  h-full "
+                                    >
+                                        Logout
+                                    </Link>
+                                </li>
+                            </>
+                        ) : (
                             <Link
                                 href={route("login")}
                                 as="button"
@@ -105,7 +133,7 @@ export default function GuestLayout({ children }) {
                             >
                                 Login
                             </Link>
-                        </li>
+                        )}
                     </ul>
                 </nav>
                 {children}

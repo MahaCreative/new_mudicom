@@ -108,14 +108,21 @@ export default function Index(props) {
     };
 
     const deleteKategori = async (id) => {
-        if (confirm("Apakah Anda yakin ingin menghapus role ini?")) {
-            try {
-                await axios.delete(`/roles/${id}`);
-                window.location.reload(); // refresh page
-            } catch (error) {
-                console.error("Gagal hapus role", error);
+        ResponseMethode(
+            "warning",
+            "Warning",
+            "Yakin ingin menghapus role ini",
+            () => {
+                router.delete(route("auth.delete-role-permission", id), {
+                    onSuccess: () =>
+                        showResponse(
+                            "success",
+                            "Berhasil",
+                            "Berhasil menghapus 1 data dalam databsae"
+                        ),
+                });
             }
-        }
+        );
     };
 
     return (
@@ -226,8 +233,8 @@ export default function Index(props) {
                                                             <button
                                                                 type="button"
                                                                 onClick={() =>
-                                                                    editKategori(
-                                                                        item
+                                                                    deleteKategori(
+                                                                        item.id
                                                                     )
                                                                 }
                                                                 className="py-1 px-2 text-white bg-red-500 hover:bg-red-600 usetransisi text-xs rounded-md drop-shadow-md"

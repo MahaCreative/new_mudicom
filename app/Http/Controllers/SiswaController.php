@@ -13,7 +13,7 @@ class SiswaController extends Controller
     public function index(Request $request)
     {
         $query = Siswa::query()
-            ->join('kantor_cabangs', 'kantor_cabangs.id', 'siswas.kantor_cabang_id')
+            ->leftJoin('kantor_cabangs', 'kantor_cabangs.id', 'siswas.kantor_cabang_id')
             ->select('kantor_cabangs.nama as nama_kantor', 'siswas.*')
             ->with('user');
         $siswa = $query->latest()->get();
@@ -90,6 +90,7 @@ class SiswaController extends Controller
                 'kabupaten' => $request->kabupaten,
                 'kantor_cabang_id' => $request->kantor_cabang_id,
                 'foto' => $foto,
+                'status_konfirmasi' => 'diterima',
                 'status' => $request->status,
                 'pekerjaan' => $request->pekerjaan,
                 'nama_ayah' => $request->nama_ayah,

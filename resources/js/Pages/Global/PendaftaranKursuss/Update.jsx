@@ -3,7 +3,7 @@ import SelectOption from "@/Components/SelectOption";
 import Tables from "@/Components/Tables";
 import useRealtimeJam from "@/Hook/RealtimeJam";
 import AuthLayout from "@/Layouts/AuthLayout";
-import { router, useForm } from "@inertiajs/react";
+import { Link, router, useForm } from "@inertiajs/react";
 import {
     Add,
     CreateNewFolder,
@@ -336,8 +336,12 @@ export default function Update(props) {
             (item, index) =>
                 (paket[index] = {
                     id: item.id,
-                    nama_instruktur: item.instruktur.nama_lengkap,
-                    kd_instruktur: item.instruktur.kd_instruktur,
+                    nama_instruktur: item.instruktur
+                        ? item.instruktur.nama_lengkap
+                        : "",
+                    kd_instruktur: item.instruktur
+                        ? item.instruktur.kd_instruktur
+                        : "",
                     kd_paket: item.paket.kd_paket,
                     nama_paket: item.paket.nama_paket,
                     jumlah_pertemuan: item.paket.total_pertemuan,
@@ -362,6 +366,7 @@ export default function Update(props) {
             telp_siswa: siswa.telp,
             paket: paket,
             kantor_cabang_id: pendaftaran.kantor_cabang_id,
+            status_konfirmasi: pendaftaran.status_konfirmasi,
             total_pertemuan: pendaftaran.total_pertemuan,
             total_harga: pendaftaran.total_harga,
             total_materi: pendaftaran.total_materi,
@@ -380,7 +385,7 @@ export default function Update(props) {
             })
         );
     };
-    console.log();
+    console.log(data);
 
     return (
         <div>
@@ -388,7 +393,13 @@ export default function Update(props) {
             <ComponentInstruktur kategori={kategori} />
             <ComponentPaket kategori={kategori} paket_ref={kd_paket_ref} />
             <ComponentSiswa />
-            <div className="py-2 px-8 w-full">
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    simpanHandler();
+                }}
+                className="py-2 px-8 w-full"
+            >
                 {/* <h1 className="text-blue-950 font-semibold text-3xl tracking-tight">
                     Formulir Pendaftaran
                 </h1>
@@ -467,6 +478,7 @@ export default function Update(props) {
                                         <div className="flex gap-x-2">
                                             <Tooltip title="Cari Siswa">
                                                 <button
+                                                    type="button"
                                                     disabled={
                                                         dataResponse == null
                                                             ? false
@@ -596,12 +608,13 @@ export default function Update(props) {
                                 <div className="flex gap-x-3 items-center my-3">
                                     <InputLabel
                                         id="kantor_cabang_id"
-                                        className="w-[190px] text-right"
+                                        className="w-[290px] text-right"
                                     >
                                         Kantor Cabang :
                                     </InputLabel>
                                     <div className="w-full">
                                         <SelectOption
+                                            required
                                             className={"w-[80%]"}
                                             label="Kantor"
                                             name="kantor_cabang_id"
@@ -629,6 +642,43 @@ export default function Update(props) {
                                                         item.status}
                                                 </MenuItem>
                                             ))}
+                                        </SelectOption>
+                                    </div>
+                                </div>
+                                <div className="flex gap-x-3 items-center my-3">
+                                    <InputLabel
+                                        id="status_konfirmasi"
+                                        className="w-[290px] text-right"
+                                    >
+                                        Status Konfirmasi :
+                                    </InputLabel>
+                                    <div className="w-full">
+                                        <SelectOption
+                                            className={"w-[80%]"}
+                                            label="Status Konfirmasi"
+                                            name="status_konfirmasi"
+                                            value={data.status_konfirmasi}
+                                            errors={errors.status_konfirmasi}
+                                            onChange={(e) =>
+                                                setData((prev) => ({
+                                                    ...prev,
+                                                    [e.target.name]:
+                                                        e.target.value,
+                                                }))
+                                            }
+                                        >
+                                            <MenuItem value="">
+                                                Pilih Status Konfirmasi
+                                            </MenuItem>
+                                            <MenuItem value="menunggu konfirmasi">
+                                                menunggu konfirmasi
+                                            </MenuItem>
+                                            <MenuItem value="terima">
+                                                terima
+                                            </MenuItem>
+                                            <MenuItem value="tolak">
+                                                tolak
+                                            </MenuItem>
                                         </SelectOption>
                                     </div>
                                 </div>
@@ -687,6 +737,13 @@ export default function Update(props) {
                                         <Tables.Td>
                                             <div className="w-[70px]">
                                                 <InputText
+                                                    required
+                                                    disabled={
+                                                        pendaftaran.type_pesanan ==
+                                                        "online"
+                                                            ? true
+                                                            : false
+                                                    }
                                                     inputRef={(el) =>
                                                         (kd_paket_ref.current[
                                                             index
@@ -722,6 +779,7 @@ export default function Update(props) {
                                         </Tables.Td>
                                         <Tables.Td className={"text-center"}>
                                             <InputText
+                                                required
                                                 disabled={
                                                     dataResponse == null
                                                         ? false
@@ -762,6 +820,14 @@ export default function Update(props) {
                                         <Tables.Td>
                                             <div className="w-[130px]">
                                                 <InputText
+                                                    required
+                                                    disabled={
+                                                        dataResponse == null &&
+                                                        pendaftaran.type_pesanan !==
+                                                            "online"
+                                                            ? false
+                                                            : true
+                                                    }
                                                     size="small"
                                                     value={item.harga}
                                                     onChange={(e) =>
@@ -776,6 +842,14 @@ export default function Update(props) {
                                         <Tables.Td>
                                             <div className="w-[50px]">
                                                 <InputText
+                                                    required
+                                                    disabled={
+                                                        dataResponse == null &&
+                                                        pendaftaran.type_pesanan !==
+                                                            "online"
+                                                            ? false
+                                                            : true
+                                                    }
                                                     inputProps={{
                                                         min: 0,
                                                         max: 100,
@@ -797,43 +871,60 @@ export default function Update(props) {
                                         </Tables.Td>
                                         <Tables.Td>
                                             {index == 0 && (
-                                                <button
-                                                    onClick={() =>
-                                                        addData(index)
-                                                    }
-                                                    className="py-1 px-2 rounded-md leading-3 bg-green-500 text-white text-xs"
-                                                >
-                                                    <Add
-                                                        color="inherit"
-                                                        fontSize="inherit"
-                                                    />
-                                                </button>
+                                                <>
+                                                    {pendaftaran.type_pesanan !==
+                                                        "online" && (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() =>
+                                                                addData(index)
+                                                            }
+                                                            className="py-1 px-2 rounded-md leading-3 bg-green-500 text-white text-xs"
+                                                        >
+                                                            <Add
+                                                                color="inherit"
+                                                                fontSize="inherit"
+                                                            />
+                                                        </button>
+                                                    )}
+                                                </>
                                             )}
 
                                             {item.id == null ? (
-                                                <button
-                                                    onClick={() =>
-                                                        removeData(index)
-                                                    }
-                                                    className="py-1 px-2 rounded-md leading-3 bg-orange-500 text-white text-xs"
-                                                >
-                                                    <Delete
-                                                        color="inherit"
-                                                        fontSize="inherit"
-                                                    />
-                                                </button>
+                                                <>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() =>
+                                                            removeData(index)
+                                                        }
+                                                        className="py-1 px-2 rounded-md leading-3 bg-orange-500 text-white text-xs"
+                                                    >
+                                                        <Delete
+                                                            color="inherit"
+                                                            fontSize="inherit"
+                                                        />
+                                                    </button>
+                                                </>
                                             ) : (
-                                                <button
-                                                    onClick={() =>
-                                                        deleteData(index)
-                                                    }
-                                                    className="py-1 px-2 rounded-md leading-3 bg-red-500 text-white text-xs"
-                                                >
-                                                    <Delete
-                                                        color="inherit"
-                                                        fontSize="inherit"
-                                                    />
-                                                </button>
+                                                <>
+                                                    {pendaftaran.type_pesanan !==
+                                                        "online" && (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() =>
+                                                                deleteData(
+                                                                    index
+                                                                )
+                                                            }
+                                                            className="py-1 px-2 rounded-md leading-3 bg-red-500 text-white text-xs"
+                                                        >
+                                                            <Delete
+                                                                color="inherit"
+                                                                fontSize="inherit"
+                                                            />
+                                                        </button>
+                                                    )}
+                                                </>
                                             )}
                                         </Tables.Td>
                                         {/* Tambah field lain sesuai kebutuhan */}
@@ -845,13 +936,16 @@ export default function Update(props) {
                     <div className="flex justify-between">
                         <div className="flex gap-x-3 flex-col justify-end">
                             <div className="flex flex-row gap-x-3 items-center">
-                                <button className="bg-blue-500 py-2 px-3 rounded-md text-white flex items-center gap-x-3 leading-3">
+                                <Link
+                                    href={route("")}
+                                    className="bg-blue-500 py-2 px-3 rounded-md text-white flex items-center gap-x-3 leading-3"
+                                >
                                     <Add />
                                     <p>Tambah</p>
-                                </button>
+                                </Link>
 
                                 <button
-                                    onClick={simpanHandler}
+                                    type="submit"
                                     className="bg-green-500 py-2 px-3 rounded-md text-white flex items-center gap-x-3 leading-3 disabled:bg-gray-500"
                                 >
                                     <Save />
@@ -918,18 +1012,35 @@ export default function Update(props) {
                                     id="tanggal"
                                     className="w-[140px] text-right"
                                 >
+                                    PPN 11% :
+                                </InputLabel>
+                                <InputText
+                                    className="text-right"
+                                    value={data.total_netto * (11 / 100)}
+                                    disabled
+                                />
+                            </div>
+
+                            <div className="flex gap-x-3 items-center">
+                                <InputLabel
+                                    id="tanggal"
+                                    className="w-[140px] text-right"
+                                >
                                     Total Netto :
                                 </InputLabel>
                                 <InputText
                                     className="text-right"
                                     disabled
-                                    value={formatRupiah(data.total_netto)}
+                                    value={formatRupiah(
+                                        data.total_netto +
+                                            data.total_netto * (11 / 100)
+                                    )}
                                 />
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     );
 }

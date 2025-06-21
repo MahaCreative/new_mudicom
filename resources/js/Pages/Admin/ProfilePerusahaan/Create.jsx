@@ -1,5 +1,6 @@
 import InputText from "@/Components/InputText";
 import SelectOption from "@/Components/SelectOption";
+import ResponseAlert from "@/Hook/ResponseAlert";
 import AuthLayout from "@/Layouts/AuthLayout";
 import { useForm } from "@inertiajs/react";
 import {
@@ -15,6 +16,7 @@ import React, { useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 export default function Create() {
+    const { showResponse } = ResponseAlert();
     const { data, setData, post, reset, errors } = useForm({
         nama: "",
         kode: "",
@@ -135,7 +137,26 @@ export default function Create() {
     ];
     const submitHandler = (e) => {
         e.preventDefault();
-        post(route("admin.store-management-profile-perusahaan"));
+        post(route("admin.store-management-profile-perusahaan"), {
+            onSuccess: () => {
+                showResponse(
+                    "success",
+                    "Berhasil",
+                    "Berhasil menambahkan 1 data baru kedalam database"
+                );
+                reset();
+                setPreviewLogo(null);
+                setPreviewThumbnail(null);
+            },
+            onError: (err) => {
+                showResponse(
+                    "error",
+                    "Gagal",
+                    "Gagal menambahkan data kantor baru, silahkan periksa isian anda kembali Err Code: " +
+                        err
+                );
+            },
+        });
     };
     return (
         <form onSubmit={submitHandler} className="py-6 px-8">

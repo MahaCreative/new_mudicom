@@ -46,4 +46,9 @@ class SliderController extends Controller
             'created_by' => $request->user()->name
         ]);
     }
+
+    public function delete(Request $request, $id)
+    {
+        Slider::find($id)->delete();
+    }
 }

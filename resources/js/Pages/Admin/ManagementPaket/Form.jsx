@@ -116,6 +116,12 @@ export default function Form({
         e.preventDefault();
         if (data.materi.length == 0 || paket?.detail.length === 0) return;
         post(route("admin.update-management-paket-kursus"), {
+            onStart: () => {
+                setShowTrouble(false);
+                setShowSolusi(false);
+                setShowCriteria(false);
+                setShowFunfact(false);
+            },
             onSuccess: () => {
                 // reset();
                 showResponse(
@@ -137,7 +143,15 @@ export default function Form({
     const submitHandler = (e) => {
         e.preventDefault();
         if (data.materi.length == 0 || paket?.detail.length === 0) return;
+
         post(route("admin.store-management-paket-kursus"), {
+            onStart: () => {
+                setShowReason(false);
+                setShowTrouble(false);
+                setShowSolusi(false);
+                setShowCriteria(false);
+                setShowFunfact(false);
+            },
             onSuccess: () => {
                 reset(
                     "nama_paket",
@@ -176,6 +190,8 @@ export default function Form({
                 );
             },
             onError: (err) => {
+                console.log(err);
+
                 showResponse(
                     "error",
                     "Gagal",
@@ -200,7 +216,7 @@ export default function Form({
                     kategori: data.kategori_kursus,
                 })
             );
-            console.log(response.data);
+
             if (response.data.length > 0) {
                 setSub(response.data);
             } else {
@@ -382,7 +398,7 @@ export default function Form({
             }));
         }
     }, []);
-    console.log(data);
+    console.log(paket);
 
     return (
         <form
@@ -395,6 +411,7 @@ export default function Form({
                         <div className="flex gap-x-3 items-center w-full ">
                             <div className="w-full">
                                 <SelectOption
+                                    required={paket ? false : true}
                                     label={"Kategori"}
                                     name="kategori_kursus"
                                     value={data.kategori_kursus}
@@ -422,6 +439,7 @@ export default function Form({
                             {data.kategori_kursus && (
                                 <div className="w-full">
                                     <SelectOption
+                                        required={paket ? false : true}
                                         label={"Sub Kategori"}
                                         name="sub_kategori_kursus"
                                         value={data.sub_kategori_kursus}
@@ -453,6 +471,7 @@ export default function Form({
                             )}
                             <div className="w-full">
                                 <SelectOption
+                                    required={paket ? false : true}
                                     label={"Jenis Paket"}
                                     name="jenis_kursus"
                                     value={data.jenis_kursus}
@@ -480,6 +499,7 @@ export default function Form({
                         </div>
                         <div className="w-full my-3">
                             <SelectOption
+                                required={paket ? false : true}
                                 label="Kantor"
                                 name="kantor_cabang_id"
                                 value={data.kantor_cabang_id}
@@ -508,6 +528,7 @@ export default function Form({
                         <div className="flex gap-x-3 items-center w-full py-3">
                             <div className="w-full">
                                 <InputText
+                                    required={paket ? false : true}
                                     label={"Nama Paket"}
                                     name="nama_paket"
                                     value={data.nama_paket}
@@ -522,6 +543,7 @@ export default function Form({
                             </div>
                             <div className="w-full">
                                 <InputText
+                                    required={paket ? false : true}
                                     label={"Harga Paket"}
                                     name="harga"
                                     // value={formatRupiah(data.harga)}
@@ -538,7 +560,8 @@ export default function Form({
                         </div>
                         <div className="w-full">
                             <InputText
-                                label={"Harga Promo"}
+                                required={paket ? false : true}
+                                label={"Potongan"}
                                 name="harga_promo"
                                 // value={formatRupiah(data.harga_promo)}
                                 value={data.harga_promo}
@@ -554,6 +577,7 @@ export default function Form({
                         <div className="flex gap-x-3 items-center w-full py-3">
                             <div className="w-full">
                                 <InputText
+                                    required={paket ? false : true}
                                     disabled
                                     label={"Total Materi"}
                                     name="total_materi"
@@ -568,6 +592,7 @@ export default function Form({
                             </div>
                             <div className="w-full">
                                 <InputText
+                                    required={paket ? false : true}
                                     disabled
                                     label={"Total Pertemuan"}
                                     name="total_pertemuan"
@@ -583,6 +608,7 @@ export default function Form({
                         </div>
                         <div className="w-full">
                             <InputText
+                                required={paket ? false : true}
                                 label={"Deskripsi Paket"}
                                 name="deskripsi"
                                 value={data.deskripsi}
@@ -598,6 +624,7 @@ export default function Form({
                         <div className="flex gap-x-3 items-center">
                             <div className="pt-4 w-full">
                                 <SelectOption
+                                    required={paket ? false : true}
                                     label={"Status Paket"}
                                     name="status"
                                     value={data.status}
@@ -688,6 +715,11 @@ export default function Form({
                                     <Tables.Td>0</Tables.Td>
                                     <Tables.Td>
                                         <SelectOption
+                                            required={
+                                                data.materi.length == 0
+                                                    ? true
+                                                    : false
+                                            }
                                             label={"Pilih Materi"}
                                             name="materi_input"
                                             value={data.materi_input}
@@ -725,6 +757,11 @@ export default function Form({
                                     </Tables.Td>
                                     <Tables.Td>
                                         <InputText
+                                            required={
+                                                data.materi.length == 0
+                                                    ? true
+                                                    : false
+                                            }
                                             type="number"
                                             label={"Jumlah Pertemuan"}
                                             name="pertemuan_input"
@@ -876,9 +913,9 @@ export default function Form({
                                 className="leading-3"
                             >
                                 {showReason ? (
-                                    <Close />
-                                ) : (
                                     <OpenInFull size="small" />
+                                ) : (
+                                    <Close />
                                 )}
                             </button>
                         </div>
@@ -891,6 +928,7 @@ export default function Form({
                         >
                             <div className="w-full px-4 pt-6 py-2">
                                 <InputText
+                                    required={paket ? false : true}
                                     label="Judul Alasan"
                                     type="text"
                                     value={data.judul_alasan}
@@ -909,6 +947,7 @@ export default function Form({
                                     className="flex flex-row gap-x-3 items-center py-2 px-4"
                                 >
                                     <InputText
+                                        required={paket ? false : true}
                                         label="Icon"
                                         type="file"
                                         onChange={(e) =>
@@ -917,6 +956,7 @@ export default function Form({
                                         errors={errors[`reason.${key}.icon`]}
                                     />
                                     <InputText
+                                        required={paket ? false : true}
                                         label="Deskripsi"
                                         value={item.reason}
                                         onChange={(e) => changeReason(e, key)}
@@ -983,7 +1023,9 @@ export default function Form({
                         <div className="w-full bg-white rounded-md drop-shadow  overflow-hidden my-3">
                             <div
                                 className={`py-2 px-3 ${
-                                    hasTroubleError ? "" : "bg-blue-800"
+                                    hasTroubleError
+                                        ? "bg-red-500"
+                                        : "bg-blue-800"
                                 } text-white flex justify-between items-center`}
                             >
                                 <div className="flex gap-x-3 items-center">
@@ -1009,6 +1051,7 @@ export default function Form({
                                     >
                                         <div className="w-full">
                                             <InputText
+                                                required={paket ? false : true}
                                                 label="Deskripsi"
                                                 value={item.deskripsi_trouble}
                                                 onChange={(e) =>
@@ -1106,15 +1149,15 @@ export default function Form({
                                     className="leading-3"
                                 >
                                     {showSoulusi ? (
-                                        <Close />
-                                    ) : (
                                         <OpenInFull size="small" />
+                                    ) : (
+                                        <Close />
                                     )}
                                 </button>
                             </div>
                             <div
                                 className={`${
-                                    showSoulusi == false ||
+                                    showSoulusi == true ||
                                     errors.deskripsi_solusi
                                         ? ""
                                         : "hidden"
@@ -1123,6 +1166,7 @@ export default function Form({
                                 <div className="px-4 py-6">
                                     <div className="w-full my-2">
                                         <InputText
+                                            required={paket ? false : true}
                                             label="image"
                                             type="file"
                                             onChange={(e) =>
@@ -1193,6 +1237,7 @@ export default function Form({
                         <div className="w-full bg-white rounded-md drop-shadow  overflow-hidden my-3">
                             <div
                                 className={`py-2 px-3 ${
+                                    showCriteria == true ||
                                     errors.deskripsi_criteria ||
                                     errors.image_criteria
                                         ? "bg-red-500"
@@ -1218,7 +1263,7 @@ export default function Form({
                             </div>
                             <div
                                 className={`${
-                                    showCriteria == false ||
+                                    showCriteria == true ||
                                     errors.deskripsi_criteria ||
                                     errors.image_criteria
                                         ? ""
@@ -1228,6 +1273,7 @@ export default function Form({
                                 <div className="px-4 py-6">
                                     <div className="w-full my-2">
                                         <InputText
+                                            required={paket ? false : true}
                                             label="image"
                                             type="file"
                                             onChange={(e) =>
@@ -1317,9 +1363,9 @@ export default function Form({
                             </div>
                             <div
                                 className={`${
-                                    showFunfact == false ||
+                                    showFunfact == true ||
                                     errors.deskripsi_funfact ||
-                                    errors.image_funfdeskripsi_funfact
+                                    errors.image_funfact
                                         ? ""
                                         : "hidden"
                                 }`}

@@ -1,6 +1,7 @@
 import InputText from "@/Components/InputText";
 import SelectOption from "@/Components/SelectOption";
 import Tables from "@/Components/Tables";
+import ResponseAlert from "@/Hook/ResponseAlert";
 import AuthLayout from "@/Layouts/AuthLayout";
 import { Link, router, usePage } from "@inertiajs/react";
 import { ClassTwoTone, Delete, Edit } from "@mui/icons-material";
@@ -9,12 +10,46 @@ import moment from "moment";
 import React from "react";
 
 export default function Index(props) {
+    const { showResponse, ResponseMethode } = ResponseAlert();
     const { auth } = usePage().props;
     const roles = auth.roles;
     const permissions = auth.permissions;
     const petugas = props.petugas;
     const editHandler = (item) => {
         router.get(route("admin.edit-management-petugas", item.kd_petugas));
+    };
+    const deleteHandler = (id) => {
+        ResponseMethode(
+            "warning",
+            "Yakin ingin Hapus?",
+            "Menghapus data ini akan mempengaruhi data yang terkait di dalamnya.",
+            () => {
+                router.delete(route("admin.delete-management-petugas", id), {
+                    onSuccess: () => {
+                        showResponse(
+                            "success",
+                            "Berhasil",
+                            "Berhasil menghapus 1 data didalam database"
+                        );
+                    },
+                });
+            }
+        );
+    };
+    const updateStatus = (e, kd_petugas) => {
+        router.post(
+            route("admin.confirm-management-petugas"),
+            { kd_petugas: kd_petugas, value: e.target.value },
+            {
+                onSuccess: () => {
+                    showResponse(
+                        "success",
+                        "Berhasil",
+                        "Berhasil memperbaharui status konfirmasi petugas"
+                    );
+                },
+            }
+        );
     };
     return (
         <div className="py-6 px-8">
@@ -108,45 +143,51 @@ export default function Index(props) {
                                                 "flex flex-row items-center gap-x-1"
                                             }
                                         >
-                                            {permissions.includes(
-                                                "edit_petugas"
-                                            ) && (
-                                                <Tooltip
-                                                    title={`Edit ${item.nama_lengkap}`}
-                                                >
-                                                    <button
-                                                        onClick={() =>
-                                                            editHandler(item)
-                                                        }
-                                                        className="py-1 px-2 text-white bg-orange-500 hover:bg-orange-600 usetransisi text-xs rounded-md drop-shadow-md"
-                                                    >
-                                                        <Edit
-                                                            color="inherit"
-                                                            fontSize="inherit"
-                                                        />
-                                                    </button>
-                                                </Tooltip>
-                                            )}
-                                            {permissions.includes(
-                                                "delete_petugas"
-                                            ) && (
-                                                <Tooltip
-                                                    title={`Delete ${item.nama_lengkap}`}
-                                                >
-                                                    <button
-                                                        onClick={() =>
-                                                            deleteHandler(
-                                                                item.id
-                                                            )
-                                                        }
-                                                        className="py-1 px-2 text-white bg-red-500 hover:bg-red-600 usetransisi text-xs rounded-md drop-shadow-md"
-                                                    >
-                                                        <Delete
-                                                            color="inherit"
-                                                            fontSize="inherit"
-                                                        />
-                                                    </button>
-                                                </Tooltip>
+                                            {item.jabatan !== "super admin" && (
+                                                <>
+                                                    {permissions.includes(
+                                                        "edit_petugas"
+                                                    ) && (
+                                                        <Tooltip
+                                                            title={`Edit ${item.nama_lengkap}`}
+                                                        >
+                                                            <button
+                                                                onClick={() =>
+                                                                    editHandler(
+                                                                        item
+                                                                    )
+                                                                }
+                                                                className="py-1 px-2 text-white bg-orange-500 hover:bg-orange-600 usetransisi text-xs rounded-md drop-shadow-md"
+                                                            >
+                                                                <Edit
+                                                                    color="inherit"
+                                                                    fontSize="inherit"
+                                                                />
+                                                            </button>
+                                                        </Tooltip>
+                                                    )}
+                                                    {permissions.includes(
+                                                        "delete_petugas"
+                                                    ) && (
+                                                        <Tooltip
+                                                            title={`Delete ${item.nama_lengkap}`}
+                                                        >
+                                                            <button
+                                                                onClick={() =>
+                                                                    deleteHandler(
+                                                                        item.kd_petugas
+                                                                    )
+                                                                }
+                                                                className="py-1 px-2 text-white bg-red-500 hover:bg-red-600 usetransisi text-xs rounded-md drop-shadow-md"
+                                                            >
+                                                                <Delete
+                                                                    color="inherit"
+                                                                    fontSize="inherit"
+                                                                />
+                                                            </button>
+                                                        </Tooltip>
+                                                    )}
+                                                </>
                                             )}
                                         </Tables.Td>
                                         <Tables.Td>
@@ -216,7 +257,10 @@ export default function Index(props) {
                                                         item.status_konfirmasi
                                                     }
                                                     onChange={(e) =>
-                                                        updateStatus(e, item.id)
+                                                        updateStatus(
+                                                            e,
+                                                            item.kd_petugas
+                                                        )
                                                     }
                                                 >
                                                     <MenuItem

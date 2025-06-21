@@ -75,7 +75,7 @@ class ManagementPaketController extends Controller
             "materi.*" => "required|string",
             "pertemuan.*" => "required|numeric|min:5|max:15",
             'reason' => 'required|array|min:1',
-            'reason.*.icon' => 'required|image|mimes:jpg,jpeg,svg,webp,icon',
+            'reason.*.icon' => 'required|image|mimes:jpg,jpeg,svg,webp,icon,png',
             'reason.*.reason' => 'required|string|min:50|max:255',
             'trouble' => 'required|array|min:1',
             'trouble.*.deskripsi_trouble' => 'required|string|min:25|max:255',
@@ -204,6 +204,7 @@ class ManagementPaketController extends Controller
             "total_pertemuan" => "required|numeric",
             "total_materi" => "required|numeric",
             "harga" => "required|numeric|min_digits:6|max_digits:9",
+            "harga_promo" => "required|numeric",
             "materi.*" => "required|string",
             "pertemuan.*" => "required|numeric|min:5|max:15",
             'reason' => 'required|array|min:1',
@@ -276,6 +277,7 @@ class ManagementPaketController extends Controller
             "total_pertemuan" => $totalPertemuan,
             "total_materi" => $totalMateri,
             "harga" => $request->harga,
+            "harga_promo" => $request->harga_promo,
             'updated_by' => $request->user()->name,
         ]);
         $reasonIds = [];

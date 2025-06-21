@@ -278,9 +278,11 @@ export default function Create(props) {
                     nama_paket: response.data[0].nama_paket,
                     jumlah_pertemuan: response.data[0].total_pertemuan,
                     jumlah_materi: response.data[0].total_materi,
-                    harga: response.data[0].harga,
+                    harga:
+                        response.data[0].harga - response.data[0].harga_promo,
                     diskont: 0,
-                    total_harga: response.data[0].harga,
+                    total_harga:
+                        response.data[0].harga - response.data[0].harga_promo,
                 };
 
                 const newPaketList = [...data.paket];
@@ -417,7 +419,13 @@ export default function Create(props) {
             <ComponentInstruktur kategori={kategori} />
             <ComponentPaket kategori={kategori} paket_ref={kd_paket_ref} />
             <ComponentSiswa />
-            <div className="py-2 px-8 w-full">
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    setShowModalPembayaran(true);
+                }}
+                className="py-2 px-8 w-full"
+            >
                 {/* <h1 className="text-blue-950 font-semibold text-3xl tracking-tight">
                     Formulir Pendaftaran
                 </h1>
@@ -496,6 +504,7 @@ export default function Create(props) {
                                         <div className="flex gap-x-2">
                                             <Tooltip title="Cari Siswa">
                                                 <button
+                                                    type="button"
                                                     disabled={
                                                         dataResponse == null
                                                             ? false
@@ -631,6 +640,7 @@ export default function Create(props) {
                                     </InputLabel>
                                     <div className="w-full">
                                         <SelectOption
+                                            required
                                             className={"w-[80%]"}
                                             label="Kantor"
                                             name="kantor_cabang_id"
@@ -716,6 +726,7 @@ export default function Create(props) {
                                         <Tables.Td>
                                             <div className="w-[70px]">
                                                 <InputText
+                                                    required
                                                     disabled={
                                                         dataResponse == null &&
                                                         index == 0
@@ -757,6 +768,7 @@ export default function Create(props) {
                                         </Tables.Td>
                                         <Tables.Td className={"text-center"}>
                                             <InputText
+                                                required
                                                 disabled={
                                                     dataResponse == null
                                                         ? false
@@ -798,6 +810,7 @@ export default function Create(props) {
                                         <Tables.Td>
                                             <div className="w-[130px]">
                                                 <InputText
+                                                    required
                                                     disabled={
                                                         dataResponse == null &&
                                                         index == 0
@@ -818,6 +831,7 @@ export default function Create(props) {
                                         <Tables.Td>
                                             <div className="w-[50px]">
                                                 <InputText
+                                                    required
                                                     inputProps={{
                                                         min: 0,
                                                         max: 100,
@@ -847,6 +861,7 @@ export default function Create(props) {
                                             {index == 0 &&
                                                 dataResponse == null && (
                                                     <button
+                                                        type="button"
                                                         onClick={() =>
                                                             addData(index)
                                                         }
@@ -860,6 +875,7 @@ export default function Create(props) {
                                                 )}
                                             {index !== 0 && (
                                                 <button
+                                                    type="button"
                                                     onClick={() =>
                                                         removeData(index)
                                                     }
@@ -881,12 +897,16 @@ export default function Create(props) {
                     <div className="flex justify-between">
                         <div className="flex gap-x-3 flex-col justify-end">
                             <div className="flex flex-row gap-x-3 items-center">
-                                <button className="bg-blue-500 py-2 px-3 rounded-md text-white flex items-center gap-x-3 leading-3">
+                                <button
+                                    type="button"
+                                    className="bg-blue-500 py-2 px-3 rounded-md text-white flex items-center gap-x-3 leading-3"
+                                >
                                     <Add />
                                     <p>Tambah</p>
                                 </button>
 
                                 <button
+                                    type="button"
                                     disabled={
                                         dataResponse == null ? false : true
                                     }
@@ -897,6 +917,7 @@ export default function Create(props) {
                                     <p>Batal</p>
                                 </button>
                                 <button
+                                    type="button"
                                     disabled={
                                         dataResponse == null ? true : false
                                     }
@@ -907,7 +928,7 @@ export default function Create(props) {
                                     <p>Cetak</p>
                                 </button>
                                 <button
-                                    onClick={() => setShowModalPembayaran(true)}
+                                    type="submit"
                                     disabled={
                                         data.paket[0].kd_paket !== "" &&
                                         data.paket[0].nama_paket !== "" &&
@@ -976,6 +997,19 @@ export default function Create(props) {
                                     disabled
                                 />
                             </div>
+                            <div className="flex gap-x-3 items-center">
+                                <InputLabel
+                                    id="tanggal"
+                                    className="w-[140px] text-right"
+                                >
+                                    PPN 11% :
+                                </InputLabel>
+                                <InputText
+                                    className="text-right"
+                                    value={data.total_netto * (11 / 100)}
+                                    disabled
+                                />
+                            </div>
 
                             <div className="flex gap-x-3 items-center">
                                 <InputLabel
@@ -987,13 +1021,16 @@ export default function Create(props) {
                                 <InputText
                                     className="text-right"
                                     disabled
-                                    value={formatRupiah(data.total_netto)}
+                                    value={formatRupiah(
+                                        data.total_netto +
+                                            data.total_netto * (11 / 100)
+                                    )}
                                 />
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     );
 }

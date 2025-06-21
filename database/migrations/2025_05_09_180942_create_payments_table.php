@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('kantor_cabang_id')->constrained('kantor_cabangs')->onDelete('cascade')->default(1);
+            $table->foreignId('kantor_cabang_id')->nullable();
             $table->foreignId('pesanan_kursus_id')->constrained('pesanan_kursuses')->onDelete('restrict'); // Relasi ke tabel pesanan_kursus
             $table->foreignId('siswa_id')->constrained('siswas')->onDelete('cascade'); // Relasi ke tabel siswa
-            $table->foreignId('petugas_id')->constrained('users')->onDelete('cascade'); // Relasi ke tabel petugas
+            $table->foreignId('petugas_id')->nullable(); // Relasi ke tabel petugas
             $table->string('order_id'); // ID pemesanan (unik untuk transaksi)
             $table->double('gross_amount'); // Jumlah total yang harus dibayar
             $table->json('payment_info')->nullable(); // Informasi pembayaran tambahan dalam format JSON
@@ -27,7 +27,7 @@ return new class extends Migration
             $table->double('remaining_amount')->default(0); // Jumlah yang masih harus dibayar
             $table->integer('installments')->default(1); // Jumlah cicilan yang dibagi
             $table->integer('installment_number')->default(1); // Nomor cicilan yang sedang dilakukan
-            $table->string('status_konfirmasi')->default('reject'); // confirm, reject
+            $table->string('status_konfirmasi')->default('menunggu konfirmasi'); // menunggu konfirmasi, terima, tolak
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->timestamps();

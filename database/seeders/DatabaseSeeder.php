@@ -66,6 +66,7 @@ class DatabaseSeeder extends Seeder
             'create_kategori',
             'edit_kategori',
             'delete_kategori',
+            'update_kategori',
             'confirm_kategori',
             'create_sub_kategori',
             'edit_sub_kategori',
@@ -150,6 +151,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'super admin',
             'email' => 'superadmin@gmail.com',
             'password' => bcrypt('password'),
+            'phone' => '082194255717'
         ]);
         $user->assignRole('super admin');
         Petugas::create([
@@ -170,6 +172,7 @@ class DatabaseSeeder extends Seeder
             'pendidikan' => 'sma',
             'kantor_cabang_id' => 1,
             'jabatan' => 'super admin',
+            'status_konfirmasi' => 'terima',
         ]);
 
         // KategoriKursus::create([

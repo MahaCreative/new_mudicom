@@ -15,7 +15,7 @@ import {
     Settings,
     Shop,
 } from "@mui/icons-material";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { RecoilRoot } from "recoil";
 
 export default function AuthLayout({ children }) {
@@ -23,6 +23,18 @@ export default function AuthLayout({ children }) {
     const roles = auth.roles;
     const permissions = auth.permissions;
     const [openSidebar, setOpenSidebar] = useState(false);
+    const sidebarRef = useRef(null);
+    useEffect(() => {
+        let handler = (e) => {
+            if (sidebarRef && !sidebarRef.current.contains(e.target)) {
+                setOpenSidebar(false);
+            }
+        };
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        };
+    }, []);
     return (
         <RecoilRoot>
             <div className="w-full min-h-full bg-gray-50 relative">
@@ -54,6 +66,7 @@ export default function AuthLayout({ children }) {
                     {/* container */}
 
                     <div
+                        ref={sidebarRef}
                         className={` ${
                             openSidebar
                                 ? "w-[90%] md:w-[40%] lg:w-[30%]"

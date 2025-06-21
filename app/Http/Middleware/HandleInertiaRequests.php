@@ -41,12 +41,14 @@ class HandleInertiaRequests extends Middleware
             'count_instruktur' =>  Instruktur::count(),
             'count_materi' =>  MateriAjar::count(),
         ];
+
         return [
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
                 'roles' => fn() => $request->user()?->getRoleNames(),
                 'permissions' => fn() => $request->user()?->getAllPermissions()->pluck('name'),
+
             ],
             'profile' => KantorCabang::with('sosmed')->where('status', 'pusat')->first(),
             'slider' => Slider::where('status', 'aktif')->latest()->get(),

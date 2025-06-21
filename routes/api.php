@@ -4,9 +4,12 @@ use App\Http\Controllers\Api\ApiInstrukturController;
 use App\Http\Controllers\Api\ApiPaketController;
 use App\Http\Controllers\Api\ApiPendaftaranKursusController;
 use App\Http\Controllers\Api\ApiSiswaController;
+use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\SubKategoriController;
 use App\Http\Controllers\ManagementPendaftaranKursusController;
 use App\Models\KategoriKursus;
+use App\Models\Payment;
+use App\Models\PesananKursus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,3 +36,5 @@ ROute::post('store-pendaftaran-kursus', [ManagementPendaftaranKursusController::
 Route::get('get-data-pendaftaran-kursus', [ApiPendaftaranKursusController::class, 'index'])->name('api.get-data-pendaftaran-kursus');
 
 Route::get('get-sub-kategori', [SubKategoriController::class, 'index'])->name('api.get-all-sub-kategori');
+
+Route::post('notification-handling-after-payment', [PaymentController::class, 'after_payment']);

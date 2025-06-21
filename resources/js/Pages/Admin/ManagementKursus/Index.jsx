@@ -11,8 +11,10 @@ import FormJenis from "./FormJenis";
 import moment from "moment";
 import SelectOption from "@/Components/SelectOption";
 import { MenuItem } from "@mui/material";
+import ResponseAlert from "@/Hook/ResponseAlert";
 
 export default function Index(props) {
+    const { showResponse } = ResponseAlert();
     const { auth } = usePage().props;
     const roles = auth.roles;
     const permissions = auth.permissions;
@@ -32,7 +34,15 @@ export default function Index(props) {
         setModel(value);
     };
     const deleteKategori = (id) => {
-        router.delete(route("admin.delete-management-kursus", { id }));
+        router.delete(route("admin.delete-management-kursus", { id }), {
+            onSuccess: () => {
+                showResponse(
+                    "success",
+                    "Berhasil",
+                    "Berhasil menghapus 1 data dalam database"
+                );
+            },
+        });
     };
     const editSub = (value) => {
         setStatus("sub");
@@ -40,7 +50,15 @@ export default function Index(props) {
         setModel(value);
     };
     const deleteSub = (id) => {
-        router.delete(route("admin.delete-sub-kategori-kursus", { id }));
+        router.delete(route("admin.delete-sub-kategori-kursus", { id }), {
+            onSuccess: () => {
+                showResponse(
+                    "success",
+                    "Berhasil",
+                    "Berhasil menghapus 1 data dalam database"
+                );
+            },
+        });
     };
     const editJenis = (value) => {
         setStatus("jenis");
@@ -48,11 +66,61 @@ export default function Index(props) {
         setModel(value);
     };
     const deleteJenis = (id) => {
-        router.delete(route("admin.delete-jenis-kategori-kursus", { id }));
+        router.delete(route("admin.delete-jenis-kategori-kursus", { id }), {
+            onSuccess: () => {
+                showResponse(
+                    "success",
+                    "Berhasil",
+                    "Berhasil menghapus 1 data dalam database"
+                );
+            },
+        });
     };
-    const updateStatus = (e, id) => {};
-    const updateStatusSub = (e, id) => {};
-    const updateStatusJenis = (e, id) => {};
+    const updateStatus = (e, id) => {
+        router.post(
+            route("admin.confirm-management-kursus"),
+            { id: id, value: e.target.value },
+            {
+                onSuccess: () => {
+                    showResponse(
+                        "success",
+                        "Berhasil",
+                        "Berhasil memperbaharui konfirmasi data"
+                    );
+                },
+            }
+        );
+    };
+    const updateStatusSub = (e, id) => {
+        router.post(
+            route("admin.confirm-sub-kategori-kursus"),
+            { id: id, value: e.target.value },
+            {
+                onSuccess: () => {
+                    showResponse(
+                        "success",
+                        "Berhasil",
+                        "Berhasil memperbaharui konfirmasi data"
+                    );
+                },
+            }
+        );
+    };
+    const updateStatusJenis = (e, id) => {
+        router.post(
+            route("admin.confirm-jenis-kategori-kursus"),
+            { id: id, value: e.target.value },
+            {
+                onSuccess: () => {
+                    showResponse(
+                        "success",
+                        "Berhasil",
+                        "Berhasil memperbaharui konfirmasi data"
+                    );
+                },
+            }
+        );
+    };
     return (
         <>
             <Dialogs
@@ -167,7 +235,9 @@ export default function Index(props) {
                                     fontSize="inherit"
                                 />
                             </p>
-                            <p className="font-bold text-6xl text-white">120</p>
+                            <p className="font-bold text-6xl text-white">
+                                {jenis.length}
+                            </p>
                         </div>
                         <p className="text-white border-t border-b-blue-800 w-full text-center">
                             Jumlah Jenis Kursus
@@ -560,7 +630,9 @@ export default function Index(props) {
                                                         "confirm_sub_kategori"
                                                     ) ? (
                                                         <SelectOption
-                                                            value={item.status}
+                                                            value={
+                                                                item.status_konfirmasi
+                                                            }
                                                             onChange={(e) =>
                                                                 updateStatusSub(
                                                                     e,
@@ -772,10 +844,12 @@ export default function Index(props) {
                                                 className={"text-black text-xs"}
                                             >
                                                 {permissions.includes(
-                                                    "confirm_jenisi"
+                                                    "confirm_jenis"
                                                 ) ? (
                                                     <SelectOption
-                                                        value={item.status}
+                                                        value={
+                                                            item.status_konfirmasi
+                                                        }
                                                         onChange={(e) =>
                                                             updateStatusJenis(
                                                                 e,

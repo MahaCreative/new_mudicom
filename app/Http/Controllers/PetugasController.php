@@ -69,6 +69,7 @@ class PetugasController extends Controller
                     'name' => $request->nama_lengkap,
                     'email' => $request->email,
                     'password' => bcrypt($request->password),
+                    'phone' => $request->telp
                 ]);
                 $user->assignRole($request->jabatan);
                 $userId = $user->id;
@@ -158,6 +159,7 @@ class PetugasController extends Controller
             }
 
             $user->update([
+                'phone' => $request->telp,
                 'email' => $request->email,
                 'password' => $request->password ? bcrypt($request->password) : $user->password
             ]);
@@ -169,6 +171,7 @@ class PetugasController extends Controller
                 ]);
             }
             $user = User::create([
+                'phone' => $request->telp,
                 'name' => $request->nama_lengkap,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
@@ -198,5 +201,17 @@ class PetugasController extends Controller
             'jabatan' => $request->jabatan,
             'updated_by' => $request->user()->name
         ]);
+    }
+
+    public function delete(Request $request, $kd_petugas)
+    {
+        Petugas::where('kd_petugas', $kd_petugas)->first()->delete();
+    }
+
+    public function confirm(Request $request,)
+    {
+
+        $petugas = Petugas::where('kd_petugas', $request->kd_petugas)->first();
+        $petugas->update(['status_konfirmasi' => $request->value, 'updated_by' => $request->user()->name]);
     }
 }

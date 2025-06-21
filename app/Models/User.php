@@ -22,6 +22,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone',
+        'avatar',
+        'is_verified',
+        'expires_at'
     ];
 
     /**
@@ -47,5 +51,10 @@ class User extends Authenticatable
     public function petugas()
     {
         return $this->hasOne(Petugas::class);
+    }
+
+    public function siswa()
+    {
+        return $this->hasOne(Siswa::class);
     }
 }

@@ -1,10 +1,12 @@
 import InputText from "@/Components/InputText";
 import SelectOption from "@/Components/SelectOption";
+import ResponseAlert from "@/Hook/ResponseAlert";
 import { useForm } from "@inertiajs/react";
 import { MenuItem } from "@mui/material";
 import React, { useEffect } from "react";
 
 export default function Form({ model, setOpen, sub, kantor_cabang }) {
+    const { showResponse } = ResponseAlert();
     const { data, setData, post, reset, errors } = useForm({
         sub_kategrori_id: "",
         nama_materi: "",
@@ -16,11 +18,46 @@ export default function Form({ model, setOpen, sub, kantor_cabang }) {
     });
     const submitHandler = (e) => {
         e.preventDefault();
-        post(route("admin.store-management-materi-ajar"));
+        post(route("admin.store-management-materi-ajar"), {
+            onSuccess: () => {
+                showResponse(
+                    "success",
+                    "Berhasil",
+                    "Berhasil menambahkan data kedalam database"
+                );
+                reset();
+                setOpen(false);
+            },
+            onError: (err) => {
+                showResponse(
+                    "error",
+                    "Gagal",
+                    "Gagal menambahkan data kedalam database"
+                );
+                setOpen(false);
+            },
+        });
     };
     const updateHandler = (e) => {
         e.preventDefault();
-        post(route("admin.update-management-materi-ajar"));
+        post(route("admin.update-management-materi-ajar"), {
+            onSuccess: () => {
+                setOpen(false);
+                showResponse(
+                    "success",
+                    "Berhasil",
+                    "Berhasil memperbaharui data kedalam database"
+                );
+            },
+            onError: (err) => {
+                setOpen(fales);
+                showResponse(
+                    "error",
+                    "Gagal",
+                    "Gagal memperbaharui data kedalam database"
+                );
+            },
+        });
     };
     useEffect(() => {
         setData({

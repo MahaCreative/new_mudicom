@@ -59,6 +59,8 @@ export default function Create(props) {
                 );
             },
             onError: (err) => {
+                console.log(err);
+
                 showResponse(
                     "error",
                     "Gagal",

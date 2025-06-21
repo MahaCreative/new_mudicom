@@ -1,18 +1,31 @@
 import InputText from "@/Components/InputText";
 import SelectOption from "@/Components/SelectOption";
 import Tables from "@/Components/Tables";
+import ResponseAlert from "@/Hook/ResponseAlert";
 import AuthLayout from "@/Layouts/AuthLayout";
-import { Link, usePage } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import { Delete, Edit } from "@mui/icons-material";
 import { MenuItem, Tooltip } from "@mui/material";
 import moment from "moment";
 import React from "react";
 
 export default function Index(props) {
+    const { showResponse } = ResponseAlert();
     const { auth } = usePage().props;
     const roles = auth.roles;
     const permissions = auth.permissions;
     const kantor = props.kantor;
+    const deleteHandler = (id) => {
+        router.delete(route("admin.delete-management-profile-perusahaan", id), {
+            onSuccess: () => {
+                showResponse(
+                    "success",
+                    "Berhasil",
+                    "Berhasil mengahapus 1 data"
+                );
+            },
+        });
+    };
     return (
         <div className="py-6 px-8 w-full">
             <h1 className="text-blue-950 font-semibold text-3xl tracking-tight">

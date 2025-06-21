@@ -14,6 +14,9 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
+        if ($request->user()->getRoleNames()[0] == 'siswa') {
+            return redirect()->route('siswa.dashboard');
+        }
         $count = [];
         $siswa = Siswa::count();
         $instruktur = Instruktur::count();

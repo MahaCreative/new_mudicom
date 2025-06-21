@@ -1,6 +1,7 @@
 import InputText from "@/Components/InputText";
 import SelectOption from "@/Components/SelectOption";
 import Tables from "@/Components/Tables";
+import ResponseAlert from "@/Hook/ResponseAlert";
 import AuthLayout from "@/Layouts/AuthLayout";
 import { Link, router, usePage } from "@inertiajs/react";
 import { ClassTwoTone, Delete, Edit } from "@mui/icons-material";
@@ -9,6 +10,7 @@ import moment from "moment";
 import React from "react";
 
 export default function Index(props) {
+    const { showResponse, ResponseMethode } = ResponseAlert();
     const instruktur = props.instruktur;
     const { auth } = usePage().props;
     const roles = auth.roles;
@@ -16,6 +18,39 @@ export default function Index(props) {
     const editHandler = (item) => {
         router.get(
             route("admin.edit-management-instruktur", item.kd_instruktur)
+        );
+    };
+    const deleteHandler = (id) => {
+        ResponseMethode(
+            "warning",
+            "Yaking ingin menghapus data?",
+            "Menghapus data, akan menghapus beberapa data yang terkait dengannya",
+            () => {
+                router.delete(route("admin.delete-management-instruktur", id), {
+                    onSuccess: () => {
+                        showResponse(
+                            "success",
+                            "Berhasil",
+                            "Berhasil mengahpus data didalam database"
+                        );
+                    },
+                });
+            }
+        );
+    };
+    const updateStatus = (e, id) => {
+        router.post(
+            route("admin.confirm-management-instruktur"),
+            { id: id, value: e.target.value },
+            {
+                onSuccess: () => {
+                    showResponse(
+                        "success",
+                        "Berhasil",
+                        "Berhasil memperbaharui status konfirmasi petugas"
+                    );
+                },
+            }
         );
     };
     return (

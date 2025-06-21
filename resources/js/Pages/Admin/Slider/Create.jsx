@@ -1,11 +1,13 @@
 import InputText from "@/Components/InputText";
 import SelectOption from "@/Components/SelectOption";
+import ResponseAlert from "@/Hook/ResponseAlert";
 import AuthLayout from "@/Layouts/AuthLayout";
 import { useForm } from "@inertiajs/react";
 import { MenuItem } from "@mui/material";
 import React, { useState } from "react";
 
 export default function Create(props) {
+    const { showResponse } = ResponseAlert();
     const kantor_cabang = props.kantor_cabang;
     const { data, setData, post, errors, reset } = useForm({
         judul: "",
@@ -22,7 +24,26 @@ export default function Create(props) {
     };
     const submitHandler = (e) => {
         e.preventDefault();
-        post(route("admin.store-management-slider"));
+        post(route("admin.store-management-slider"), {
+            onSuccess: () => {
+                showResponse(
+                    "success",
+                    "Berhasil",
+                    "Berhasil menambahkan 1 data baru kedalam database"
+                );
+                reset();
+                setPreviewLogo(null);
+                setPreviewThumbnail(null);
+            },
+            onError: (err) => {
+                showResponse(
+                    "error",
+                    "Gagal",
+                    "Gagal menambahkan data kedalam database, silahkan periksa isian anda kembali Err Code: " +
+                        err
+                );
+            },
+        });
     };
     return (
         <form onSubmit={submitHandler} className="py-6 px-8">

@@ -24,11 +24,11 @@ return new class extends Migration
             $table->string('telp')->nullable();
             $table->string('pendidikan')->nullable();
             $table->string('agama');
-            $table->string('alamat');
-            $table->string('kelurahan');
-            $table->string('kecamatan');
-            $table->string('kabupaten');
-            $table->longText('deskripsi');
+            $table->string('alamat')->nullable();
+            $table->string('kelurahan')->nullable();
+            $table->string('kecamatan')->nullable();
+            $table->string('kabupaten')->nullable();
+            $table->longText('deskripsi')->nullable();
             $table->string('foto')->default('image/default_profile.png');
             $table->date('tanggal_masuk')->default(now());
             $table->date('tanggal_keluar')->nullable();

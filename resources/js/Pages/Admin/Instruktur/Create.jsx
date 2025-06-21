@@ -85,11 +85,14 @@ export default function Create(props) {
                     "berhasil menambahkan data instruktur baru ke database"
                 );
             },
-            onError: () => {
+            onError: (err) => {
+                console.log(err);
+
                 showResponse(
                     "error",
                     "Gagal",
-                    "gagal menambahkan data instruktur, silahkan periksa kembali isian anda"
+                    "gagal menambahkan data instruktur, silahkan periksa kembali isian anda Error Code: " +
+                        err
                 );
             },
         });
