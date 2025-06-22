@@ -69,6 +69,7 @@ export default function FormSub({ model, kategori, onClose, kantor_cabang }) {
             kantor_cabang_id: model ? model.kantor_cabang_id : "",
         });
     }, [model]);
+
     return (
         <form
             onSubmit={model ? updateHandler : submitHandler}
@@ -167,7 +168,7 @@ export default function FormSub({ model, kategori, onClose, kantor_cabang }) {
             </div>
             <div className="flex gap-x-3 justify-end items-center">
                 <button className="bg-blue-500 hover:bg-blue-700 usetransisi py-2 px-3 text-sm text-white font-medium rounded-md">
-                    Submit
+                    {model ? "Update" : "Submit"}
                 </button>
                 <button
                     onClick={onClose}

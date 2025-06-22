@@ -68,7 +68,7 @@ Route::middleware(['auth'])->group(function () {
     })->name('logout');
 });
 
-Route::middleware(['auth', 'role:siswa'])->group(function () {
+Route::middleware(['auth', 'role:siswa', 'verified.otp'])->group(function () {
     Route::get('siswa/dashboard', [GuestDashboardController::class, 'index'])->name('siswa.dashboard')->middleware(['cek.profil.siswa']);
     Route::get('siswa/my-profile', [GuestProfileController::class, 'index'])->name('siswa.profile-saya');
     Route::post('siswa/update-my-profile', [GuestProfileController::class, 'store'])->name('siswa.update-profile');

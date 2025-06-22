@@ -18,7 +18,6 @@ return new class extends Migration
             $table->foreignId('instruktur_id')->nullable()->constrained('instrukturs')->onDelete('restrict');
             $table->tinyInteger('diskont')->default(0);
             $table->decimal('harga', 12, 0)->default(0);
-
             $table->timestamps();
         });
     }
