@@ -174,7 +174,7 @@ export default function Index({ payment }) {
                                             </Tables.Td>
 
                                             <Tables.Td className="text-xs">
-                                                {item.petugas.name}
+                                                {item.petugas?.name}
                                             </Tables.Td>
 
                                             <Tables.Td

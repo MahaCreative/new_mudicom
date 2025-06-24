@@ -163,7 +163,6 @@ class ManagementPendaftaranKursusController extends Controller
                 'model_id' => $pembayaran->id,
                 'model_type' => Payment::class,
                 'created_by' => $request->user()->name,
-                'status_konfirmasi' => 'terima',
             ]);
             $this->sendMessage($siswa->telp, $pesanan->kd_transaksi, $pesanan->created_at, $pesanan->total_harga);
             DB::commit();
@@ -171,6 +170,7 @@ class ManagementPendaftaranKursusController extends Controller
             return response()->json(['pesanan' => $pesanan, 'paket' => $paket, 'pembayaran' => $pembayaran]);
         } catch (\Exception $e) {
             DB::rollBack();
+            dd($e);
             return response()->json(['error' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
         }
     }
@@ -207,9 +207,10 @@ class ManagementPendaftaranKursusController extends Controller
         $kategori = KategoriKursus::latest()->get();
         $pendaftaran = PesananKursus::where('kd_transaksi', $kd_transaksi)->first();
         $detail = DetailPesananKursus::with('paket', 'instruktur')->where('pesanan_kursus_id', $pendaftaran->id)->get();
-        // dd($detail);
+
         $payment = Payment::where('pesanan_kursus_id', $pendaftaran->id)->latest()->get();
         $siswa = Siswa::find($pendaftaran->siswa_id);
+
         if ($request->user()->can('only_kantor')) {
 
             $kantor_cabang = KantorCabang::where('id', $request->user()->petugas->kantor_cabang_id)->latest()->get();

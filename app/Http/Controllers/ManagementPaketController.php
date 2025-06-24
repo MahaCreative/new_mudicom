@@ -73,7 +73,7 @@ class ManagementPaketController extends Controller
             "total_materi" => "required|numeric",
             "harga" => "required|numeric|min_digits:6|max_digits:9",
             "materi.*" => "required|string",
-            "pertemuan.*" => "required|numeric|min:5|max:15",
+            "pertemuan.*" => "required|numeric|min:1|max:15",
             'reason' => 'required|array|min:1',
             'reason.*.icon' => 'required|image|mimes:jpg,jpeg,svg,webp,icon,png',
             'reason.*.reason' => 'required|string|min:50|max:255',
@@ -181,7 +181,7 @@ class ManagementPaketController extends Controller
             'funfact',
         )->where('slug', $slug)->first();
 
-        return inertia('Admin/ManagementPaket/Form', compact(
+        return inertia('Admin/ManagementPaket/FormUpdate', compact(
             'kategori',
             'sub',
             'jenis',
@@ -206,7 +206,7 @@ class ManagementPaketController extends Controller
             "harga" => "required|numeric|min_digits:6|max_digits:9",
             "harga_promo" => "required|numeric",
             "materi.*" => "required|string",
-            "pertemuan.*" => "required|numeric|min:5|max:15",
+            "pertemuan.*" => "required|numeric|min:1|max:15",
             'reason' => 'required|array|min:1',
 
             'reason.*.reason' => 'required|string|min:50|max:255',

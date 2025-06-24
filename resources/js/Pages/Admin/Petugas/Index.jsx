@@ -143,7 +143,7 @@ export default function Index(props) {
                                                 "flex flex-row items-center gap-x-1"
                                             }
                                         >
-                                            {item.jabatan !== "super admin" && (
+                                            {item.jabatan == "super admin" && (
                                                 <>
                                                     {permissions.includes(
                                                         "edit_petugas"

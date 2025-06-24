@@ -18,12 +18,12 @@ import { debounce, MenuItem } from "@mui/material";
 import axios from "axios";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
-export default function Form({
+export default function FormUpdate({
     kategori,
 
     jenis,
     paket,
-
+    reason,
     kantor_cabang,
 }) {
     const { showResponse } = ResponseAlert();
@@ -33,53 +33,68 @@ export default function Form({
     const [showTrouble, setShowTrouble] = useState(false);
 
     const [showSoulusi, setShowSolusi] = useState(false);
-    const [previewSolusi, setPreviewSolusi] = useState();
+    const [previewSolusi, setPreviewSolusi] = useState(
+        "/storage/" + paket?.solusi?.image_solusi
+    );
 
     const [showCriteria, setShowCriteria] = useState(false);
-    const [previewCriteria, setPreviewCriteria] = useState();
+    const [previewCriteria, setPreviewCriteria] = useState(
+        "/storage/" + paket?.kriteria?.image_criteria
+    );
 
     const [showFunfact, setShowFunfact] = useState(false);
-    const [previewFunfact, setPreveiwFuncat] = useState();
+    const [previewFunfact, setPreveiwFuncat] = useState(
+        "/storage/" + paket?.funfact?.image_funfact
+    );
     const [sub, setSub] = useState([]);
     const { materi } = usePage().props;
     const { data, setData, post, reset, errors } = useForm({
-        nama_paket: "",
-        kategori_kursus: "",
-        sub_kategori_kursus: "",
-        jenis_kursus: "",
-        deskripsi: "",
-        thumbnail: "",
-        total_pertemuan: 0,
-        total_materi: 0,
-        harga: "",
-        harga_promo: "",
-        status: "",
-        judul_alasan: "",
+        id: paket?.id || "",
+        nama_paket: paket?.nama_paket || "",
+        kategori_kursus: paket?.kategori_kursus || "",
+        sub_kategori_kursus: paket?.sub_kategori_kursus || "",
+        jenis_kursus: paket?.jenis_kursus || "",
+        status: paket?.status || "",
+        deskripsi: paket?.deskripsi || "",
+        kantor_cabang_id: paket?.kantor_cabang_id || "",
+        judul_alasan: paket?.judul_alasan || "",
+        total_pertemuan: paket?.total_pertemuan || 0,
+        total_materi: paket?.total_materi || 0,
+        harga: paket?.harga || "",
+        harga_promo: paket?.harga_promo || "",
+        thumbnail: paket?.thumbnail || "",
         materi_input: "",
         pertemuan_input: "",
-        kantor_cabang_id: "",
-        materi: [],
+        materi: [], // kamu bisa isi dari paket?.detail jika perlu
         pertemuan: [],
-        reason: [
+        reason: paket?.reason?.map((item) => ({
+            reason_id: item.id,
+            icon: "/storage/" + item.icon,
+            reason: item.reason,
+        })) || [
             {
                 reason_id: "",
                 icon: "",
                 reason: "",
             },
         ],
-        trouble: [
+        trouble: paket?.trouble.map((item) => ({
+            reason_id: item.id,
+            deskripsi_trouble: item.deskripsi_trouble,
+        })) || [
             {
                 reason_id: "",
                 deskripsi_trouble: "",
             },
         ],
-        image_solusi: "",
-        deskripsi_solusi: "",
-        image_criteria: "",
-        deskripsi_criteria: "",
-        image_funfact: "",
-        deskripsi_funfact: "",
+        deskripsi_solusi: paket?.solusi?.deskripsi_solusi || "",
+        image_solusi: paket?.solusi?.image_solusi || "",
+        deskripsi_criteria: paket?.kriteria?.deskripsi_criteria || "",
+        image_criteria: paket?.kriteria?.image_criteria || "",
+        deskripsi_funfact: paket?.funfact?.deskripsi_funfact || "",
+        image_funfact: paket?.funfact?.image_funfact || "",
     });
+
     const clearInput = () => {
         setData({ ...data, pertemuan_input: "", materi_input: "" });
     };
@@ -322,67 +337,24 @@ export default function Form({
     }, [data.kategori_kursus]);
     useEffect(() => {
         if (data.materi.length > 0) {
-            let pertemuan = paket ? paket.total_pertemuan : 0;
+            let pertemuan = 0;
             data.pertemuan.forEach((item) => {
-                pertemuan = pertemuan + parseInt(item);
+                pertemuan += parseInt(item);
             });
-            setData({
-                ...data,
-                total_pertemuan: pertemuan,
-                total_materi: data.materi.length,
-            });
+
+            if (
+                data.total_pertemuan !== pertemuan ||
+                data.total_materi !== data.materi.length
+            ) {
+                setData((prev) => ({
+                    ...prev,
+                    total_pertemuan: pertemuan,
+                    total_materi: data.materi.length,
+                }));
+            }
         }
-    }, [data.materi]);
-    useEffect(() => {
-        if (paket && !data.id) {
-            // isi data hanya kalau belum ada id
-            const reasonData = paket.reason.map((item) => ({
-                reason_id: item.id,
-                icon: "",
-                reason: item.reason,
-            }));
-
-            const previewReasonData = paket.reason.map(
-                (item) => "/storage/" + item.icon
-            );
-
-            const troubleData = paket.trouble.map((item) => ({
-                reason_id: item.id,
-                deskripsi_trouble: item.deskripsi_trouble,
-            }));
-
-            setPreviewReason(previewReasonData);
-            setPreviewSolusi("/storage/" + paket.solusi.image_solusi);
-            setPreviewCriteria("/storage/" + paket.kriteria.image_criteria);
-            setPreveiwFuncat("/storage/" + paket.funfact.image_funfact);
-
-            setData((prev) => ({
-                ...prev,
-                id: paket.id,
-                nama_paket: paket.nama_paket,
-                kategori_kursus: paket.kategori_kursus,
-                sub_kategori_kursus: paket.sub_kategori_kursus,
-                jenis_kursus: paket.jenis_kursus,
-                status: paket.status,
-                deskripsi: paket.deskripsi,
-                kantor_cabang_id: paket.kantor_cabang_id,
-                judul_alasan: paket.judul_alasan,
-                total_pertemuan: paket.total_pertemuan,
-                total_materi: paket.total_materi,
-                harga: paket.harga,
-                harga_promo: paket.harga_promo,
-                thumbnail: paket.thumbnail,
-                reason: reasonData,
-                trouble: troubleData,
-                deskripsi_solusi: paket.solusi.deskripsi_solusi,
-                image_solusi: paket.solusi.image_solusi,
-                deskripsi_criteria: paket.kriteria.deskripsi_criteria,
-                image_criteria: paket.kriteria.image_criteria,
-                deskripsi_funfact: paket.funfact.deskripsi_funfact,
-                image_funfact: paket.funfact.image_funfact,
-            }));
-        }
-    }, [paket]);
+    }, [data.materi, data.pertemuan]);
+    const [initialized, setInitialized] = useState(false);
 
     return (
         <form
@@ -1424,4 +1396,4 @@ export default function Form({
     );
 }
 
-Form.layout = (page) => <AuthLayout children={page} />;
+FormUpdate.layout = (page) => <AuthLayout children={page} />;

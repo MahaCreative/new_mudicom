@@ -331,33 +331,25 @@ export default function Update(props) {
     };
 
     useEffect(() => {
-        const paket = [];
-        detail.map(
-            (item, index) =>
-                (paket[index] = {
-                    id: item.id,
-                    nama_instruktur: item.instruktur
-                        ? item.instruktur.nama_lengkap
-                        : "",
-                    kd_instruktur: item.instruktur
-                        ? item.instruktur.kd_instruktur
-                        : "",
-                    kd_paket: item.paket.kd_paket,
-                    nama_paket: item.paket.nama_paket,
-                    jumlah_pertemuan: item.paket.total_pertemuan,
-                    jumlah_materi: item.paket.total_materi,
-                    harga: item.harga,
-                    diskont: item.diskont,
-                    total_harga: item.harga - (item.harga * item.diskont) / 100,
-                })
-        );
+        if (!detail || !pendaftaran || !siswa) return; // guard clause
 
-        setData({
-            ...data,
+        const paket = detail.map((item) => ({
+            id: item.id,
+            nama_instruktur: item.instruktur?.nama_lengkap || "",
+            kd_instruktur: item.instruktur?.kd_instruktur || "",
+            kd_paket: item.paket.kd_paket,
+            nama_paket: item.paket.nama_paket,
+            jumlah_pertemuan: item.paket.total_pertemuan,
+            jumlah_materi: item.paket.total_materi,
+            harga: item.harga,
+            diskont: item.diskont,
+            total_harga: item.harga - (item.harga * item.diskont) / 100,
+        }));
 
+        setData((prev) => ({
+            ...(prev ?? {}), // jika prev null/undefined, jadi {}
             no_transaksi: kd_transaksi,
             tanggal: moment(new Date()).format("D-M-Y"),
-
             siswa: siswa.nama_lengkap,
             kd_siswa: siswa.kd_siswa,
             nik_siswa: siswa.nik_ktp,
@@ -372,7 +364,7 @@ export default function Update(props) {
             total_materi: pendaftaran.total_materi,
             total_netto: pendaftaran.total_netto,
             total_discount: pendaftaran.total_discount,
-        });
+        }));
     }, []);
     const simpanHandler = () => {
         router.post(route("admin.update-pendaftaran-kursus"), { ...data });
@@ -724,7 +716,7 @@ export default function Update(props) {
                                 </tr>
                             </thead>
                             <Tables.Tbody>
-                                {data.paket.map((item, index) => (
+                                {data?.paket?.map((item, index) => (
                                     <tr
                                         key={index}
                                         className={`${
@@ -786,7 +778,7 @@ export default function Update(props) {
                                                         : true
                                                 }
                                                 value={
-                                                    data.paket[index]
+                                                    data?.paket[index]
                                                         .nama_instruktur
                                                 }
                                                 onChange={(e) => {
@@ -936,10 +928,7 @@ export default function Update(props) {
                     <div className="flex justify-between">
                         <div className="flex gap-x-3 flex-col justify-end">
                             <div className="flex flex-row gap-x-3 items-center">
-                                <Link
-                                    href={route("")}
-                                    className="bg-blue-500 py-2 px-3 rounded-md text-white flex items-center gap-x-3 leading-3"
-                                >
+                                <Link className="bg-blue-500 py-2 px-3 rounded-md text-white flex items-center gap-x-3 leading-3">
                                     <Add />
                                     <p>Tambah</p>
                                 </Link>
@@ -1016,7 +1005,7 @@ export default function Update(props) {
                                 </InputLabel>
                                 <InputText
                                     className="text-right"
-                                    value={data.total_netto * (11 / 100)}
+                                    value={data?.total_netto * (11 / 100)}
                                     disabled
                                 />
                             </div>
@@ -1032,8 +1021,8 @@ export default function Update(props) {
                                     className="text-right"
                                     disabled
                                     value={formatRupiah(
-                                        data.total_netto +
-                                            data.total_netto * (11 / 100)
+                                        data?.total_netto +
+                                            data?.total_netto * (11 / 100)
                                     )}
                                 />
                             </div>

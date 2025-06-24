@@ -100,7 +100,9 @@ export default function Show(props) {
                                             </InputLabel>
                                             <InputText
                                                 disabled
-                                                value={pendaftaran.petugas.name}
+                                                value={
+                                                    pendaftaran?.petugas?.name
+                                                }
                                             />
                                         </div>
                                     </div>
@@ -407,7 +409,7 @@ export default function Show(props) {
                                         <Tables.Td
                                             className={"text-xs capitalize"}
                                         >
-                                            {item.petugas.name}
+                                            {item.petugas?.name}
                                         </Tables.Td>
                                     </tr>
                                 ))}

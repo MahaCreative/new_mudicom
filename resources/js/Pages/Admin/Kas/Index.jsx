@@ -160,7 +160,7 @@ export default function Index(props) {
                                         </Tables.Td>
 
                                         <Tables.Td className={"flex gap-x-2"}>
-                                            <button
+                                            {/* <button
                                                 onClick={() =>
                                                     editHandler(item)
                                                 }
@@ -175,7 +175,7 @@ export default function Index(props) {
                                                 className="py-1 px-2 text-white bg-red-500 hover:bg-red-600 usetransisi text-xs rounded-md drop-shadow-md"
                                             >
                                                 Delete
-                                            </button>
+                                            </button> */}
                                         </Tables.Td>
                                     </tr>
                                 ))

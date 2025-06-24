@@ -248,7 +248,7 @@ export default function Index(props) {
                                             </Tables.Td>
 
                                             <Tables.Td className="text-xs">
-                                                {item.petugas.name}
+                                                {/* {item.petugas.name} */}
                                             </Tables.Td>
 
                                             <Tables.Td
@@ -273,18 +273,20 @@ export default function Index(props) {
                                                     Edit
                                                 </Link>
                                                 {item.status_pembayaran !==
-                                                    "lunas" && (
-                                                    <button
-                                                        onClick={() =>
-                                                            deleteHandler(
-                                                                item.id
-                                                            )
-                                                        }
-                                                        className="py-1 px-2 text-white bg-red-500 hover:bg-red-600 usetransisi text-xs rounded-md drop-shadow-md"
-                                                    >
-                                                        Delete
-                                                    </button>
-                                                )}
+                                                    "lunas" &&
+                                                    item.status_konfirmasi ==
+                                                        "terima" && (
+                                                        <button
+                                                            onClick={() =>
+                                                                deleteHandler(
+                                                                    item.id
+                                                                )
+                                                            }
+                                                            className="py-1 px-2 text-white bg-red-500 hover:bg-red-600 usetransisi text-xs rounded-md drop-shadow-md"
+                                                        >
+                                                            Delete
+                                                        </button>
+                                                    )}
                                             </Tables.Td>
                                         </tr>
                                     ))
