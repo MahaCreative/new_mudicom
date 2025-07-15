@@ -111,9 +111,9 @@ class PetugasController extends Controller
     public function edit(Request $request, $kd_petugas)
     {
         $kantor_cabang = KantorCabang::latest()->get();
-
+        $roles = Role::latest()->get();
         $petugas = Petugas::with('user')->where('kd_petugas', $kd_petugas)->first();
-        return inertia('Admin/Petugas/Update', compact('kantor_cabang', 'petugas'));
+        return inertia('Admin/Petugas/Update', compact('kantor_cabang', 'petugas', 'roles'));
     }
 
     public function update(Request $request)
@@ -149,8 +149,8 @@ class PetugasController extends Controller
 
 
         if ($petugas->user_id) {
-
             $user = User::find($petugas->user_id);
+
             if ($request->filled('email')) {
                 $request->validate([
                     "email" => 'required|email|unique:users,email,' . $petugas->user_id,
@@ -163,6 +163,9 @@ class PetugasController extends Controller
                 'email' => $request->email,
                 'password' => $request->password ? bcrypt($request->password) : $user->password
             ]);
+
+            // Update role di sini
+            $user->syncRoles($request->jabatan);
         } else {
             if ($request->filled('email')) {
                 $request->validate([
@@ -170,12 +173,15 @@ class PetugasController extends Controller
                     "password" => 'required|string|confirmed|min:8|max:50',
                 ]);
             }
+
             $user = User::create([
                 'phone' => $request->telp,
                 'name' => $request->nama_lengkap,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
             ]);
+
+            // Assign role baru
             $user->assignRole($request->jabatan);
             $userId = $user->id;
         }

@@ -129,7 +129,7 @@ export default function FormCreate() {
         // Menghilangkan format Rupiah jika ada (hanya angka yang akan diambil)
         const numericValue = value.replace(/[^\d]/g, "");
 
-        if (isNaN(numericValue) || numericValue <= 0) {
+        if (isNaN(numericValue) || numericValue < 0) {
             // Jika nilai tidak valid (bukan angka atau <= 0), batalkan perubahan
             alert("Gross amount harus lebih besar dari 0.");
             return;

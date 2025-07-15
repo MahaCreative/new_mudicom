@@ -19,9 +19,7 @@ export default function ComponentPembayaran() {
     );
     const inputRef = useRef(null);
     const handleBayarChange = (e) => {
-        const totalNetto = parseInt(
-            formData.total_netto + (formData.total_netto * 11) / 100
-        ); // Mengambil total netto dan mengonversinya menjadi integer
+        const totalNetto = parseInt(formData.total_netto); // Mengambil total netto dan mengonversinya menjadi integer
         let value = e.target.value.replace(/[^0-9]/g, "");
         const bayar = parseInt(value); // Mengambil nilai bayar dan mengonversinya menjadi integer
         // Pastikan nilai bayar valid

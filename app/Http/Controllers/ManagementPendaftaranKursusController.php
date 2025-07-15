@@ -101,7 +101,7 @@ class ManagementPendaftaranKursusController extends Controller
 
             $status_lunas = $request->bayar >= $request->total_netto ? 'lunas' : 'belum_lunas';
             $sisa_bayar = max(0, $request->total_netto - $request->bayar);
-            $ppn = (int) round($request->total_netto * 0.11);
+
             $pesanan = PesananKursus::create([
                 'kd_transaksi' => $kd_transaksi,
                 'siswa_id' => $siswa->id,
@@ -111,8 +111,7 @@ class ManagementPendaftaranKursusController extends Controller
                 'total_materi' => $request->total_materi,
                 'total_discount' => $request->total_discount ?? 0,
                 'total_harga' => $request->total_harga,
-                'total_netto' =>  $request->total_netto + $ppn,
-                'ppn' =>  $ppn, // KASI MUNCUL NANTI INI KARNA DIPAKE
+                'total_netto' =>  $request->total_netto,
                 'jumlah_bayar' => $request->bayar >= $request->total_netto ? $request->total_netto : $request->bayar,
                 'sisa_bayar' => $sisa_bayar,
                 'status_pembayaran' => $status_lunas,

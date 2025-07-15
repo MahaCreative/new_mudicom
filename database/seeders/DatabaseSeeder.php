@@ -83,9 +83,6 @@ class DatabaseSeeder extends Seeder
             'delete_materi',
             'confirm_materi',
 
-            'view_pesanan_kursus',
-
-
             'view_paket',
             'create_paket',
             'edit_paket',
@@ -93,18 +90,23 @@ class DatabaseSeeder extends Seeder
             'confirm_paket',
 
             'view_pendaftaran_kursus',
+            'show_pendaftaran_kursus',
+            'edit_harga_paket',
+            'edit_diskont',
             'create_pendaftaran_kursus',
             'edit_pendaftaran_kursus',
             'delete_pendaftaran_kursus',
             'confirm_pendaftaran_kursus',
 
             'view_pembayaran_kursus',
+            'show_pembayaran_kursus',
             'create_pembayaran_kursus',
             'edit_pembayaran_kursus',
             'delete_pembayaran_kursus',
             'confirm_pembayaran_kursus',
 
             'view_kas',
+            'show_kas',
             'create_kas',
             'edit_kas',
             'delete_kas',

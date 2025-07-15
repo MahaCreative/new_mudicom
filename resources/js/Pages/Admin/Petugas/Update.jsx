@@ -1,5 +1,6 @@
 import InputText from "@/Components/InputText";
 import SelectOption from "@/Components/SelectOption";
+import ResponseAlert from "@/Hook/ResponseAlert";
 import AuthLayout from "@/Layouts/AuthLayout";
 import { useForm } from "@inertiajs/react";
 
@@ -7,8 +8,10 @@ import { Icon, MenuItem } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 
 export default function Create(props) {
+    const { showResponse } = ResponseAlert();
     const kantor_cabang = props.kantor_cabang;
     const petugas = props.petugas;
+    const roles = props.roles;
 
     const imageRef = useRef(null);
     const [preview, setPreview] = useState(null);
@@ -402,13 +405,14 @@ export default function Create(props) {
                                         <MenuItem value="">
                                             Pilih Jabatan
                                         </MenuItem>
-                                        <MenuItem value="Super Admin">
-                                            Super Admin
-                                        </MenuItem>
-                                        <MenuItem value="Admin">Admin</MenuItem>
-                                        <MenuItem value="Keuangan">
-                                            Keuangan
-                                        </MenuItem>
+                                        {roles.map((item, key) => (
+                                            <MenuItem
+                                                key={key}
+                                                value={item.name}
+                                            >
+                                                {item.name}
+                                            </MenuItem>
+                                        ))}
                                     </SelectOption>
                                 </div>
                                 <div className="w-full">

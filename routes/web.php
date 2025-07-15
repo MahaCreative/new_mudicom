@@ -115,7 +115,7 @@ Route::middleware(['auth', 'verified.otp'])->group(function () {
     Route::delete('delete-detail-management-paket-kursus', [ManagementPaketController::class, 'delete_detail'])->name('admin.delete-detail-management-paket-kursus');
 
     Route::get('management-pendaftaran-kursus', [ManagementPendaftaranKursusController::class, 'index'])->name('management-pendaftaran-kursus')->middleware(['permission:view_pendaftaran_kursus']);
-    Route::get('show-pendaftaran-kursus/{kd_transaksi}', [ManagementPendaftaranKursusController::class, 'show'])->name('admin.show-pendaftaran-kursus')->middleware(['permission:view_kategori']);
+    Route::get('show-pendaftaran-kursus/{kd_transaksi}', [ManagementPendaftaranKursusController::class, 'show'])->name('admin.show-pendaftaran-kursus')->middleware(['permission:show_pendaftaran_kursus']);
     Route::get('formulir-pendaftaran-kursus', [ManagementPendaftaranKursusController::class, 'create'])->name('admin.formulit-pendaftaran-kursus')->middleware(['permission:create_pendaftaran_kursus']);
 
     ROute::post('store-pendaftaran-kursus', [ManagementPendaftaranKursusController::class, 'store'])->name('admin.store-pendaftaran-kursus')->middleware(['permission:create_pendaftaran_kursus']);

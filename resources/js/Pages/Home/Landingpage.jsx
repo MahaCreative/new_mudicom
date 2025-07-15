@@ -233,8 +233,16 @@ export default function Landingpage(props) {
                                                 <h1
                                                     className={`font-bold text-lg md:text-lg  transition-all duration-500 ease-in-out group-hover:text-white`}
                                                 >
-                                                    {item.nama_paket}
+                                                    {item.nama_paket +
+                                                        " " +
+                                                        item.jenis_kursus}
                                                 </h1>
+                                                <p className="text-primary group-hover:text-white text-sm">
+                                                    {item.total_materi +
+                                                        " Materi/" +
+                                                        item.total_pertemuan +
+                                                        "X Pertemuan"}
+                                                </p>
                                                 <p
                                                     className="line-clamp-3 my-3 text-sm md:text-sm group-hover:text-white"
                                                     dangerouslySetInnerHTML={{
@@ -247,7 +255,8 @@ export default function Landingpage(props) {
                                                         className={`inline my-3 group-hover:bg-white group-hover:text-primary bg-primary  text-white    font-extrabold text-4xl md:text-sm py-3 px-4 transition-all duration-500 ease-in-out`}
                                                     >
                                                         {formatRupiah(
-                                                            item.harga
+                                                            item.harga -
+                                                                item.harga_promo
                                                         )}
                                                     </p>
                                                     <span className="text-xs md:text-sm group-hover:text-white">

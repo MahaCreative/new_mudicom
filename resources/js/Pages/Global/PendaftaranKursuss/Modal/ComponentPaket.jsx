@@ -46,54 +46,71 @@ export default function ComponentPaket({ kategori, paket_ref }) {
         setFormData((prev) => ({ ...prev, kategori_kursus: e.target.value }));
         setParams((prev) => ({ ...prev, kategori: e.target.value }));
     };
-    const pilihHandler = (value, index) => {
+    const pilihHandler = (value, index = 0) => {
         setParams((prev) => ({ ...prev, kategori: "", search: "" }));
+
+        // Harga akhir tetap pakai harga promo, tapi diskon tidak terpengaruh
+        const hargaPromo = value.harga_promo ?? 0;
+        const hargaAsli = value.harga ?? 0;
+        const hargaAkhir = hargaAsli - hargaPromo;
+
+        const paketLama = formData.paket[index] ?? {
+            jumlah_pertemuan: 0,
+            jumlah_materi: 0,
+            harga: 0,
+            diskont: 0,
+            total_harga: 0,
+        };
+
         const newPaket = {
-            id: formData.paket[0].id == null ? null : formData.paket[0].id,
+            id: paketLama.id ?? null,
             kd_paket: value.kd_paket,
             nama_paket: value.nama_paket,
             jumlah_pertemuan: value.total_pertemuan,
             jumlah_materi: value.total_materi,
-            harga: value.harga,
-            diskont: 0,
-            total_harga: value.harga,
+            harga: hargaAkhir, // yang dibayar setelah promo
+            diskont: 0, // tidak terpengaruh harga_promo
+            total_harga: hargaAkhir,
         };
 
-        // Tambahkan baris kosong di index 0
-
         const newPaketList = [...formData.paket];
-        newPaketList[0] = newPaket; // karena kita menambahkan 1 row di depan
+        newPaketList[index] = newPaket;
 
         const updatedData = {
             ...formData,
             paket: newPaketList,
             total_pertemuan:
-                formData.paket.length === 1
-                    ? value.total_pertemuan
-                    : parseInt(formData.total_pertemuan) +
-                      value.total_pertemuan,
+                parseInt(formData.total_pertemuan || 0) -
+                parseInt(paketLama.jumlah_pertemuan || 0) +
+                parseInt(value.total_pertemuan),
+
             total_materi:
-                formData.paket.length === 1
-                    ? value.total_materi
-                    : parseInt(formData.total_materi) + value.total_materi,
+                parseInt(formData.total_materi || 0) -
+                parseInt(paketLama.jumlah_materi || 0) +
+                parseInt(value.total_materi),
+
             total_harga:
-                formData.paket.length === 1
-                    ? value.harga
-                    : parseInt(formData.total_harga) + value.harga,
+                parseInt(formData.total_harga || 0) -
+                parseInt(paketLama.harga || 0) +
+                hargaAkhir,
+
             total_netto:
-                formData.paket.length === 1
-                    ? value.harga
-                    : parseInt(formData.total_netto) + value.harga,
-            total_discount:
-                formData.paket.length === 1 ? 0 : formData.total_discount + 0,
+                parseInt(formData.total_netto || 0) -
+                parseInt(paketLama.harga || 0) +
+                hargaAkhir,
+
+            total_discount: parseInt(formData.total_discount || 0), // Tidak berubah
         };
 
         setFormData(updatedData);
+
         setTimeout(() => {
-            paket_ref.current[0]?.focus(); // Fokus ke baris paling awal
+            paket_ref.current[0]?.focus();
         }, 0);
+
         setModal(false);
     };
+
     useEffect(() => {
         searchPaket();
     }, [params]);
@@ -234,7 +251,9 @@ export default function ComponentPaket({ kategori, paket_ref }) {
                                                 "capitalize text-xs text-center"
                                             }
                                         >
-                                            {formatRupiah(item.harga)}
+                                            {formatRupiah(
+                                                item.harga - item.harga_promo
+                                            )}
                                         </Tables.Td>
                                         <Tables.Td
                                             className={"capitalize text-xs"}

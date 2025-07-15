@@ -31,12 +31,13 @@ class RolePermissionController extends Controller
 
     public function update(Request $request, $id)
     {
+        $role = Role::find($id);
         $request->validate([
-            'name' => 'required|alpha_dash|min:3|max:50|unique:roles,name',
+            'name' => 'required|alpha_dash|min:3|max:50|unique:roles,name,' . $role->id,
             'permissions' => 'array|min:1',
             'permissions.*' => 'required|string'
         ]);
-        $role = Role::find($id);
+
         $role->update(['name' => $request->name]);
         $role->syncPermissions($request->permissions);
     }

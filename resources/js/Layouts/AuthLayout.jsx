@@ -96,38 +96,47 @@ export default function AuthLayout({ children }) {
                                     <Dashboard />
                                     <p>Dashboard</p>
                                 </Link>
-                                <DropdownLinks
-                                    title={"Managemen Master Data"}
-                                    icon={<Settings />}
-                                >
-                                    {permissions.includes(
-                                        "view_kantor_cabang"
-                                    ) && (
-                                        <DropdownLinks.Item
-                                            href={route(
-                                                "admin.management-profile-perusahaan"
+                                {permissions.includes("view_kantor_cabang") &&
+                                    permissions.includes("view_slider") && (
+                                        <DropdownLinks
+                                            title={"Managemen Master Data"}
+                                            icon={<Settings />}
+                                        >
+                                            {permissions.includes(
+                                                "view_kantor_cabang"
+                                            ) && (
+                                                <DropdownLinks.Item
+                                                    href={route(
+                                                        "admin.management-profile-perusahaan"
+                                                    )}
+                                                    icon={<ListAltOutlined />}
+                                                    title={"Management Kantor"}
+                                                />
                                             )}
-                                            icon={<ListAltOutlined />}
-                                            title={"Management Kantor"}
-                                        />
-                                    )}
-                                    {permissions.includes("view_slider") && (
-                                        <DropdownLinks.Item
-                                            href={route(
-                                                "admin.management-slider"
+                                            {permissions.includes(
+                                                "view_slider"
+                                            ) && (
+                                                <DropdownLinks.Item
+                                                    href={route(
+                                                        "admin.management-slider"
+                                                    )}
+                                                    icon={<ListAltOutlined />}
+                                                    title={"Management Slider"}
+                                                />
                                             )}
-                                            icon={<ListAltOutlined />}
-                                            title={"Management Slider"}
-                                        />
+                                            {roles == "super admin" && (
+                                                <DropdownLinks.Item
+                                                    href={route(
+                                                        "auth.role-permission"
+                                                    )}
+                                                    icon={<ListAltOutlined />}
+                                                    title={
+                                                        "Management Role Permission"
+                                                    }
+                                                />
+                                            )}
+                                        </DropdownLinks>
                                     )}
-                                    {roles == "super admin" && (
-                                        <DropdownLinks.Item
-                                            href={route("auth.role-permission")}
-                                            icon={<ListAltOutlined />}
-                                            title={"Management Role Permission"}
-                                        />
-                                    )}
-                                </DropdownLinks>
                                 <DropdownLinks
                                     title={"Managemen User"}
                                     icon={<AdminPanelSettings />}
@@ -162,48 +171,81 @@ export default function AuthLayout({ children }) {
                                         />
                                     )}
                                 </DropdownLinks>
-                                <DropdownLinks
-                                    title={"Managemen Kursus"}
-                                    icon={<School />}
-                                >
-                                    <DropdownLinks.Item
-                                        href={route("admin.management-kursus")}
-                                        icon={<ListAltOutlined />}
-                                        title={"Kategori Kursus"}
-                                    />
-                                    <DropdownLinks.Item
-                                        href={route(
-                                            "admin.management-materi-ajar"
-                                        )}
-                                        icon={<ListAltOutlined />}
-                                        title={"Management Materi Pelajaran"}
-                                    />
-                                    <DropdownLinks.Item
-                                        href={route(
-                                            "admin.management-paket-kursus"
-                                        )}
-                                        icon={<ListAltOutlined />}
-                                        title={"Management Paket"}
-                                    />
-                                </DropdownLinks>
+                                {permissions.includes("view_kategori") &&
+                                    permissions.includes("view_materi") &&
+                                    permissions.includes("view_paket") && (
+                                        <DropdownLinks
+                                            title={"Managemen Kursus"}
+                                            icon={<School />}
+                                        >
+                                            {permissions.includes(
+                                                "view_kategori"
+                                            ) && (
+                                                <DropdownLinks.Item
+                                                    href={route(
+                                                        "admin.management-kursus"
+                                                    )}
+                                                    icon={<ListAltOutlined />}
+                                                    title={"Kategori Kursus"}
+                                                />
+                                            )}
+                                            {permissions.includes(
+                                                "view_materi"
+                                            ) && (
+                                                <DropdownLinks.Item
+                                                    href={route(
+                                                        "admin.management-materi-ajar"
+                                                    )}
+                                                    icon={<ListAltOutlined />}
+                                                    title={
+                                                        "Management Materi Pelajaran"
+                                                    }
+                                                />
+                                            )}
+                                            {permissions.includes(
+                                                "view_paket"
+                                            ) && (
+                                                <DropdownLinks.Item
+                                                    href={route(
+                                                        "admin.management-paket-kursus"
+                                                    )}
+                                                    icon={<ListAltOutlined />}
+                                                    title={"Management Paket"}
+                                                />
+                                            )}
+                                        </DropdownLinks>
+                                    )}
                                 <DropdownLinks
                                     title={"Managemen Transaksi"}
                                     icon={<Shop />}
                                 >
-                                    <DropdownLinks.Item
-                                        href={route(
-                                            "management-pendaftaran-kursus"
-                                        )}
-                                        icon={<ListAltOutlined />}
-                                        title={"Management Pendaftaran Kursus"}
-                                    />
-                                    <DropdownLinks.Item
-                                        href={route(
-                                            "admin.management-pembayaran-kursus"
-                                        )}
-                                        icon={<ListAltOutlined />}
-                                        title={"Management Pembayaran Kursus"}
-                                    />
+                                    {permissions.includes(
+                                        "view_pendaftaran_kursus"
+                                    ) && (
+                                        <DropdownLinks.Item
+                                            href={route(
+                                                "management-pendaftaran-kursus"
+                                            )}
+                                            icon={<ListAltOutlined />}
+                                            title={
+                                                "Management Pendaftaran Kursus"
+                                            }
+                                        />
+                                    )}
+                                    {permissions.includes(
+                                        "view_pembayaran_kursus"
+                                    ) && (
+                                        <DropdownLinks.Item
+                                            href={route(
+                                                "admin.management-pembayaran-kursus"
+                                            )}
+                                            icon={<ListAltOutlined />}
+                                            title={
+                                                "Management Pembayaran Kursus"
+                                            }
+                                        />
+                                    )}
+
                                     <DropdownLinks.Item
                                         href={route(
                                             "admin.daftar-pesanan-kursus"
@@ -211,11 +253,14 @@ export default function AuthLayout({ children }) {
                                         icon={<ListAltOutlined />}
                                         title={"Daftar Pesanan Paket Kursus"}
                                     />
-                                    <DropdownLinks.Item
-                                        href={route("admin.management-kas")}
-                                        icon={<ListAltOutlined />}
-                                        title={"Kas Perusahaan"}
-                                    />
+
+                                    {permissions.includes("view_kas") && (
+                                        <DropdownLinks.Item
+                                            href={route("admin.management-kas")}
+                                            icon={<ListAltOutlined />}
+                                            title={"Kas Perusahaan"}
+                                        />
+                                    )}
                                 </DropdownLinks>
                             </div>
                         )}

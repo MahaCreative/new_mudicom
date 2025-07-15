@@ -3,7 +3,7 @@ import SelectOption from "@/Components/SelectOption";
 import Tables from "@/Components/Tables";
 import useRealtimeJam from "@/Hook/RealtimeJam";
 import AuthLayout from "@/Layouts/AuthLayout";
-import { Link, router, useForm } from "@inertiajs/react";
+import { Link, router, useForm, usePage } from "@inertiajs/react";
 import {
     Add,
     CreateNewFolder,
@@ -36,6 +36,9 @@ import ComponentPembayaran from "./Modal/ComponentPembayaran";
 import { ResponsePesananRecoil } from "./Recoil/ResponsePesanan";
 
 export default function Update(props) {
+    const { auth } = usePage().props;
+    const roles = auth.roles;
+    const permissions = auth.permissions;
     const pendaftaran = props.pendaftaran;
     const kantor_cabang = props.kantor_cabang;
     const payment = props.payment;
@@ -811,51 +814,63 @@ export default function Update(props) {
                                         </Tables.Td>
                                         <Tables.Td>
                                             <div className="w-[130px]">
-                                                <InputText
-                                                    required
-                                                    disabled={
-                                                        dataResponse == null &&
-                                                        pendaftaran.type_pesanan !==
-                                                            "online"
-                                                            ? false
-                                                            : true
-                                                    }
-                                                    size="small"
-                                                    value={item.harga}
-                                                    onChange={(e) =>
-                                                        handleChangeHarga(
-                                                            index,
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                />
+                                                {permissions.includes(
+                                                    "edit_harga_paket"
+                                                ) ? (
+                                                    <InputText
+                                                        required
+                                                        disabled={
+                                                            dataResponse ==
+                                                                null &&
+                                                            index == 0
+                                                                ? false
+                                                                : true
+                                                        }
+                                                        size="small"
+                                                        value={item.harga}
+                                                        onChange={(e) =>
+                                                            handleChangeHarga(
+                                                                index,
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                    />
+                                                ) : (
+                                                    item.harga
+                                                )}
                                             </div>
                                         </Tables.Td>
                                         <Tables.Td>
                                             <div className="w-[50px]">
-                                                <InputText
-                                                    required
-                                                    disabled={
-                                                        dataResponse == null &&
-                                                        pendaftaran.type_pesanan !==
-                                                            "online"
-                                                            ? false
-                                                            : true
-                                                    }
-                                                    inputProps={{
-                                                        min: 0,
-                                                        max: 100,
-                                                    }}
-                                                    type="number"
-                                                    size="small"
-                                                    value={item.diskont}
-                                                    onChange={(e) =>
-                                                        handleDiscountChange(
-                                                            index,
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                />
+                                                {permissions.includes(
+                                                    "edit_diskont"
+                                                ) ? (
+                                                    <InputText
+                                                        required
+                                                        inputProps={{
+                                                            min: 0,
+                                                            max: 100,
+                                                        }}
+                                                        disabled={
+                                                            dataResponse ==
+                                                                null &&
+                                                            index == 0
+                                                                ? false
+                                                                : true
+                                                        }
+                                                        type="number"
+                                                        size="small"
+                                                        value={item.diskont}
+                                                        onChange={(e) =>
+                                                            handleDiscountChange(
+                                                                index,
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                    />
+                                                ) : (
+                                                    item.diskont
+                                                )}
                                             </div>
                                         </Tables.Td>
                                         <Tables.Td className={"text-xs"}>
@@ -996,7 +1011,7 @@ export default function Update(props) {
                                 />
                             </div>
 
-                            <div className="flex gap-x-3 items-center">
+                            {/* <div className="flex gap-x-3 items-center">
                                 <InputLabel
                                     id="tanggal"
                                     className="w-[140px] text-right"
@@ -1008,7 +1023,7 @@ export default function Update(props) {
                                     value={data?.total_netto * (11 / 100)}
                                     disabled
                                 />
-                            </div>
+                            </div> */}
 
                             <div className="flex gap-x-3 items-center">
                                 <InputLabel
@@ -1020,10 +1035,7 @@ export default function Update(props) {
                                 <InputText
                                     className="text-right"
                                     disabled
-                                    value={formatRupiah(
-                                        data?.total_netto +
-                                            data?.total_netto * (11 / 100)
-                                    )}
+                                    value={formatRupiah(data?.total_netto)}
                                 />
                             </div>
                         </div>
