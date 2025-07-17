@@ -4,11 +4,21 @@ import React, { useEffect, useRef, useState } from "react";
 
 function DropdownLinks({ icon, title, active, children, ...props }) {
     const [open, setOpen] = useState(false);
-    const ref = useRef(null);
-
+    const dropdownRef = useRef(null);
+    useEffect(() => {
+        let handler = (e) => {
+            if (dropdownRef && !dropdownRef.current.contains(e.target)) {
+                setOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        };
+    }, []);
     return (
         <button
-            ref={ref}
+            ref={dropdownRef}
             onClick={() => setOpen(!open)}
             className={` px-4 py-2 border-b border-x-white text-white tracking-tighter leading-3 font-medium text-lg  usetransisi w-full`}
         >
