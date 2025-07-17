@@ -23,6 +23,7 @@ export default function Index(props) {
     const jenis = props.jenis;
     const [modal, setModal] = useState(false);
     const [model, setModel] = useState(null);
+    console.log(paket);
 
     const deleteHandler = (id) => {
         router.delete(route("admin.delete-management-paket-kursus", { id }));
@@ -196,24 +197,15 @@ export default function Index(props) {
                                 <Tables.Th className={"text-xs capitalize"}>
                                     Kategori
                                 </Tables.Th>
+
                                 <Tables.Th className={"text-xs capitalize"}>
-                                    Sub Kategori
+                                    Total Materi / Pertemuan
                                 </Tables.Th>
-                                <Tables.Th className={"text-xs capitalize"}>
-                                    Jenis Kursus
-                                </Tables.Th>
-                                <Tables.Th className={"text-xs capitalize"}>
-                                    Total Materi
-                                </Tables.Th>
-                                <Tables.Th className={"text-xs capitalize"}>
-                                    Total Pertemuan
-                                </Tables.Th>
+
                                 <Tables.Th className={"text-xs capitalize"}>
                                     Harga Paket
                                 </Tables.Th>
-                                <Tables.Th className="text-xs capitalize">
-                                    By_Kantor
-                                </Tables.Th>
+
                                 <Tables.Th className="text-xs capitalize">
                                     Status Konfirmasi
                                 </Tables.Th>
@@ -230,16 +222,43 @@ export default function Index(props) {
                                 <Tables.Th className="text-xs capitalize">
                                     Updated_by
                                 </Tables.Th>
-                                <Tables.Th className={"text-xs capitalize"}>
-                                    Aksi
-                                </Tables.Th>
                             </thead>
                             <Tables.Tbody>
                                 {paket.length > 0 ? (
                                     paket.map((item, key) => (
                                         <tr className="odd:bg-gray-200 w-full">
-                                            <Tables.Td className={"text-xs"}>
-                                                {key + 1}
+                                            <Tables.Td
+                                                className={
+                                                    "text-xs flex flex-col gap-2"
+                                                }
+                                            >
+                                                {permissions.includes(
+                                                    "edit_paket"
+                                                ) && (
+                                                    <Link
+                                                        href={route(
+                                                            "admin.edit-management-paket-kursus",
+                                                            item.slug
+                                                        )}
+                                                        className="py-1 px-2 text-white bg-orange-500 hover:bg-orange-600 usetransisi text-xs rounded-md drop-shadow-md"
+                                                    >
+                                                        Edit
+                                                    </Link>
+                                                )}
+                                                {permissions.includes(
+                                                    "delete_paket"
+                                                ) && (
+                                                    <button
+                                                        onClick={() =>
+                                                            deleteHandler(
+                                                                item.id
+                                                            )
+                                                        }
+                                                        className="py-1 px-2 text-white bg-red-500 hover:bg-red-600 usetransisi text-xs rounded-md drop-shadow-md"
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                )}
                                             </Tables.Td>
                                             <Tables.Td className={"text-xs"}>
                                                 <p className="w-[70px]">
@@ -247,47 +266,36 @@ export default function Index(props) {
                                                 </p>
                                             </Tables.Td>
                                             <Tables.Td className={"text-xs"}>
-                                                <p className=" capitalize w-[100px]">
+                                                <p className=" capitalize w-[130px]">
                                                     {item.nama_paket}
                                                 </p>
                                             </Tables.Td>
                                             <Tables.Td className={"text-xs"}>
-                                                <p className=" capitalize w-[70px]">
-                                                    {item.kategori_kursus}
+                                                <p className=" capitalize w-[170px]">
+                                                    {"Kategori :" +
+                                                        item.kategori_kursus +
+                                                        " Sub Kategori :" +
+                                                        item.sub_kategori_kursus +
+                                                        " Jenis Kursus :" +
+                                                        item.jenis_kursus}
                                                 </p>
                                             </Tables.Td>
-                                            <Tables.Td className={"text-xs"}>
-                                                <p className=" capitalize w-[70px]">
-                                                    {item.sub_kategori_kursus}
-                                                </p>
-                                            </Tables.Td>
-                                            <Tables.Td className={"text-xs"}>
-                                                <p className=" capitalize w-[70px]">
-                                                    {item.jenis_kursus}
-                                                </p>
-                                            </Tables.Td>
+
                                             <Tables.Td className={"text-xs"}>
                                                 <p className=" capitalize w-[80px]">
                                                     {item.total_materi +
-                                                        " Materi"}
+                                                        " Materi / " +
+                                                        item.total_pertemuan +
+                                                        " X Pertemuan"}
                                                 </p>
                                             </Tables.Td>
-                                            <Tables.Td className={"text-xs"}>
-                                                <p className=" capitalize w-[80px]">
-                                                    {item.total_pertemuan +
-                                                        "X Pertemuan"}
-                                                </p>
-                                            </Tables.Td>
+
                                             <Tables.Td className={"text-xs"}>
                                                 <p className=" capitalize w-[80px]">
                                                     {formatRupiah(item.harga)}
                                                 </p>
                                             </Tables.Td>
-                                            <Tables.Td>
-                                                <p className="w-[100px] capitalize text-xs text-wrap line-clamp-1">
-                                                    {item.nama_kantor}
-                                                </p>
-                                            </Tables.Td>
+
                                             <Tables.Td
                                                 className={"text-black text-xs"}
                                             >
@@ -349,38 +357,6 @@ export default function Index(props) {
                                                 <p className="w-[100px] capitalize text-xs text-wrap line-clamp-1">
                                                     {item.updated_by}
                                                 </p>
-                                            </Tables.Td>
-
-                                            <Tables.Td
-                                                className={"flex gap-x-2"}
-                                            >
-                                                {permissions.includes(
-                                                    "edit_paket"
-                                                ) && (
-                                                    <Link
-                                                        href={route(
-                                                            "admin.edit-management-paket-kursus",
-                                                            item.slug
-                                                        )}
-                                                        className="py-1 px-2 text-white bg-orange-500 hover:bg-orange-600 usetransisi text-xs rounded-md drop-shadow-md"
-                                                    >
-                                                        Edit
-                                                    </Link>
-                                                )}
-                                                {permissions.includes(
-                                                    "delete_paket"
-                                                ) && (
-                                                    <button
-                                                        onClick={() =>
-                                                            deleteHandler(
-                                                                item.id
-                                                            )
-                                                        }
-                                                        className="py-1 px-2 text-white bg-red-500 hover:bg-red-600 usetransisi text-xs rounded-md drop-shadow-md"
-                                                    >
-                                                        Delete
-                                                    </button>
-                                                )}
                                             </Tables.Td>
                                         </tr>
                                     ))

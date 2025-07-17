@@ -16,6 +16,7 @@ class PaketKursusController extends Controller
         $kategori = KategoriKursus::latest()->get();
         $query = PaketKursus::query();
         $paket = $query->latest()->get();
+
         return inertia('Guest/PaketKursus/Index', compact('paket', 'kategori'));
     }
 
