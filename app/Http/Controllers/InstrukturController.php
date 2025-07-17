@@ -39,7 +39,7 @@ class InstrukturController extends Controller
 
         $request->validate([
             "kategori_kursus_id" => 'required|exists:kategori_kursuses,id',
-            "nik_ktp" => 'required|numeric|digits:16|unique:instrukturs,nik_ktp',
+            "nik_ktp" => 'nullable|numeric|digits:16|unique:instrukturs,nik_ktp',
             "nama_lengkap" => 'required|string|min:3|max:255',
             "tempat_lahir" => 'required|string|min:3|max:255',
             "tanggal_lahir" => 'required|date',
@@ -155,7 +155,7 @@ class InstrukturController extends Controller
         $userId = $instruktur->user_id;
         $request->validate([
             "kategori_kursus_id" => 'required|exists:kategori_kursuses,id',
-            "nik_ktp" => 'required|numeric|digits:16|unique:instrukturs,nik_ktp,' . $instruktur->id,
+            "nik_ktp" => 'nullable|numeric|digits:16|unique:instrukturs,nik_ktp,' . $instruktur->id,
             "nama_lengkap" => 'required|string|min:3|max:255',
             "tempat_lahir" => 'required|string|min:3|max:255',
             "tanggal_lahir" => 'required|date',

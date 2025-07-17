@@ -35,7 +35,7 @@ class PetugasController extends Controller
     {
         $request->validate([
 
-            "nik_ktp" => 'required|numeric|digits:16|unique:instrukturs,nik_ktp',
+            "nik_ktp" => 'nullable|numeric|digits:16|unique:instrukturs,nik_ktp',
             "nama_lengkap" => 'required|string|min:3|max:255',
             "tempat_lahir" => 'required|string|min:3|max:255',
             "tanggal_lahir" => 'required|date',
@@ -122,7 +122,7 @@ class PetugasController extends Controller
         $userId = $petugas->user_id;
         $request->validate([
 
-            "nik_ktp" => 'required|numeric|digits:16|unique:petugas,nik_ktp,' . $petugas->id,
+            "nik_ktp" => 'nullable|numeric|digits:16|unique:petugas,nik_ktp,' . $petugas->id,
             "nama_lengkap" => 'required|string|min:3|max:255',
             "tempat_lahir" => 'required|string|min:3|max:255',
             "tanggal_lahir" => 'required|date',

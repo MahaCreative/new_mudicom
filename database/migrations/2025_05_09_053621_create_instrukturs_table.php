@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable();
             $table->foreignId('kategori_kursus_id')->constrained('kategori_kursuses');
             $table->string('kd_instruktur')->unique();
-            $table->string('nik_ktp');
+            $table->string('nik_ktp')->nullable();
             $table->string('nama_lengkap');
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');

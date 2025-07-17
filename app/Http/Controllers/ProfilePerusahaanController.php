@@ -112,6 +112,7 @@ class ProfilePerusahaanController extends Controller
 
     public function update(Request $request)
     {
+
         $request->validate([
             "nama" => "required|string|min:3|max:255",
             "alamat" => "required|min:10|max:255",
@@ -167,13 +168,19 @@ class ProfilePerusahaanController extends Controller
                 'thumbnail' => $thumbnail,
                 'updated_by' => $request->user()->name
             ]);
-            $ids_sosial_media = [];
-            foreach ($request->sosial_media as $index => $item) {
-                $ids_sosial_media[$index] = $item['id'];
-            }
-            $cek_sosmed = SosialMedia::whereNotIn('id', $ids_sosial_media)->where('kantor_cabang_id', $kantor->id)->get();
-            foreach ($cek_sosmed as $item) {
-                $item->delete();
+
+            $sosmed = SosialMedia::where('kantor_cabang_id', $kantor->id)->delete();
+
+            foreach ($request->sosial_media as $i => $item) {
+                if ($request->sosial_media[$i]['kategori'] && $request->sosial_media[$i]['name']  && $request->sosial_media[$i]['link']) {
+                    SosialMedia::create([
+                        'kantor_cabang_id' => $kantor->id,
+                        'icon' => 4444,
+                        'kategori' => $item['kategori'],
+                        'name' => $item['name'],
+                        'link' => $item['link'],
+                    ]);
+                }
             }
             $ids_misi = [];
             foreach ($request->misi as $index => $item) {
@@ -183,30 +190,7 @@ class ProfilePerusahaanController extends Controller
             foreach ($cekMisi as $item) {
                 $item->delete();
             }
-            foreach ($request->sosial_media as $i => $item) {
-                if ($item['id']) {
-                    $sosial_media = SosialMedia::find($item['id']);
 
-                    if ($request->sosial_media[$i]['kategori'] && $request->sosial_media[$i]['name']  && $request->sosial_media[$i]['link']) {
-                        $sosial_media->update([
-                            'icon' => 4444,
-                            'kategori' => $item['kategori'],
-                            'name' => $item['name'],
-                            'link' => $item['link'],
-                        ]);
-                    }
-                } else {
-                    if ($request->sosial_media[$i]['kategori'] && $request->sosial_media[$i]['name']  && $request->sosial_media[$i]['link']) {
-                        $sosialMedia = SosialMedia::create([
-                            'instruktur_id' => $kantor->id,
-                            'icon' => 4444,
-                            'kategori' => $item['kategori'],
-                            'name' => $item['name'],
-                            'link' => $item['link'],
-                        ]);
-                    }
-                }
-            }
             foreach ($request->misi as $item) {
                 if ($item['id']) {
                     $misi = Misi::find($item['id']);
