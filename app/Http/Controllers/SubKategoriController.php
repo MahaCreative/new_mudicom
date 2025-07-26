@@ -27,7 +27,7 @@ class SubKategoriController extends Controller
         $sub = SubKategoriKursus::find($request->id);
         $attr =  $request->validate([
             'kategori_kursus_id' => 'required',
-            'nama_sub_kategori' => 'required|string|min:6|max:25|unique:sub_kategori_kursuses,nama_sub_kategori,' . $sub->id,
+            'nama_sub_kategori' => 'required|string|min:6|max:25|unique:sub_kategori_kursuses,nama_sub_kategori, ' . $request->id,
             'deskripsi' => 'required|string|min:6|max:255',
             'kantor_cabang_id' => 'required'
         ]);
@@ -40,7 +40,7 @@ class SubKategoriController extends Controller
             $attr['thumbnail'] = $request->file('thumbnail')->store('sub_kategori_kursus');
         }
 
-        $sub = SubKategoriKursus::create($attr);
+        $sub->update($attr);
     }
 
     public function delete(Request $request)

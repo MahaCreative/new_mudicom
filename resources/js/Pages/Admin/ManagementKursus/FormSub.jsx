@@ -69,6 +69,7 @@ export default function FormSub({ model, kategori, onClose, kantor_cabang }) {
             kantor_cabang_id: model ? model.kantor_cabang_id : "",
         });
     }, [model]);
+    console.log(model);
 
     return (
         <form
