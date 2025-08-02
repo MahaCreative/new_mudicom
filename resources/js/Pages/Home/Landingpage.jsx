@@ -282,7 +282,7 @@ export default function Landingpage(props) {
                                 ))}
                             </SliderPaket>
                         </div>
-                        <div>
+                        <div className="block md:hidden">
                             {paket.map((item, key) => (
                                 <Link
                                     href={route(
