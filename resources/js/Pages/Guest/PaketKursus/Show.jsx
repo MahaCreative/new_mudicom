@@ -82,8 +82,8 @@ export default function Show(props) {
             <div className=" px-4 md:px-8 lg:px-16 flex flex-col  justify-center items-center gap-3 py-24">
                 <h1 className="font-bold text-2xl w-full text-center md:w-1/2 text-primary">
                     Online Course{" "}
-                    {" " + data.nama_paket + " " + data.jenis_kursus} ini cocok
-                    untuk Anda yang memiliki salah satu masalah ini
+                    {" " + paket.nama_paket + " " + paket.jenis_kursus} ini
+                    cocok untuk Anda yang memiliki salah satu masalah ini
                 </h1>
                 <div className="my-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-20">
                     {paket.trouble.map((item, key) => (
@@ -199,7 +199,7 @@ export default function Show(props) {
                 <p className="text-center font-medium  text-5xl my-9">
                     Biaya untuk Skill Masa Depanmu
                 </p>
-                <div className="flex justify-center items-start gap-6">
+                <div className="flex flex-col md:flex-row gap-3 justify-center items-start gap-6">
                     <div className="w-full">
                         <div className="bg-primary">
                             <div className="py-6 flex justify-center bg-blue-800">
@@ -223,7 +223,7 @@ export default function Show(props) {
                                 <p className="capitalize text-4xl font-extrabold text-center text-white">
                                     Hanya
                                 </p>
-                                <p className=" capitalize text-7xl font-extrabold text-center text-white py-16   leading-3">
+                                <p className=" capitalize text-5xl lg:text-7xl font-extrabold text-center text-white py-16   leading-3">
                                     {formatRupiah(
                                         paket.harga_promo == 0
                                             ? paket.harga
