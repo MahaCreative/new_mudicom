@@ -49,7 +49,7 @@ export default function Show(props) {
                         </Link>
                     </div>
                     <img
-                        src={"/storage/" + profile.thumbnail}
+                        src={"/storage/" + paket.thumbnail}
                         alt=""
                         className="w-full md:w-1/2  object-cover"
                     />
