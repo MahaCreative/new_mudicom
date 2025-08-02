@@ -1,7 +1,7 @@
 import InputText from "@/Components/InputText";
 import GuestLayout from "@/Layouts/GuestLayout";
 import { formatRupiah } from "@/Pages/Function/FormatRupiah";
-import { Link, usePage } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
 import {
     Facebook,
     InsertEmoticon,
@@ -20,6 +20,7 @@ export default function Show(props) {
 
     return (
         <div>
+            <Head title={paket.nama_paket + " " + paket.jenis_kursus} />
             {/* Jumbotron */}
             <div className="bg-primary relative min-h-[600px] md:min-h-[500px] lg:min-h-[400px] w-full flex flex-col justify-center items-start px-4 md:px-8 lg:px-16 py-16">
                 <div className="flex flex-col-reverse md:flex-row w-full gap-3 justify-between">
@@ -80,8 +81,9 @@ export default function Show(props) {
             {/* trouble */}
             <div className=" px-4 md:px-8 lg:px-16 flex flex-col  justify-center items-center gap-3 py-24">
                 <h1 className="font-bold text-2xl w-full text-center md:w-1/2 text-primary">
-                    Online Course Excel ini cocok untuk Anda yang memiliki salah
-                    satu masalah ini
+                    Online Course{" "}
+                    {" " + data.nama_paket + " " + data.jenis_kursus} ini cocok
+                    untuk Anda yang memiliki salah satu masalah ini
                 </h1>
                 <div className="my-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-20">
                     {paket.trouble.map((item, key) => (

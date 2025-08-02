@@ -13,11 +13,19 @@ class PaketKursusController extends Controller
 {
     public function index(Request $request)
     {
+
+        $params_kategori = $request->kategori ? $request->kategori : 'all';
         $kategori = KategoriKursus::latest()->get();
         $query = PaketKursus::query();
+        if ($request->kategori) {
+            if ($request->kategori !== "all") {
+
+                $query->where('kategori_kursus', $request->kategori);
+            }
+        }
         $paket = $query->latest()->get();
 
-        return inertia('Guest/PaketKursus/Index', compact('paket', 'kategori'));
+        return inertia('Guest/PaketKursus/Index', compact('paket', 'kategori', 'params_kategori'));
     }
 
     public function show(Request $request, $slug)

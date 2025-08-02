@@ -1,6 +1,6 @@
 import InputText from "@/Components/InputText";
 import GuestLayout from "@/Layouts/GuestLayout";
-import { Link, usePage } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
 import { Facebook, Telegram, Web, X } from "@mui/icons-material";
 import React from "react";
 
@@ -11,6 +11,7 @@ export default function About(props) {
     const sosmed = props.sosmed;
     return (
         <div>
+            <Head title="Tentang Kami" />
             {/* Jumbotron */}
             <div className="bg-primary relative h-[400px] w-full flex flex-col justify-center items-center">
                 <h1 className="font-bold text-white text-4xl">Tentang Kami</h1>
@@ -94,10 +95,9 @@ export default function About(props) {
                                 Kontak Kami
                             </h1>
                             <p>
-                                Lorem ipsum dolor, sit amet consectetur
-                                adipisicing elit. Ullam sequi quam enim placeat
-                                harum magnam minus ab, quisquam atque
-                                voluptatibus quis dolorem delectus minima
+                                Hubungi kami untuk informasi lebih lanjut
+                                mengenai program kursus, pendaftaran, atau
+                                layanan lainnya.
                             </p>
                             <div className="flex gap-x-3 items-center">
                                 <InputText label="*Nama Lengkap" />

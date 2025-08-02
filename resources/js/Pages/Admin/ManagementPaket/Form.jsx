@@ -1080,9 +1080,12 @@ export default function Form({
                                     </h1>
                                     <div className=" px-4 md:px-8 lg:px-16 flex flex-col  justify-center items-center gap-3 py-24">
                                         <h1 className="font-bold text-2xl w-full text-center md:w-1/2 text-primary">
-                                            Online Course Excel ini cocok untuk
-                                            Anda yang memiliki salah satu
-                                            masalah ini
+                                            Online Course{" "}
+                                            {data.nama_paket +
+                                                " " +
+                                                data.jenis_kursus}{" "}
+                                            ini cocok untuk Anda yang memiliki
+                                            salah satu masalah ini
                                         </h1>
                                         <div className="my-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-20">
                                             {data.trouble.map((item, key) => (

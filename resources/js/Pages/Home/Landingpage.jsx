@@ -2,7 +2,7 @@ import SliderPaket from "@/Components/Guest/SliderPaket";
 import SliderTestimoni from "@/Components/Guest/SliderTestimoni";
 import Jumbotron from "@/Components/Jumbotron";
 import GuestLayout from "@/Layouts/GuestLayout";
-import { Link, usePage } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
 import {
     Email,
     MeetingRoom,
@@ -20,6 +20,7 @@ export default function Landingpage(props) {
     const paket = props.paket;
     return (
         <>
+            <Head title="Beranda" />
             <section className="relative bg-primary ">
                 <Jumbotron />
                 <div className="h-full w-full absolute left-0 top-0 bg-primary/50 "></div>
@@ -129,9 +130,7 @@ export default function Landingpage(props) {
             {/* Available Courses & Testimonial */}
             <section className="px-6 py-12 flex flex-col-reverse lg:flex-row gap-8 items-center">
                 <div className="w-full lg:w-1/2">
-                    <h2 className="text-2xl font-bold mb-4">
-                        Available Courses
-                    </h2>
+                    <h2 className="text-2xl font-bold mb-4">Jenis Kursus</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 ">
                         {sub_kategori.map((item, key) => (
                             <>
@@ -160,9 +159,16 @@ export default function Landingpage(props) {
                                         <p className="font-sans leading-6 tracking-tight text-sm text-white">
                                             {item.deskripsi}
                                         </p>
-                                        <button className="border border-white py-2 px-3 rounded-md text-white font-light inline">
+                                        <Link
+                                            href={route("paket-kursus", {
+                                                kategori:
+                                                    item.nama_sub_kategori,
+                                            })}
+                                            as="button"
+                                            className="border border-white py-2 px-3 rounded-md text-white font-light inline"
+                                        >
                                             Selengkapnya
-                                        </button>
+                                        </Link>
                                     </div>
                                 </div>
                             </>
@@ -189,23 +195,24 @@ export default function Landingpage(props) {
                 </div>
                 <div className="w-full lg:w-1/2">
                     <h1 className="text-lg font-medium mb-4 text-primary">
-                        Paket Belajar Yang Tersedia
+                        Paket Kursus Yang Tersedia
                     </h1>
                     <h6 className="font-bold mb-4 text-primary text-4xl">
                         Mengembangkan Bakat, Kreativitas, dan Karakter!
                     </h6>
                     <p className="font-light tracking-tight text-xl">
-                        Lorem ipsum dolor sit, amet consectetur adipisicing
-                        elit. Illum ducimus temporibus tempora natus? Quia,
-                        maxime rerum. Eveniet eum quaerat eius cumque, in
-                        voluptatibus? Aut enim vel dolores architecto tempora
-                        nesciunt?
+                        Pilih berbagai paket kursus yang dirancang khusus untuk
+                        membantu peserta meningkatkan keterampilan, memperluas
+                        wawasan, dan membentuk karakter unggul. Setiap paket
+                        disesuaikan dengan kebutuhan dan tingkat kemampuan,
+                        mulai dari dasar hingga lanjutan, serta dilengkapi
+                        dengan materi praktik yang menarik dan interaktif.
                     </p>
                     <div className="py-3">
                         <h1 className="text-primary font-extrabold text-xl">
                             Paket Kursus Yang Tersedia
                         </h1>
-                        <div className="my-6 px-4">
+                        <div className="my-6 px-4 hidden md:block">
                             <SliderPaket setActiveIndex={setActiveIndex}>
                                 {paket.map((item, key) => (
                                     <Link
@@ -275,10 +282,85 @@ export default function Landingpage(props) {
                                 ))}
                             </SliderPaket>
                         </div>
+                        <div>
+                            {paket.map((item, key) => (
+                                <Link
+                                    href={route(
+                                        "detail-paket-kursus",
+                                        item.slug
+                                    )}
+                                    as="div"
+                                    className="mx-5 hover:cursor-pointer"
+                                >
+                                    <div
+                                        className={` py-3 rounded-md drop-shadow-md px-4  border border-primary/20 flex justify-between flex-col md:flex-row gap-3 items-start  transition-all duration-500 ease-in-out group hover:bg-primary`}
+                                    >
+                                        <div className="w-full md:w-[200px] ">
+                                            <img
+                                                src={
+                                                    "/storage/" + item.thumbnail
+                                                }
+                                                alt=""
+                                                className="w-[400px] h-[200px] object-cover"
+                                            />
+                                        </div>
+                                        <div className="w-full font-heebo">
+                                            <h1
+                                                className={`font-bold text-lg md:text-lg  transition-all duration-500 ease-in-out group-hover:text-white`}
+                                            >
+                                                {item.nama_paket +
+                                                    " " +
+                                                    item.jenis_kursus}
+                                            </h1>
+                                            <p className="text-primary group-hover:text-white text-sm">
+                                                {item.total_materi +
+                                                    " Materi/" +
+                                                    item.total_pertemuan +
+                                                    "X Pertemuan"}
+                                            </p>
+                                            <p
+                                                className="line-clamp-3 my-3 text-sm md:text-sm group-hover:text-white"
+                                                dangerouslySetInnerHTML={{
+                                                    __html: item.deskripsi,
+                                                }}
+                                            />
+
+                                            <div className="flex flex-col  gap-1 md:gap-3  ">
+                                                <p
+                                                    className={`inline my-3 group-hover:bg-white group-hover:text-primary bg-primary  text-white    font-extrabold  text-xs md:text-2xl lg:text-4xl py-3 px-4 transition-all duration-500 ease-in-out`}
+                                                >
+                                                    {formatRupiah(
+                                                        item.harga -
+                                                            item.harga_promo
+                                                    )}
+                                                </p>
+                                                <p className="text-xs md:text-sm group-hover:text-white">
+                                                    {item.total_materi +
+                                                        " Materi " +
+                                                        item.total_pertemuan +
+                                                        " / Pertemuan"}
+                                                </p>
+                                            </div>
+                                            <Link
+                                                as="button"
+                                                href={route("kategori-kursus")}
+                                                className="mt-3 text-primary border py-2 px-3 border-primary rounded-md group-hover:text-white group-hover:border-white"
+                                            >
+                                                Selengkapnya
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
                         <div className="w-full flex justify-center">
-                            <button className="border border-primary py-2 px-4 text-xl font-extrabold text-primary rounded-md usetransisi hover:bg-primary hover:text-white">
+                            <Link
+                                as="button"
+                                href={route("kategori-kursus")}
+                                className="mt-3 border border-primary py-2 px-4 text-xl font-extrabold text-primary rounded-md usetransisi hover:bg-primary hover:text-white"
+                            >
                                 Lihat Paket Lainnya
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 </div>

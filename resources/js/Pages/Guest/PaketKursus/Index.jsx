@@ -1,24 +1,53 @@
 import GuestLayout from "@/Layouts/GuestLayout";
 import { formatRupiah } from "@/Pages/Function/FormatRupiah";
-import { Link } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
+import { debounce } from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
 
 export default function Index(props) {
+    const params_kategori = props.params_kategori;
     const [params, setParamas] = useState({ kategori: "" });
     const kategori = props.kategori;
     const paket = props.paket;
 
-    // const reload = useCallback(() => {})
-    useEffect(() => {}, []);
+    const reload = useCallback(
+        debounce((query) => {
+            router.get(
+                route("paket-kursus"),
+                { ...query },
+                {
+                    preserveState: true,
+                    preserveScroll: true,
+                },
+                300
+            );
+        }, [])
+    );
+    useEffect(() => {
+        if (params_kategori) {
+            setParamas({
+                ...params,
+                kategori: params_kategori,
+            });
+        } else {
+            setParamas({
+                ...params,
+                kategori: "all",
+            });
+        }
+    }, [params_kategori]);
+    useEffect(() => reload(params), [params]);
     return (
         <div>
+            <Head title="Paket Kursus" />
             <div className="bg-primary relative h-[400px] w-full flex flex-col justify-center items-center">
                 <h1 className="font-bold text-white text-4xl">Paket Kursus</h1>
                 <p className="text-white w-full md:w-[80%] lg:w-1/2 text-center my-3">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Doloribus ipsa repudiandae nobis rem, blanditiis odio saepe
-                    natus laborum in vel voluptas possimus porro cumque fugiat
-                    odit nam, eaque ullam magnam iure error libero beatae
+                    Kami menyediakan berbagai pilihan paket kursus yang dapat
+                    disesuaikan dengan minat dan kebutuhan Anda. Mulai dari
+                    kelas dasar hingga tingkat mahir, setiap paket dirancang
+                    untuk memberikan pengalaman belajar yang menyenangkan,
+                    terstruktur, dan aplikatif dalam dunia nyata.
                 </p>
                 <div className="my-3 w-full flex flex-row gap-x-3 justify-center items-center">
                     <input
@@ -43,7 +72,7 @@ export default function Index(props) {
                             params.kategori == "all"
                                 ? "bg-primary text-white "
                                 : "bg-white text-primary  hover:bg-primary hover:text-white"
-                        } py-2 px-3  usetransisi hover:cursor-pointer capitalize  rounded-md drop-shadow-sm text-xl font-bold`}
+                        } py-2 px-3  usetransisi hover:cursor-pointer capitalize  rounded-md drop-shadow-sm text-sm md:text-lg lg:text-xl  font-bold`}
                     >
                         Semua Kategori
                     </div>
@@ -59,7 +88,7 @@ export default function Index(props) {
                                 params.kategori == item.nama_kategori
                                     ? "bg-primary text-white "
                                     : "bg-white text-primary  hover:bg-primary hover:text-white"
-                            } py-2 px-3  usetransisi hover:cursor-pointer capitalize  rounded-md drop-shadow-sm text-xl font-bold`}
+                            } py-2 px-3  usetransisi hover:cursor-pointer capitalize  rounded-md drop-shadow-sm text-sm md:text-lg lg:text-xl font-bold`}
                         >
                             {item.nama_kategori}
                         </div>
@@ -73,13 +102,13 @@ export default function Index(props) {
                             className="mx-1 hover:cursor-pointer"
                         >
                             <div
-                                className={` py-3 rounded-md drop-shadow-md px-4  border border-primary/20 flex justify-between flex-row gap-x-3 items-start  transition-all duration-500 ease-in-out group hover:bg-primary`}
+                                className={` py-3 rounded-md drop-shadow-md px-4  border border-primary/20 flex-col justify-between gap-3 items-start  transition-all duration-500 ease-in-out group hover:bg-primary`}
                             >
-                                <div className="w-[200px] ">
+                                <div className=" w-full">
                                     <img
                                         src={"/storage/" + item.thumbnail}
                                         alt=""
-                                        className="w-[200px] h-[100px] object-cover"
+                                        className="w-full h-[200px] object-cover"
                                     />
                                 </div>
                                 <div className="w-full font-heebo">

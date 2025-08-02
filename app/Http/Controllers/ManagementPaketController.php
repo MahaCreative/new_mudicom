@@ -96,7 +96,7 @@ class ManagementPaketController extends Controller
             $paket = PaketKursus::create([
                 "kd_paket" => $kd_paket,
                 "nama_paket" => $request->nama_paket,
-                'slug' => \Str::slug($request->nama_paket + $request->jenis_kursus + $request->total_pertemuan),
+                'slug' => \Str::slug($request->nama_paket . $request->jenis_kursus . $request->total_pertemuan),
                 "kategori_kursus" => $kategoriKursus->nama_kategori,
                 "sub_kategori_kursus" => $subKategori->nama_sub_kategori,
                 "jenis_kursus" => $request->jenis_kursus,
@@ -265,7 +265,7 @@ class ManagementPaketController extends Controller
         }
         $paket->update([
             "nama_paket" => $request->nama_paket,
-            'slug' => \Str::slug($request->nama_paket),
+            'slug' => \Str::slug($request->nama_paket . $request->jenis_kursus . $request->total_pertemuan),
             "kategori_kursus" => $kategoriKursus->nama_kategori,
             "sub_kategori_kursus" => $subKategori->nama_sub_kategori,
             "jenis_kursus" => $request->jenis_kursus,

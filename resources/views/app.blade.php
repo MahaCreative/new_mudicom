@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title inertia>{{ config('app.name', $mudicom->nama) }}</title>
-    <link rel="icon" href="{{ asset($mudicom->logo) }}" type="image/png">
+    <link rel="icon" href="{{ asset('/storage/' . $mudicom->logo) }}" type="image/png">
+
     <!-- Fonts -->
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
