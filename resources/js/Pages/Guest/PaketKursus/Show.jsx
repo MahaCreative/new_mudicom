@@ -25,10 +25,10 @@ export default function Show(props) {
             <div className="bg-primary relative min-h-[600px] md:min-h-[500px] lg:min-h-[400px] w-full flex flex-col justify-center items-start px-4 md:px-8 lg:px-16 py-16">
                 <div className="flex flex-col-reverse md:flex-row w-full gap-3 justify-between">
                     <div className="w-full md:w-1/2">
-                        <h1 className="font-bold text-white text-6xl">
+                        <h1 className="font-bold text-white text-3xl md:text-6xl">
                             {paket.nama_paket}
                         </h1>
-                        <h1 className="font-bold text-white text-7xl">
+                        <h1 className="font-bold text-white text-3xl md:text-5xl lg:text-7xl">
                             {formatRupiah(paket.harga - paket.harga_promo)}
                         </h1>
                         <p
@@ -70,7 +70,7 @@ export default function Show(props) {
                                 src={"/storage/" + item.icon}
                                 alt={item.reason}
                             />
-                            <p className="font-light text-sm my-5">
+                            <p className="font-light text-sm my-5 text-center md:text-left">
                                 {item.reason}
                             </p>
                         </div>
@@ -81,7 +81,6 @@ export default function Show(props) {
             {/* trouble */}
             <div className=" px-4 md:px-8 lg:px-16 flex flex-col  justify-center items-center gap-3 py-24">
                 <h1 className="font-bold text-2xl w-full text-center md:w-1/2 text-primary">
-                    Online Course{" "}
                     {" " + paket.nama_paket + " " + paket.jenis_kursus} ini
                     cocok untuk Anda yang memiliki salah satu masalah ini
                 </h1>
@@ -96,11 +95,11 @@ export default function Show(props) {
                                     <img
                                         src={"/storage/image/Group-1802.jpg"}
                                         alt={paket.nama_paket}
-                                        className="w-[100px]"
+                                        className="w-[100px] h-[100px] bg-white"
                                     />
                                 </div>
                             </div>
-                            <p className="font-light text-sm mt-12">
+                            <p className="font-light text-sm mt-12 text-center md:text-left">
                                 {item.deskripsi_trouble}
                             </p>
                         </div>
