@@ -19,7 +19,7 @@ export default function GuestLayout({ children }) {
             <Link
                 href={"https://wa.me/6282349893534"}
                 as="div"
-                className="fixed hover:cursor-pointer bottom-2 right-2 w-12 h-12 bg-white z-[9999]   rounded-full hover:scale-105 duration-300 ease-in-out animate-bounce"
+                className="fixed hover:cursor-pointer bottom-10 right-10 md:bottom-2 md:right-2 w-12 h-12 bg-white z-[9999]   rounded-full hover:scale-105 duration-300 ease-in-out animate-bounce"
             >
                 <img src="/whatsapp.webp" alt="" />
             </Link>{" "}
